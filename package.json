@@ -1,40 +1,41 @@
 {
-  "name": "express-mvc-bootstrap",
+  "name": "trinte",
   "description": "Express MVC Application Accelerator",
-  "version": "0.1.2",
-  "homepage": "http://cliftonc.github.com/express-mvc-bootstrap",
+  "version": "0.0.1",
+  "homepage": "https://github.com/biggora/trinte",
   "repository": {
     "type": "git",
-    "url": "git://github.com/cliftonc/express-mvc-bootstrap.git"
+    "url": "git://github.com/biggora/trinte.git"
   },
-  "main":"bootstrap",
-  "author": "Clifton Cunningham <clifton.cunningham@gmail.com> (cliftoncunningham.co.uk)",  
+  "main":"trinte",
+  "author": "",
   "directories": {
+    "bin": "./bin",
     "lib": "./lib",
-    "conf": "./conf",    
+    "conf": "./conf",
     "models": "./models",
     "controllers": "./controllers",
     "views": "./views",
     "public": "./public",
     "scripts": "./scripts",
-    "utils": "./utils",    
-    "tests": "./tests"    
+    "utils": "./utils",
+    "tests": "./tests"
   },
   "repository" :
              { "type" : "git"
-             , "url" : "https://github.com/cliftonc/express-mvc-bootstrap.git"
-  },  
-  "engines" : { "node" : "0.4 || 0.5" },
-  "dependencies" : { 
-             "express" : ">=2.0.0beta3",
-             "connect" : ">=1.0.3",
-             "cluster" : ">=0.4.0",
-             "ejs" : ">=0.3.1",
-             "socket.io" : ">=0.6.16",
-             "mongoose" : ">=1.1.3",
-             "expresso" : ">=0.7.3",
-             "should" : ">=0.0.4"              
+             , "url" : "https://github.com/biggora/trinte.git"
   },
-  "bin": { "eb": "./eb" }
-                
+  "engines" : { "node" : ">=0.8" },
+  "dependencies" : {
+             "express"   : ">=3.0.0",
+             "connect"   : ">=1.0.3",
+             "cluster"   : ">=0.4.0",
+             "ejs"       : ">=0.3.1",
+             "socket.io" : ">=0.8.0",
+             "mongoose"  : ">=1.1.3",
+             "expresso"  : ">=0.7.3",
+             "should"    : ">=0.0.4"
+  },
+  "bin": { "trinte": "./bin/trinte" }
+
 }
