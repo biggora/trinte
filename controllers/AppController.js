@@ -1,5 +1,5 @@
 var fs = require('fs')
-    , inflection = require('../lib/inflection');
+, inflection = require('../lib/inflection');
 
 module.exports = function (app) {
 
@@ -111,6 +111,8 @@ function index(req, res, next) {
                 controllers.push(file.replace('Controller.js', '').toLowerCase());
             }
         });
-        res.render('app', {controllers: controllers});
+        res.render('app', {
+            controllers: controllers
+        });
     });
 };
