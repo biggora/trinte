@@ -1,4 +1,4 @@
-# Trinte MVC Framework
+# TrinteJS MVC Framework
 
 A MVC boilerplate for Express.js
 
@@ -7,6 +7,9 @@ A MVC boilerplate for Express.js
 I built this application to create a template MVC `style` app that I could then use as the start point for further development. I used the excellent examples in the main [Express github repository](https://github.com/visionmedia/express), specifically the MVC example, as the starting point. I have however changed it quite substantially to make it clearer and remove some of the `magic` that confused me at first when learning. If you are familiar with other MVC frameworks hopefully my file structure makes some sense.
 
 ## Requires
+  - [express](http://expressjs.com/): Application Framework for Node.js
+  - [mongoose](http://mongoosejs.com/): Node.js ORM for MongoDB
+  - [ejs](http://embeddedjs.com/): EmbeddedJS Templating
 
 ## Installation
 
@@ -30,8 +33,68 @@ I built this application to create a template MVC `style` app that I could then 
 
   - Browse to http://localhost:3000
 
+Directory structure
+-------------------
 
-## Commands:
+On initialization directories tree generated, like that:
+
+    .
+    `-- conf
+    |   |-- configuration.js
+    |   |-- development.js
+    |   |-- production.js
+    |   `-- test.js
+    |-- controllers
+    |   |-- AppController.js
+    |   `-- PostsController.js
+    |-- lib
+    |   `-- inflection.js
+    |-- models
+    |   |-- Category.js
+    |   |-- Post.js
+    |   `-- User.js
+    |-- public
+    |   |-- css
+    |   |   `-- ...
+    |   |-- js
+    |   |   `-- ...
+    |   `-- img
+    |   |   `-- ...
+    |-- views
+    |   |-- app
+    |   |   `-- index.html
+    |   `-- posts
+    |   |   |-- edit.html
+    |   |   |-- index.html
+    |   |   `-- new.html
+    |   |-- layout.html
+    |   |-- 404.html
+    |   `-- 500.html
+    `-- utils
+    |   `-- pager.js
+    |-- app.js
+    `-- app-cluster.js
+
+Routing
+-------
+
+    // Plural
+    app.get("/:controller?", router);				// Index
+    app.get("/:controller.:format?", router);			// Index
+    app.get("/:controller/:from-:to.:format?", router);		// Index
+
+    // Plural Create & Delete
+    app.post("/:controller", router);			        // Create
+    app.del("/:controller", router);   			        // Delete all
+
+    // Singular - different variable to clarify routing
+    app.get("/:controller/:id.:format?", router);  	        // To support controller/index
+    app.get("/:controller/:id/:action", router);		// Show edit
+    app.put("/:controller/:id", router);			// Update
+    app.del("/:controller/:id", router);			// Delete
+
+
+## Generators:
 
       // Shows help
       $ trinte script
@@ -57,6 +120,23 @@ I built this application to create a template MVC `style` app that I could then 
       // Creates a new app
       $ trinte create-app
 
+
+## In the Wild
+
+The following projects use express-useragent.
+
+If you are using express-useragent in a project, app, or module, get on the list below
+by getting in touch or submitting a pull request with changes to the README.
+
+### Startups & Apps
+
+- [TViMama](http://tvimama.com/)
+- [GorkaTV](https://gorkatv.com/)
+
+
+## Author
+
+Aleksej Gordejev (aleksej@gordejev.lv).
 
 ## License
 
