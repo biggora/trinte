@@ -13,7 +13,7 @@ I built this application to create a template MVC `style` app that I could then 
     $ npm install -g trinte
 
 ## Setup
-  - In you project folder run
+  -  Create and initialize app
 
 <!---->
       // create project dir
