@@ -55,6 +55,4 @@ exports.execute = function(params,appPath) {
     fs.writeFileSync(modelFile, ret,'utf8');
 
     console.log('Model ' + modelName + ' created in models/' + modelName + '.js');
-
-
 };

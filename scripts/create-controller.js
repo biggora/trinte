@@ -69,6 +69,4 @@ exports.execute = function(params,appPath) {
     fs.writeFileSync(controllerFile, ret,'utf8');
 
     console.log('Controller for model ' + modelName + ' created in controllers/' + controllerName + 'Controller.js');
-
-
 };

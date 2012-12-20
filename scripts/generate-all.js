@@ -17,5 +17,4 @@ exports.execute = function(params,appPath) {
     controllerScript.execute(params,appPath);
     viewScript.execute(params,appPath);
     testScript.execute(params,appPath);
-
 };

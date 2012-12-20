@@ -7,12 +7,11 @@
 <h1>Viewing <?= basePath ?></h1>
 <script type="text/javascript">
 	$(function(){
-
 		// Delete User
 		$('.button-delete').click(function(){
-			
+
 			var <?= modelVariable ?>Id = this.id;
-			
+
 			$("#dialog-confirm" ).dialog({
 				resizable: false,
 				height:180,
@@ -23,11 +22,11 @@
 						$( this ).dialog( "close" );
 						$.ajax({
 							   type: "DELETE",
-							   url: "/<?= modelVariable ?>/" + <?= modelVariable ?>Id,				   
-							   success: function(msg) {				   	  
+							   url: "/<?= modelVariable ?>/" + <?= modelVariable ?>Id,
+							   success: function(msg) {
 								  window.location.replace("/<?= modelVariable ?>s");
 							   },
-							   error: function(msg) {					  
+							   error: function(msg) {
 								  alert("I was unable to delete the <?= modelVariable ?> - something has gone wrong, apologies!");
 							   }
 						});
@@ -36,10 +35,10 @@
 						$( this ).dialog( "close" );
 					}
 				}
-			});			
-			
+			});
+
 		});
-		
+
 	});
 </script>
 <div id="dialog-confirm" style="display: none;" title="Delete <?= modelVariable ?>?">
@@ -52,10 +51,10 @@
   	</tr>
   	<tr>
   		<th>Name</th><td><%= <?= modelVariable ?>.name %></td>
-  	</tr> 	
+  	</tr>
 </table>
 <a class="button-edit" href="<%= <?= modelVariable ?>.id %>/edit" title="Edit <?= modelVariable ?> ...">
-	Edit 
+	Edit
 </a>
 <button class="button-delete" id="<%= <?= modelVariable ?>.id %>"  title="Delete <?= modelVariable ?> ...">
 	Delete

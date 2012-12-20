@@ -92,6 +92,4 @@ exports.execute = function(params,appPath) {
     fs.writeFileSync(testFolder + "/functional/" + modelName + '.js', retFunctional,'utf8');
 
     console.log('Tests for ' + modelName + ' created in tests.');
-
-
 };

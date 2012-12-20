@@ -38,6 +38,4 @@ exports.execute = function(params,appPath) {
         console.log(ret);
 
     });
-
-
 };
