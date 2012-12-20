@@ -77,6 +77,17 @@ function bootApplication(app) {
                     return arr.concat(msgs[type]);
                 }, []);
             };
+            req.flash = function (type, msg) {
+                req.session.messages = req.session.messages ? req.session.messages : [];
+                if(type && msg) {
+                    req.session.messages.push({
+                        type : type,
+                        message : msg
+                    });
+                } else {
+                    return req.session.messages;
+                }
+            };   
             next();
         });
         app.use(app.router);
