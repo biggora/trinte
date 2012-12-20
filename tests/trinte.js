@@ -244,7 +244,6 @@ function createApplicationAt(path) {
 
     copy(bootstrapPath + '/app-cluster.js', path + '/app-cluster.js');
     copy(bootstrapPath + '/app.js', path + '/app.js');
-    copy(bootstrapPath + '/app.json', path + '/package.json');
 
     write(path + '/.trinte-status', 'Created @ ' + new Date());
 
@@ -350,7 +349,7 @@ function mkdir(path, fn) {
  *
  * @param {String} path
  * @param {Function} fn
- */   // mkdirSyncRecursive
+ */
 
 function copy(from, to, fn) {
     var stat = fs.statSync(from);

@@ -2,23 +2,24 @@
  * Module dependencies.
  */
 var fs = require('fs'),
-express = require('express'),
-mongoose = require('mongoose'),
-nodepath = require('path');
+    express = require('express'),
+    mongoose = require('mongoose'),
+    nodepath = require('path'),
+    engine = require('ejs-locals');
 
-var path = __dirname;
+var curpath = __dirname.replace(/\\/gi,"/");
 var app;
 
 /**
  * Initial bootstrapping
  */
-exports.boot = function(params){
+exports.boot = function (params) {
 
     //Create our express instance
-    app = express.createServer();
+    app = express();
 
     // Import configuration
-    require(path + '/conf/configuration.js')(app,express);
+    require(curpath + '/conf/configuration.js')(app, express);
 
     // Bootstrap application
     bootApplication(app);
@@ -37,62 +38,73 @@ exports.boot = function(params){
 
 function bootApplication(app) {
 
-    // launch
-    // app.use(express.logger({ format: ':method :url :status' }));
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-    app.use(express.cookieParser());
-    app.use(express.session({
-        secret: 'helloworld'
-    }));
-    app.use(express.static(path + '/public'));  // Before router to enable dynamic routing
-    app.use(app.router);
+    app.configure(function () {
+        app.use(express.logger({ format: ':method :url :status' }));
+        app.use(express.compress());
+        app.use(express.bodyParser({
+            uploadDir: curpath + '/uploads',
+            keepExtensions: true,
+            encoding: 'utf-8'
+        }));
+        app.use(express.methodOverride());
+        app.use(express.cookieParser('77ecf30e77123e7ddf1db738eaa437376'));
+        app.use(express.session({
+            cookie: {
+                maxAge: 8640000
+            },
+            secret: '77ecf30e77123e7ddf1db738eaa437376'
+        }));
+        app.use(express.static(curpath + '/public'));  // Before router to enable dynamic routing
+        app.use(app.router);
 
-    // Example 500 page
-    app['error'](function(err, req, res){
-        console.log('Internal Server Error: ' + err.message);
-        res.render('500');
-    });
+        // Example 500 page
+        app.use(function(err, req, res){
+            console.log('Internal Server Error: ' + err.message);
+            res.render('500');
+         });
 
-    // Example 404 page via simple Connect middleware
-    app.use(function(req, res){
-        res.render('404');
-    });
+        // Example 404 page via simple Connect middleware
+        app.use(function (req, res) {
+            res.render('404');
+        });
 
-    // Setup ejs views as default, with .html as the extension
-    app.set('views', path + '/views');
-    app.register('.html', require('ejs'));
-    app.set('view engine', 'html');
+        // Setup ejs views as default, with .html as the extension
+        
+        app.set('port', process.env.PORT || 3000);
+        app.set('views', curpath + '/views');
+        app.engine('html', engine);
+        app.set('view engine', 'html');
+        app.set('view options', {
+            complexNames: true
+        });
 
-    // Some dynamic view helpers
-    app.dynamicHelpers({
+        // Some dynamic view helpers
+        app.use(function (){
+            return function (req, res, next) {
 
-        request: function(req){
-            return req;
-        },
-
-        hasMessages: function(req){
-            return Object.keys(req.session.flash || {}).length;
-        },
-
-        messages: function(req){
-            return function(){
+            function messages() {
                 var msgs = req.flash();
-                console.log(msgs);
-                return Object.keys(msgs).reduce(function(arr, type){
+                return Object.keys(msgs).reduce(function (arr, type) {
                     return arr.concat(msgs[type]);
                 }, []);
             }
-        }
+
+            app.locals({
+                request: req,
+                hasMessages: Object.keys(req.session.flash || {}).length,
+                messages: messages()
+            });
+            next();
+        }});
     });
 }
 
 //Bootstrap models
 function bootModels(app) {
 
-    fs.readdir(path + '/models', function(err, files){
+    fs.readdir(curpath + '/models', function (err, files) {
         if (err) throw err;
-        files.forEach(function(file){
+        files.forEach(function (file) {
             bootModel(app, file);
         });
     });
@@ -104,16 +116,14 @@ function bootModels(app) {
 
 // Bootstrap controllers
 function bootControllers(app) {
-    fs.readdir(path + '/controllers', function(err, files){
+    fs.readdir(curpath + '/controllers', function (err, files) {
         if (err) throw err;
-        files.forEach(function(file){
+        files.forEach(function (file) {
             // bootController(app, file);
-            });
-
-
+        });
     });
 
-    require(path + '/controllers/AppController')(app);			// Include
+    require(curpath + '/controllers/AppController')(app);			// Include
 
 }
 
@@ -121,7 +131,7 @@ function bootControllers(app) {
 function bootModel(app, file) {
 
     var name = file.replace('.js', ''),
-    schema = require(path + '/models/'+ name);				// Include the mongoose file
+        schema = require(curpath + '/models/' + name);				// Include the mongoose file
 
 }
 
@@ -129,8 +139,8 @@ function bootModel(app, file) {
 function bootController(app, file) {
 
     var name = file.replace('.js', ''),
-    controller = path + '/controllers/' + name,   // full controller to include
-    template = name.replace('Controller','').toLowerCase();									// template folder for html - remove the ...Controller part.
+        controller = curpath + '/controllers/' + name,   // full controller to include
+        template = name.replace('Controller', '').toLowerCase();									// template folder for html - remove the ...Controller part.
 
 // Include the controller
 // require(controller)(app,template);			// Include
@@ -142,4 +152,3 @@ if (!module.parent) {
     exports.boot().listen(3000);
     console.log("Express server %s listening on port %d", express.version, app.address().port)
 }
-

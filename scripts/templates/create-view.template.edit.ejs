@@ -3,6 +3,7 @@
 	var basePath = modelName.toLowerCase();
 	var basePathPlural = controllerName.toLowerCase();
 ?>
+<% layout('../layout') -%>
 <h1>Editing <?= modelName ?> <%= <?= modelVariable ?>.name %></h1>
 <%- partial('../messages') %>
 <form method="post" action="/<?= modelVariable ?>/<%= <?= modelVariable ?>.id %>">
