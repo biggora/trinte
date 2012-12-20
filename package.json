@@ -1,48 +1,33 @@
 {
-    "name": "trinte",
-    "description": "Trinte - MVC framework for NodeJS",
-    "version": "0.0.1",
-    "homepage": "https://github.com/biggora/trinte",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/biggora/trinte.git"
-    },
-    "main":"trinte",
-    "author": "Aleksej Gordejev <aleksej@gordejev.lv> (https://github.com/biggora/)",
-    "directories": {
-        "bin": "./bin",
-        "lib": "./lib",
-        "conf": "./conf",
-        "models": "./models",
-        "controllers": "./controllers",
-        "views": "./views",
-        "public": "./public",
-        "scripts": "./scripts",
-        "utils": "./utils",
-        "tests": "./tests"
-    },
-    "repository" : {
-        "type" : "git",
-        "url" : "https://github.com/biggora/trinte.git"
-    },
-    "engines" : {
-        "node" : ">=0.8"
-    },
-    "dependencies" : {
-        "should"    : ">=1.2.0",
-        "wrench"    : ">=1.4.4"
-    },
-    "devDependencies": {
-        "express"   : ">=3.0.0",
-        "connect"   : ">=2.0.0",
-        "ejs"       : ">=0.8.0",
-        "socket.io" : ">=0.8.0",
-        "mongoose"  : ">=3.0.0",
-        "expresso"  : ">=0.9.0",
-    },
-    "bin": {
-        "trinte": "./bin/trinte",
-        "trintejs": "./bin/trinte"
-    },
-    "license" : "MIT"
+  "name": "trinte",
+  "description": "Trinte - MVC framework for NodeJS",
+  "version": "0.0.2",
+  "homepage": "https://github.com/biggora/trinte",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/biggora/trinte.git"
+  },
+  "main": "trinte",
+  "author": "Aleksej Gordejev <aleksej@gordejev.lv> (https://github.com/biggora/)",
+  "engines": {
+    "node": ">=0.8"
+  },
+  "dependencies": {
+    "should": ">=1.2.0",
+    "wrench": ">=1.4.4"
+  },
+  "devDependencies": {
+    "express": ">=3.0.0",
+    "connect": ">=2.0.0",
+    "ejs": ">=0.8.0",
+    "socket.io": ">=0.8.0",
+    "mongoose": ">=3.0.0",
+    "expresso": ">=0.9.0"
+  },
+  "optionalDependencies": {},
+  "bin": {
+    "trinte": "./bin/trinte",
+    "trintejs": "./bin/trinte"
+  },
+  "license": "MIT"
 }
