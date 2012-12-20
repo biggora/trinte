@@ -16,12 +16,17 @@ I built this application to create a template MVC `style` app that I could then 
   - In you project folder run
 
 <!---->
+      // create project dir
+      $ mkdir HelloWorld && cd HelloWorld
 
       // create app
-      trinte create-app
+      $ trinte create-app
+
+      // intall deps
+      $ npm -l install
 
       // running server
-      trinte
+      $ trinte
 
   - Browse to http://localhost:3000
 
@@ -29,28 +34,28 @@ I built this application to create a template MVC `style` app that I could then 
 ## Commands:
 
       // Shows help
-      trinte script
+      $ trinte script
 
       // Wrapper for 3 commands below
-      trinte script generate-all HelloWorld
+      $ trinte script generate-all HelloWorld
 
       // Creates a model
-      trinte script create-model HelloWorld
+      $ trinte script create-model HelloWorld
 
       // Creates a controller
-      trinte script create-controller HelloWorld
+      $ trinte script create-controller HelloWorld
 
       // Creates views
-      trinte script create-view HelloWorld
+      $ trinte script create-view HelloWorld
 
       // Creates tests
-      trinte script create-test HelloWorld
+      $ trinte script create-test HelloWorld
 
       // Runs server on different port
-      trinte server server.port=3000
+      $ trinte server server.port=3000
 
       // Creates a new app
-      trinte create-app
+      $ trinte create-app
 
 
 ## License
