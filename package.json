@@ -21,8 +21,7 @@
     "connect": ">=2.0.0",
     "ejs": ">=0.8.0",
     "socket.io": ">=0.8.0",
-    "mongoose": ">=3.0.0",
-    "expresso": ">=0.9.0"
+    "mongoose": ">=3.0.0"
   },
   "optionalDependencies": {},
   "bin": {
