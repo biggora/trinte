@@ -206,7 +206,7 @@ On initialization directories tree generated, like that:
     app.put("/:controller/:id", router);                        // Update
     app.del("/:controller/:id", router);                        // Delete
 
- - Params
+### Params
 
     app.param('id', /^[A-Za-z0-9]+$/);
     app.param('controller', /^[a-zA-Z]+$/);
@@ -225,9 +225,9 @@ On initialization directories tree generated, like that:
 <a name="in-the-wild"></a>
 ## In the Wild
 
-The following projects use express-useragent.
+The following projects use TrinteJS.
 
-If you are using express-useragent in a project, app, or module, get on the list below
+If you are using TrinteJS in a project, app, or module, get on the list below
 by getting in touch or submitting a pull request with changes to the README.
 
 <a name="startups-and-apps"></a>
