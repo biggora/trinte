@@ -46,15 +46,15 @@ To install trinte:
       test                              : Run all tests.
       test unit|integration|functional  : Run a particular type of test.
       script help *<name>               : This help script, optional script name for additional help.
-      script <name> *params             : Run a script with <name>, with params
+      script <name> *args               : Run a script with <name>, with params
 
       Available scripts:
 
-      create-controller                 : Creates a controller
-      create-model *params              : Creates a model
-      create-test                       : Creates a test
-      create-view                       : Creates a view
-      generate-all *params              : Creates a scaffold
+      create-controller  args           : Creates a controller
+      create-model  args                : Creates a model
+      create-test  args                 : Creates a test
+      create-view  args                 : Creates a view
+      generate-all  args                : Creates a scaffold
       help                              : Show help
 
 
@@ -73,22 +73,32 @@ To install trinte:
 ### Shows help:
 
       // Shows help
-      $ trinte script
+      $ trinte help
+      $ trinte script help generate-all
 
 <a name="scaffold"></a>
 ### Create a scaffold:
 
-      // Creates all (models, views, controllers, tests)
+      // Creates all (model, views, controller, tests)
       $ trinte script generate-all User
-      // or
+
+      // create User model and etc. with fields: name, email, password, active
       $ trinte script generate-all User name email password active:boolean
-      // generated User model and etc. with fields: name, email, password, active
+
+      // See all valid field types [here](#field-types).
 
 <a name="model"></a>
 ### Create a model:
 
-      // Creates a model
+      // format: trinte script create-model [model name] [field(s)]
+
+      // Create Post model without fields
       $ trinte script create-model Post
+
+      // create User model with fields name, email, password, active: Boolean
+      $ trinte script create-model User name email password active:boolean
+
+      // See all valid field types [here](#field-types).
 
 <a name="controller"></a>
 ### Create a controller:
@@ -111,7 +121,11 @@ To install trinte:
 <a name="runs-server"></a>
 ### Runs server:
 
-      // Runs server on different port
+      $ trinte                         // Runs server in cluster mode
+      $ trinte server                  // Runs server in simple mode
+      $ trinte cluster                 // Runs server in cluster mode
+
+      # Runs server in simple mode on different port
       $ trinte server port=3000
 
 <a name="field-types"></a>

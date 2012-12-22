@@ -9,7 +9,12 @@ exports.execute = function(params,appPath) {
     if(params.length == 0) {
         var str = fs.readFileSync(__dirname + '/templates/help.ejs', 'utf8');
     } else {
-        var str = fs.readFileSync(__dirname + '/templates/' + params[0] + '.help.ejs', 'utf8');
+        if(fs.existsSync(__dirname + '/templates/' + params[0] + '.help.ejs')) {
+            var str = fs.readFileSync(__dirname + '/templates/' + params[0] + '.help.ejs', 'utf8');
+        } else {
+            console.error('   \033[31mHelp file not specified\x1b[0m\r\n');
+            process.exit(1);
+        }
     }
 
     var scripts = [];
