@@ -85,7 +85,7 @@ To install trinte:
       // create User model and etc. with fields: name, email, password, active
       $ trinte script generate-all User name email password active:boolean
 
-      // See all valid field types [here](#field-types).
+ - See all valid field types [here](#field-types).
 
 <a name="model"></a>
 ### Create a model:
@@ -98,7 +98,7 @@ To install trinte:
       // create User model with fields name, email, password, active: Boolean
       $ trinte script create-model User name email password active:boolean
 
-      // See all valid field types [here](#field-types).
+ - See all valid field types [here](#field-types).
 
 <a name="controller"></a>
 ### Create a controller:
