@@ -1,32 +1,42 @@
 {
-  "name": "trinte",
-  "description": "Trinte - MVC framework for NodeJS",
-  "version": "0.0.3",
-  "homepage": "https://github.com/biggora/trinte",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/biggora/trinte.git"
-  },
-  "main": "trinte",
-  "author": "Aleksej Gordejev <aleksej@gordejev.lv> (https://github.com/biggora/)",
-  "engines": {
-    "node": ">=0.8"
-  },
-  "dependencies": {
-    "should": ">=1.2.0",
-    "wrench": ">=1.4.4"
-  },
-  "devDependencies": {
-    "express": ">=3.0.0",
-    "connect": ">=2.0.0",
-    "ejs": ">=0.8.0",
-    "socket.io": ">=0.8.0",
-    "mongoose": ">=3.0.0"
-  },
-  "optionalDependencies": {},
-  "bin": {
-    "trinte": "./bin/trinte",
-    "trintejs": "./bin/trinte"
-  },
-  "license": "MIT"
+    "name": "trinte",
+    "description": "TrinteJS - MVC framework for NodeJS",
+    "keywords": [
+    "app",
+    "mvc",
+    "web-framework",
+    "framework",
+    "trinte",
+    "mongoose",
+    "express",
+    "mongodb"
+    ],
+    "version": "0.0.4",
+    "homepage": "https://github.com/biggora/trinte",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/biggora/trinte.git"
+    },
+    "main": "trinte",
+    "author": "Aleksej Gordejev <aleksej@gordejev.lv> (https://github.com/biggora/)",
+    "engines": {
+        "node": ">=0.8"
+    },
+    "dependencies": {
+        "should": ">=1.2.0",
+        "wrench": ">=1.4.4"
+    },
+    "devDependencies": {
+        "express": ">=3.0.0",
+        "connect": ">=2.0.0",
+        "ejs": ">=0.8.0",
+        "socket.io": ">=0.8.0",
+        "mongoose": ">=3.0.0"
+    },
+    "optionalDependencies": {},
+    "bin": {
+        "trinte": "./bin/trinte",
+        "trintejs": "./bin/trinte"
+    },
+    "license": "MIT"
 }
