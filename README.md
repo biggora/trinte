@@ -139,9 +139,9 @@ by getting in touch or submitting a pull request with changes to the README.
 - [Node.js](http://nodejs.org/): Amazing javascript asynchronous IO library, install manually.
 - [MongoDB](http://www.mongodb.org/): NoSQL Database, install manually.
 - [NPM](http://npmjs.org/): Node package manager, used to install:
--- [Express.Js](http://expressjs.com/): Application Framework for Node.js
--- [Mongoose.Js](http://mongoosejs.com/): Node.JS ORM for MongoDB.
--- [EJS](http://embeddedjs.com/): Embedded Javascript Templating Library.
+- - [Express.Js](http://expressjs.com/): Application Framework for Node.js
+- - [Mongoose.Js](http://mongoosejs.com/): Node.JS ORM for MongoDB.
+- - [EJS](http://embeddedjs.com/): Embedded Javascript Templating Library.
 - [jQuery](http://jquery.com/): Best Javascript Library.
 - [Bootstrap](http://twitter.github.com/bootstrap/index.html): Powerful front-end CSS/JS framework
 - [Glyphicons](http://glyphicons.com/): Fantastic library of precisely prepared monochromatic icons and symbols.
