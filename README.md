@@ -206,6 +206,14 @@ On initialization directories tree generated, like that:
     app.put("/:controller/:id", router);                        // Update
     app.del("/:controller/:id", router);                        // Delete
 
+ - Params
+
+    app.param('id', /^[A-Za-z0-9]+$/);
+    app.param('controller', /^[a-zA-Z]+$/);
+    app.param('action', /^[a-zA-Z]+$/);
+    app.param('format', /^[a-zA-Z]+$/);
+    app.param('from', /^\d+$/);
+    app.param('to', /^\d+$/);
 
 <a name="middleware"></a>
 ### Used Middleware
