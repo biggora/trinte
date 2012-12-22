@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * ExpressJs MVC Bootstrap
+ * TrinteJS MVC Bootstrap
  * @Params - cmd - serve
  r | script | params
  */
@@ -140,17 +140,17 @@ function processParam(param, depth) {
     }
 
     // Server.port
-    if (paramArray[0] == "server.port" && paramArray[1] != undefined) {
+    if (paramArray[0] == "port" && paramArray[1] != undefined) {
         appLauncher.server.port = paramArray[1];
     }
 
     //
-    if ((appLauncher.command == "script" || appLauncher.command == "test") && i == 3) {
+    if ((appLauncher.command == "s" || appLauncher.command == "script" || appLauncher.command == "test") && i == 3) {
         appLauncher.script.name = param;
     }
 
     // Script params
-    if (appLauncher.command == 'script' && i > 3) {
+    if ((appLauncher.command == 's' || appLauncher.command == 'script) && i > 3) {
         appLauncher.script.params.push(param);
     }
 }
@@ -206,6 +206,7 @@ function runCluster(port) {
  * Create application at the given directory `path`.
  *
  * @param {String} path
+ * @param {String} appname
  */
 function createApplicationAt(path,appname) {
     var appdir = path + '/' + appname;
@@ -347,7 +348,6 @@ function mkdir(path, fn) {
 }
 
 /**
- * cp -r
  *
  * @param {String} path
  * @param {Function} fn

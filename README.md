@@ -30,6 +30,25 @@ To install trinte:
 
       $ trinte [command(s)] [argument(s)]
 
+      Command format:
+
+      cluster *server.port=3000         : Run the application using the cluster module.
+      server *server.port=3000          : Run the application as a server.
+      test                              : Run all tests.
+      test unit|integration|functional  : Run a particular type of test.
+      script help *<name>               : This help script, optional script name for additional help.
+      script <name> *params             : Run a script with <name>, with params
+
+      Available scripts:
+
+      create-controller                 : Creates a controller
+      create-model *params              : Creates a model
+      create-test                       : Creates a test
+      create-view                       : Creates a view
+      generate-all *params              : Creates a scaffold
+      help                              : Show help
+
+
 <a name="start"></a>
 <a name="create-app"></a>
 ##  Create and initialize app
