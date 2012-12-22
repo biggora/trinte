@@ -12,25 +12,39 @@ To install trinte:
 
     $ sudo npm install trinte -g
 
-## Short usage overview
-  -  Create and initialize app
+## Table of contents
+* [Get started!](#start)
+* [Usage overview](#usage)
+* [Create and initialize app](#create-app)
+* [CLI tool](#cli)
+  * [Creates a Model](#model)
+  * [Creates a Controller](#controller)
+  * [Creates a View](#view)
+* [Credits](#credits)
+* [Peoject Author](#author)
+* [Copyright & License](#license)
+* [Resources](#resources)
 
-<!---->
-      // create app
-      // trinte [command] [Your Application Name]
-      $ trinte create-app HelloWorld
+<a name="usage"></a>
+## Usage overview:
 
-      // intall dependencies
-      $ cd HelloWorld && npm -l install
+      $ trinte [command(s)] [argument(s)]
 
-      // running server (default in cluster mode)
-      $ trinte
+<a name="start"></a>
+<a name="create-app"></a>
+##  Create and initialize app
+
+      $ trinte create-app HelloWorld    # Create application
+      $ cd HelloWorld && npm -l install # intall dependencies
+      $ trinte script generate-all User name email password active # generate scaffold
+      $ trinte     # running server (default in cluster mode)
 
   - Browse your application to [http://localhost:3000](http://localhost:3000)
 
+<a name="cli"></a>
 ## CLI tool:
 
-      Usage: trinte command 1 command 2 [argument(s)]
+      Usage: trinte [command(s)] [argument(s)]
 
       // Shows help
       $ trinte script
@@ -59,6 +73,7 @@ To install trinte:
       // Creates a new app
       $ trinte create-app MyShop
 
+<a name="directory-structure"></a>
 Directory structure
 -------------------
 
@@ -103,6 +118,7 @@ On initialization directories tree generated, like that:
     |-- app.js
     `-- app-cluster.js
 
+<a name="routing"></a>
 Routing
 -------
 
@@ -122,6 +138,7 @@ Routing
     app.put("/:controller/:id", router);                        // Update
     app.del("/:controller/:id", router);                        // Delete
 
+<a name="in-the-wild"></a>
 ## In the Wild
 
 The following projects use express-useragent.
@@ -129,11 +146,13 @@ The following projects use express-useragent.
 If you are using express-useragent in a project, app, or module, get on the list below
 by getting in touch or submitting a pull request with changes to the README.
 
+<a name="startups-and-apps"></a>
 ### Startups & Apps
 
 - [TViMama](http://tvimama.com/)
 - [GorkaTV](https://gorkatv.com/)
 
+<a name="credits"></a>
 ## Credits
 
 - [Node.js](http://nodejs.org/): Amazing javascript asynchronous IO library, install manually.
@@ -146,10 +165,12 @@ by getting in touch or submitting a pull request with changes to the README.
 - [Bootstrap](http://twitter.github.com/bootstrap/index.html): Powerful front-end CSS/JS framework
 - [Glyphicons](http://glyphicons.com/): Fantastic library of precisely prepared monochromatic icons and symbols.
 
+<a name="author"></a>
 ## Author
 
 Aleksej Gordejev (aleksej@gordejev.lv).
 
+<a name="license"></a>
 ## License
 
 (The MIT License)
@@ -175,7 +196,7 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
+<a name="resources"></a>
 ## Resources
 
 - Visit the [author website](http://www.gordejev.lv).

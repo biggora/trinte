@@ -3,6 +3,13 @@
     margin-top: 10px;
 }
 
+#logo {
+    display: block;
+    float: left;
+    padding: 8px 10px 8px;
+    margin-left: -20px;
+}
+
 /* Sorting columns */
 a.sorter {
     background-image: url(/img/bg.gif);
