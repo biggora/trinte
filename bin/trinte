@@ -2,8 +2,7 @@
 
 /**
  * TrinteJS MVC Bootstrap
- * @Params - cmd - serve
- r | script | params
+ * @Params - cmd - server | script | params
  */
 
 
@@ -76,15 +75,19 @@ function runLauncher(appLauncher) {
             runTests(appLauncher.script);
             break;
         case 'cluster':
+        case 'c':
             runCluster(appLauncher.server.port);
             break;
         case 'server':
+        case 's':
             runServer(appLauncher.server.port);
             break;
         case 'script':
+        case 'g':
             runScript(appLauncher.script);
             break;
         case 'create-app':
+        case 'init':
             appLauncher.appname = args.shift();
             if(typeof appLauncher.appname != 'undefined') {
                 createApplication(path,appLauncher.appname);
@@ -145,12 +148,12 @@ function processParam(param, depth) {
     }
 
     //
-    if ((appLauncher.command == "s" || appLauncher.command == "script" || appLauncher.command == "test") && i == 3) {
+    if ((appLauncher.command == "g" || appLauncher.command == "script" || appLauncher.command == "test") && i == 3) {
         appLauncher.script.name = param;
     }
 
     // Script params
-    if ((appLauncher.command == 's' || appLauncher.command == 'script) && i > 3) {
+    if ((appLauncher.command == 'g' || appLauncher.command == 'script') && i > 3) {
         appLauncher.script.params.push(param);
     }
 }
@@ -220,7 +223,6 @@ function createApplicationAt(path,appname) {
     wrench.mkdirSyncRecursive(appdir + '/lib',755);
     wrench.mkdirSyncRecursive(appdir + '/tests',755);
     wrench.mkdirSyncRecursive(appdir + '/logs',755);
-    wrench.mkdirSyncRecursive(appdir + '/pids',755);
     wrench.mkdirSyncRecursive(appdir + '/uploads',755);
 
     wrench.copyDirSyncRecursive(bootstrapPath + '/controllers', appdir + '/controllers');
@@ -241,11 +243,11 @@ function createApplicationAt(path,appname) {
     copy(bootstrapPath + '/app-cluster.js', appdir + '/app-cluster.js');
     copy(bootstrapPath + '/app.js', appdir + '/app.js');
 
-    var package = fs.readFileSync(bootstrapPath + '/views/layout.html', 'utf-8');
-    write(appdir + '/views/layout.html', package.toString().replace(/APPNAME/gi,appname));
+    var layout = fs.readFileSync(bootstrapPath + '/views/layout.html', 'utf-8');
+    write(appdir + '/views/layout.html', layout.toString().replace(/APPNAME/gi,appname));
 
-    var package = fs.readFileSync(bootstrapPath + '/app.json', 'utf-8');
-    write(appdir + '/package.json', package.toString().replace(/APPNAME/gi,appname));
+    var jpackage = fs.readFileSync(bootstrapPath + '/app.json', 'utf-8');
+    write(appdir + '/package.json', jpackage.toString().replace(/APPNAME/gi,appname));
 
     write(appdir + '/.trinte-status', 'Created @ ' + new Date());
     console.log('   \x1b[1mApplication created! \x1b[0m ');
@@ -331,7 +333,7 @@ function prompt(msg, fn) {
 }
 
 /**
- * Mkdir -p.
+ * Mkdir
  *
  * @param {String} path
  * @param {Function} fn
@@ -348,10 +350,10 @@ function mkdir(path, fn) {
 }
 
 /**
- *
+ * Cp
  * @param {String} path
  * @param {Function} fn
- */   // mkdirSyncRecursive
+ */
 
 function copy(from, to, fn) {
     var stat = fs.statSync(from);
