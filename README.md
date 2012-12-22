@@ -4,16 +4,17 @@ A MVC boilerplate for Express.js
 
 ## Description
 
-I built this application to create a template MVC `style` app that I could then use as the start point for further development. I used the excellent examples in the main [Express github repository](https://github.com/visionmedia/express), specifically the MVC example, as the starting point. I have however changed it quite substantially to make it clearer and remove some of the `magic` that confused me at first when learning. If you are familiar with other MVC frameworks hopefully my file structure makes some sense.
+This application help to create a webapp MVC `style` app in few minutes.
 
 ## Requires
   - [express](http://expressjs.com/): Application Framework for Node.js
   - [mongoose](http://mongoosejs.com/): Node.js ORM for MongoDB
   - [ejs](http://embeddedjs.com/): EmbeddedJS Templating
+  - [wrench] (https://github.com/ryanmcgrath/wrench-js): Recursive file operations in Node.js
 
 ## Installation
 
-    $ sudo npm install -g trinte
+    $ sudo npm install trinte -g
 
 ## Setup
   -  Create and initialize app
@@ -87,6 +88,7 @@ Routing
     app.del("/:controller", router);   			        // Delete all
 
     // Singular - different variable to clarify routing
+    app.get("/:controller/:action", router);                    // Add (New) and custom actions
     app.get("/:controller/:id.:format?", router);  	        // To support controller/index
     app.get("/:controller/:id/:action", router);		// Show edit
     app.put("/:controller/:id", router);			// Update
