@@ -1,6 +1,7 @@
 # TrinteJS Javascript MVC Framework for NodeJS
 
-A [MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) boilerplate for [ExpressJS](http://expressjs.com/) backed by [MongooseJS](http://mongoosejs.com/)
+A [MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) boilerplate for [ExpressJS](http://expressjs.com/) backed by [MongooseJS](http://mongoosejs.com/) and [Bootstrap](http://twitter.github.com/bootstrap/index.html),
+based on [Express MVC Bootstrap](https://github.com/cliftonc/express-mvc-bootstrap).
 
 ## Description
 
@@ -15,11 +16,18 @@ To install trinte:
 ## Table of contents
 * [Get started!](#start)
 * [Usage overview](#usage)
-* [Create and initialize app](#create-app)
-* [CLI tool](#cli)
+  * [Command format](#commands)
+  * [Create and initialize app](#create-app)
+  * [Creates a scaffold](#scaffold)
   * [Creates a Model](#model)
   * [Creates a Controller](#controller)
   * [Creates a View](#view)
+  * [Field types](#field-types)
+  * [Runs server](#runs-server)
+* [Created application](#directory-structure)
+  * [Directory structure](#directory-structure)
+  * [Routing and params](#routing)
+  * [Middleware](#middleware)
 * [Credits](#credits)
 * [Peoject Author](#author)
 * [Copyright & License](#license)
@@ -30,10 +38,11 @@ To install trinte:
 
       $ trinte [command(s)] [argument(s)]
 
-      Command format:
+<a name="commands"></a>
+### Command format:
 
-      cluster *server.port=3000         : Run the application using the cluster module.
-      server *server.port=3000          : Run the application as a server.
+      cluster *port=3000                : Run the application using the cluster module.
+      server *port=3000                 : Run the application as a server.
       test                              : Run all tests.
       test unit|integration|functional  : Run a particular type of test.
       script help *<name>               : This help script, optional script name for additional help.
@@ -51,22 +60,23 @@ To install trinte:
 
 <a name="start"></a>
 <a name="create-app"></a>
-##  Create and initialize app
+###  Create and initialize app
 
       $ trinte create-app HelloWorld    # Create application
       $ cd HelloWorld && npm -l install # intall dependencies
       $ trinte script generate-all User name email password active # generate scaffold
-      $ trinte     # running server (default in cluster mode)
+      $ trinte                          # running server (default in cluster mode)
 
   - Browse your application to [http://localhost:3000](http://localhost:3000)
 
-<a name="cli"></a>
-## CLI tool:
-
-      Usage: trinte [command(s)] [argument(s)]
+<a name="scaffold"></a>
+### Shows help:
 
       // Shows help
       $ trinte script
+
+<a name="scaffold"></a>
+### Create a scaffold:
 
       // Creates all (models, views, controllers, tests)
       $ trinte script generate-all User
@@ -74,27 +84,51 @@ To install trinte:
       $ trinte script generate-all User name email password active:boolean
       // generated User model and etc. with fields: name, email, password, active
 
+<a name="model"></a>
+### Create a model:
+
       // Creates a model
       $ trinte script create-model Post
+
+<a name="controller"></a>
+### Create a controller:
 
       // Creates a controller
       $ trinte script create-controller Post
 
+<a name="view"></a>
+### Create a views:
+
       // Creates views
       $ trinte script create-view Post
+
+<a name="test"></a>
+### Create a test:
 
       // Creates tests
       $ trinte script create-test HelloWorld
 
-      // Runs server on different port
-      $ trinte server server.port=3000
+<a name="runs-server"></a>
+### Runs server:
 
-      // Creates a new app
-      $ trinte create-app MyShop
+      // Runs server on different port
+      $ trinte server port=3000
+
+<a name="field-types"></a>
+### Field types:
+Following are all valid field types.
+
+      String
+      Number
+      Date
+      Buffer
+      Boolean
+      Mixed
+      ObjectId
+      Array
 
 <a name="directory-structure"></a>
-Directory structure
--------------------
+## Directory structure
 
 On initialization directories tree generated, like that:
 
@@ -156,6 +190,10 @@ Routing
     app.get("/:controller/:id/:action", router);                // Show edit
     app.put("/:controller/:id", router);                        // Update
     app.del("/:controller/:id", router);                        // Delete
+
+
+
+
 
 <a name="in-the-wild"></a>
 ## In the Wild
