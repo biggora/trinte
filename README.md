@@ -143,7 +143,10 @@ Following are all valid field types.
       ObjectId
       Array
 
+Learn more on [MongooseJS](http://mongoosejs.com/docs/schematypes.html).
+
 <a name="directory-structure"></a>
+## Created application
 ### Directory structure
 
 On initialization directories tree generated, like that:
@@ -255,11 +258,11 @@ by getting in touch or submitting a pull request with changes to the README.
 Aleksej Gordejev (aleksej@gordejev.lv).
 
 <a name="license"></a>
-## License
+## Copyright & License
 
 (The MIT License)
 
-Copyright (c) 2012 Aleksej Gordejev <aleksej@gordejev.lv>
+Copyright (c) 2012 Aleksej Gordejev <aleksej [åt] gordejev [døt] lv>
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
