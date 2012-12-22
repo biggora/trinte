@@ -1,35 +1,63 @@
-# TrinteJS MVC Framework
+# TrinteJS Javascript MVC Framework for NodeJS
 
-A MVC boilerplate for Express.js
+A [MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) boilerplate for [ExpressJS](http://expressjs.com/) backed by [MongooseJS](http://mongoosejs.com/)
 
 ## Description
 
-This application help to create a webapp MVC `style` app in few minutes.
-
-## Requires
-  - [express](http://expressjs.com/): Application Framework for Node.js
-  - [mongoose](http://mongoosejs.com/): Node.js ORM for MongoDB
-  - [ejs](http://embeddedjs.com/): EmbeddedJS Templating
-  - [wrench] (https://github.com/ryanmcgrath/wrench-js): Recursive file operations in Node.js
+This application help to create a Webapp [MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) `style` in few minutes.
 
 ## Installation
+Installation is done using the NodeJS Package Manager (npm). If you don't have npm installed on your system you can download it from [npmjs.org](http://npmjs.org/)
+To install trinte:
 
     $ sudo npm install trinte -g
 
-## Setup
+## Short usage overview
   -  Create and initialize app
 
 <!---->
       // create app
+      // trinte [command] [Your Application Name]
       $ trinte create-app HelloWorld
 
-      // intall deps
+      // intall dependencies
       $ cd HelloWorld && npm -l install
 
-      // running server
+      // running server (default in cluster mode)
       $ trinte
 
-  - Browse your app to http://localhost:3000
+  - Browse your application to [http://localhost:3000](http://localhost:3000)
+
+## CLI tool:
+
+      Usage: trinte command 1 command 2 [argument(s)]
+
+      // Shows help
+      $ trinte script
+
+      // Creates all (models, views, controllers, tests)
+      $ trinte script generate-all User
+      // or
+      $ trinte script generate-all User name email password active:boolean
+      // generated User model and etc. with fields: name, email, password, active
+
+      // Creates a model
+      $ trinte script create-model Post
+
+      // Creates a controller
+      $ trinte script create-controller Post
+
+      // Creates views
+      $ trinte script create-view Post
+
+      // Creates tests
+      $ trinte script create-test HelloWorld
+
+      // Runs server on different port
+      $ trinte server server.port=3000
+
+      // Creates a new app
+      $ trinte create-app MyShop
 
 Directory structure
 -------------------
@@ -79,48 +107,20 @@ Routing
 -------
 
     // Plural
-    app.get("/:controller?", router);				// Index
-    app.get("/:controller.:format?", router);			// Index
-    app.get("/:controller/:from-:to.:format?", router);		// Index
+    app.get("/:controller?", router);                           // Index
+    app.get("/:controller.:format?", router);                   // Index
+    app.get("/:controller/:from-:to.:format?", router);         // Index
 
     // Plural Create & Delete
-    app.post("/:controller", router);			        // Create
-    app.del("/:controller", router);   			        // Delete all
+    app.post("/:controller", router);                           // Create
+    app.del("/:controller", router);                            // Delete all
 
     // Singular - different variable to clarify routing
     app.get("/:controller/:action", router);                    // Add (New) and custom actions
-    app.get("/:controller/:id.:format?", router);  	        // To support controller/index
-    app.get("/:controller/:id/:action", router);		// Show edit
-    app.put("/:controller/:id", router);			// Update
-    app.del("/:controller/:id", router);			// Delete
-
-
-## Generators:
-
-      // Shows help
-      $ trinte script
-
-      // Wrapper for 3 commands below
-      $ trinte script generate-all HelloWorld
-
-      // Creates a model
-      $ trinte script create-model HelloWorld
-
-      // Creates a controller
-      $ trinte script create-controller HelloWorld
-
-      // Creates views
-      $ trinte script create-view HelloWorld
-
-      // Creates tests
-      $ trinte script create-test HelloWorld
-
-      // Runs server on different port
-      $ trinte server server.port=3000
-
-      // Creates a new app
-      $ trinte create-app
-
+    app.get("/:controller/:id.:format?", router);               // To support controller/index
+    app.get("/:controller/:id/:action", router);                // Show edit
+    app.put("/:controller/:id", router);                        // Update
+    app.del("/:controller/:id", router);                        // Delete
 
 ## In the Wild
 
@@ -139,9 +139,9 @@ by getting in touch or submitting a pull request with changes to the README.
 - [Node.js](http://nodejs.org/): Amazing javascript asynchronous IO library, install manually.
 - [MongoDB](http://www.mongodb.org/): NoSQL Database, install manually.
 - [NPM](http://npmjs.org/): Node package manager, used to install:
-- - [Express.Js](http://expressjs.com/): Application Framework for Node.js
-- - [Mongoose.Js](http://mongoosejs.com/): Node.JS ORM for MongoDB.
-- - [EJS](http://embeddedjs.com/): Embedded Javascript Templating Library.
+- [Express.Js](http://expressjs.com/): Application Framework for Node.js
+- [Mongoose.Js](http://mongoosejs.com/): Node.JS ORM for MongoDB.
+- [EJS](http://embeddedjs.com/): Embedded Javascript Templating Library.
 - [jQuery](http://jquery.com/): Best Javascript Library.
 - [Bootstrap](http://twitter.github.com/bootstrap/index.html): Powerful front-end CSS/JS framework
 - [Glyphicons](http://glyphicons.com/): Fantastic library of precisely prepared monochromatic icons and symbols.
