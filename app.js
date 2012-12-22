@@ -55,13 +55,11 @@ function bootApplication(app) {
         app.use(express.cookieParser('secret'));
         app.use(express.session({
             cookie: {
-                maxAge: 8640000
+                maxAge: 8640000,
+                secure: true
             },
-            secret: 'secret',
-            store: new MongooseStore({
-                collection: 'session',
-                clear_interval: 60
-            })
+            key: 'trinte',
+            secret: 'secret'
         }));
         app.use(express.csrf());
         app.use(useragent.express());
