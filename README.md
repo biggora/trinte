@@ -13,25 +13,22 @@ I built this application to create a template MVC `style` app that I could then 
 
 ## Installation
 
-    $ npm install -g trinte
+    $ sudo npm install -g trinte
 
 ## Setup
   -  Create and initialize app
 
 <!---->
-      // create project dir
-      $ mkdir HelloWorld && cd HelloWorld
-
       // create app
-      $ trinte create-app
+      $ trinte create-app HelloWorld
 
       // intall deps
-      $ npm -l install
+      $ cd HelloWorld && npm -l install
 
       // running server
       $ trinte
 
-  - Browse to http://localhost:3000
+  - Browse your app to http://localhost:3000
 
 Directory structure
 -------------------
@@ -39,7 +36,7 @@ Directory structure
 On initialization directories tree generated, like that:
 
     .
-    `-- conf
+    |-- conf
     |   |-- configuration.js
     |   |-- development.js
     |   |-- production.js
@@ -70,8 +67,10 @@ On initialization directories tree generated, like that:
     |   |-- layout.html
     |   |-- 404.html
     |   `-- 500.html
-    `-- utils
+    |-- utils
+    |   |-- helper.js
     |   `-- pager.js
+    |-- package.json
     |-- app.js
     `-- app-cluster.js
 

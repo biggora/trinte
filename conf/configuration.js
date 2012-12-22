@@ -1,8 +1,8 @@
-
 /**
  * Default configuration manager
  * Inject app and express reference
  */
+
 module.exports = function(app,express) {
 
     // DEVELOPMENT

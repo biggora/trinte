@@ -1,0 +1,34 @@
+<?
+	var modelVariable = modelName.toLowerCase();
+	var basePath = modelName.toLowerCase();
+	var basePathPlural = controllerName.toLowerCase();
+?>
+<% layout('../layout') -%>
+<!--page breadcrumb-->
+<ul class="breadcrumb">
+    <li><a href="/">Home</a> <span class="divider">/</span></li>
+    <li><a href="/<?= basePathPlural ?>"><?= controllerName ?></a> <span class="divider">/</span></li>
+    <li class="active"><a href="#">New <?= modelName ?></a></li>
+</ul>
+<%- partial('../messages') %>
+<!--page title-->
+<div class="page-header">
+    <h1>New <?= modelName ?></h1>
+</div>
+
+<!--form-->
+<form method="post" action="/<?= basePathPlural ?>" class="form-horizontal">
+    <input type="hidden" name="_method" value="post"/>
+    <input type="hidden" name="_csrf" value="<%= session._csrf %>" />
+    <%- partial('form',{ locals : { <?= modelVariable ?> : <?= modelVariable ?> } }) %>
+    <div class="form-actions">
+        <button class="btn btn-primary" type="submit" value="Update">
+            <i class="icon-ok icon-white"></i>
+            Save
+        </button>
+        <a class="btn button-cancel" href="/<?= basePathPlural ?>">
+            <i class="icon-tasks"></i>
+            Cancel
+        </a>
+    </div>
+</form>

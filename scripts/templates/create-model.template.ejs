@@ -1,6 +1,13 @@
 /**
  *  <?= name ?> schema
- *  Created by create-model script  
+ *
+ *  @package     <?= package ?>
+ *  @version     <?= version ?>
+ *  @desc        <?= description ?>
+ *  @author      <?= author ?>
+ *  @created     <?= created ?>
+ *
+ *  Created by create-model script
  **/
  
 var mongoose = require('mongoose'),
@@ -8,10 +15,7 @@ var mongoose = require('mongoose'),
     ObjectId = Schema.ObjectId;
 
 var <?= name ?> = new Schema({
-
-	  // Single default property
-	  name:{type: String, required: true}
-	  
+<?= fields ?>
 });
 
 mongoose.model('<?= name ?>', <?= name ?>);

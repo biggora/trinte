@@ -20,9 +20,9 @@ module.exports = {
 	 * For JSON use '/<?= basePathPlural ?>.json'
 	 **/
 	index: function(req, res, next) {
-
+          var sort = req.query.sort || "_id";
 		  var from = req.params.from ? parseInt(req.params.from) - 1 : 0;
-		  var to = req.params.to ? parseInt(req.params.to) : 10;
+		  var to = req.params.to ? parseInt(req.params.to) : 20;
 	      var total = 0;
 
 	      <?= modelName ?>.count({}, function (err, count) {
@@ -30,7 +30,7 @@ module.exports = {
 	    	var pagerHtml = pager.render(from,to,total,'/<?= basePathPlural ?>');
 
 			  <?= modelName ?>.find({})
-			  	.sort('name')
+			  	.sort(sort)
 			  	.skip(from).limit(to)
 			  	.find(function (err, <?= basePathPlural ?>) {
 
@@ -77,6 +77,14 @@ module.exports = {
 
 	},
 
+    /**
+     * New action, returns a form via views/<?= basePathPlural ?>/edit.html view no JSON view.
+     * Default mapping to GET '/<?= basePath ?>/new'
+     **/
+    add: function(req, res, next){
+         var <?= modelVariable ?> = new <?= modelName ?>();
+         res.render(ViewTemplatePath + "/new",{<?= modelVariable ?>:<?= modelVariable ?>});
+     },
 	/**
 	 * Edit action, returns a form via views/<?= basePathPlural ?>/edit.html view no JSON view.
 	 * Default mapping to GET '/<?= basePath ?>/:id/edit'
@@ -93,12 +101,11 @@ module.exports = {
 	 * Default mapping to PUT '/<?= basePath ?>/:id', no GET mapping
 	 **/
 	update: function(req, res, next){
-
-	    <?= modelName ?>.findById(req.params.id, function(err, <?= modelVariable ?>) {
-
-	    	if (!<?= modelVariable ?>) return next(err);
-	    	<?= modelVariable ?>.name = req.body.<?= modelVariable ?>.name;
-	        <?= modelVariable ?>.save(function(err) {
+       <?= modelName ?>.update({
+                 _id: req.params.id
+              }, {
+                 $set: req.body.<?= modelVariable ?>
+              }, { multi: false }, function(err) {
 
 	    	  if (err) {
 	    		  console.log(err);
@@ -115,7 +122,6 @@ module.exports = {
 	              req.flash('info', '<?= modelName ?> updated');
 	              res.redirect('/<?= modelVariable ?>/' + req.params.id);
 	          }
-	        });
 	      });
 	},
 
@@ -165,10 +171,10 @@ module.exports = {
 		    	<?= modelVariable ?>.remove(function(err) {
 	    		  if(err) {
 	    	    	  req.flash('error','There was an error deleting the <?= modelVariable ?>!');
-	    			  res.send('false');
+	    			  res.send('/"<?= basePathPlural ?>"');
 	    		  } else {
 	    	    	  req.flash('info','<?= modelName ?> deleted');
-	    			  res.send('true');
+	    			  res.send('"/<?= basePathPlural ?>"');
 	    		  }
 	   	      	});
 		  });

@@ -36,7 +36,7 @@ exports.execute = function(params,appPath) {
     var functionalTemplate = __dirname + '/templates/create-test.template.functional.ejs';
 
     // Check if the model exists
-    var fileCheck = path.existsSync(modelFile);
+    var fileCheck = fs.existsSync(modelFile);
     if(!fileCheck) {
         console.log("The model you have specified doesn't exist!");
         console.log("You need to create the model first.");
@@ -45,7 +45,7 @@ exports.execute = function(params,appPath) {
     }
 
     // Check if the unit test exists
-    var fileCheck = path.existsSync(testFolder + "/unit/" + modelName + '.js');
+    var fileCheck = fs.existsSync(testFolder + "/unit/" + modelName + '.js');
     if(fileCheck) {
         if(params[1] != "force") {
             console.log("Tests appear to already exist for this model!");

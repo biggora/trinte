@@ -1,35 +1,41 @@
-<html>
-  <head>
-    <title>Sample MVC Application</title>
-    	<link type="text/css" href="/css/bootstrap.min.css" rel="stylesheet" />
-        <link type="text/css" href="/css/style.css" rel="stylesheet" />
-        <link type="text/css" href="/css/bootstrap-responsive.min.css" rel="stylesheet" />
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
-		<script type="text/javascript">
-			$(function(){
-		
-				// Style default buttons
-				// TODO: Move this into an application js library
-				$(".button-edit").button({ icons: {	primary: 'ui-icon-wrench' }	});
-				$(".button-delete").button({ icons: { primary: 'ui-icon-trash' } });
-				$(".button-home").button({ icons: {	primary: 'ui-icon-home'	} });
-				$(".button-submit").button({ icons: { primary: 'ui-icon-disk' } });
-				$(".button-cancel").button({ icons: {primary: 'ui-icon-close' } });
-				
-			});
-			
-		</script>
-  </head>
-  <body>  	
-  	<div id="container">
-	  	<div id="header">
-			<h1><a href="/">Node.js + ExpressJs + Mongoose : Bootstrap</a></h1>
-  			<h2>Simple Application Template and Scripts</h2>
-		</div>
-		<div id="content">
-    		<%- body %>
-    	</div>		
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset='utf-8'>
+    <title>TrinteJS Sample Application</title>
+    <link type="text/css" href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/style.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/rails.min.js"></script>
+    <meta name="csrf-param" content="_csrf">
+    <meta name="csrf-token" content="<%= session._csrf %>">
+</head>
+<body>
+<div id="page" class="container">
+    <nav class="row">
+        <section id="menu">
+            <!--menu content-->
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <a class="brand" href="/">
+                            APPNAME
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </nav>
+    <div id="content" class="row">
+        <!--page content-->
+        <%- body %>
     </div>
-  </body>
+    <hr/>
+    <footer id="footer" class="row">
+        <p style="text-align: center">Contact me via github : <a href="https://github.com/biggora" target="_new">TrinteJS @ Github</a></p>
+    </footer>
+</div>
+</body>
 </html>

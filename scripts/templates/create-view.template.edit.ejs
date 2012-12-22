@@ -4,13 +4,32 @@
 	var basePathPlural = controllerName.toLowerCase();
 ?>
 <% layout('../layout') -%>
-<h1>Editing <?= modelName ?> <%= <?= modelVariable ?>.name %></h1>
+<!--page breadcrumb-->
+<ul class="breadcrumb">
+    <li><a href="/">Home</a> <span class="divider">/</span></li>
+    <li><a href="/<?= basePathPlural ?>"><?= controllerName ?></a> <span class="divider">/</span></li>
+    <li class="active"><a href="#">Edit <?= modelName ?></a></li>
+</ul>
 <%- partial('../messages') %>
-<form method="post" action="/<?= modelVariable ?>/<%= <?= modelVariable ?>.id %>">
-  <input type="hidden" name="_method" value="put" />
-  <p>Name: <input type="text" name="<?= modelVariable ?>[name]", value="<%= <?= modelVariable ?>.name %>" /></p>
-  <p>
-  	<button class="button-submit" type="submit" value="Update">Save</button>
-  	<a class="button-cancel" href="/<?= modelVariable ?>/<%= <?= modelVariable ?>.id %>">Cancel</a>
-  </p>
+<!--page title-->
+<div class="page-header">
+    <h1>Edit <?= modelName ?></h1>
+</div>
+
+<!--form-->
+<form method="post" action="/<?= modelVariable ?>/<%= <?= modelVariable ?>.id %>" class="form-horizontal">
+    <input type="hidden" name="_method" value="put"/>
+    <input type="hidden" name="_csrf" value="<%= session._csrf %>" />
+    <%- partial('form',{ locals : { <?= modelVariable ?> : <?= modelVariable ?> } }) %>
+    <div class="form-actions">
+        <button class="btn btn-primary" type="submit" value="Update">
+            <i class="icon-ok icon-white"></i>
+            Save
+        </button>
+        <a class="btn" href="/<?= modelVariable ?>/<%= <?= modelVariable ?>.id %>">
+            <i class="icon-list-alt"></i>
+            Cancel
+        </a>
+    </div>
 </form>
+

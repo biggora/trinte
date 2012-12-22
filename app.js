@@ -4,8 +4,8 @@
 var fs = require('fs'),
 express = require('express'),
 mongoose = require('mongoose'),
-nodepath = require('path'),
-engine = require('ejs-locals');
+engine = require('ejs-locals'),
+helper = require('./utils/helper');
 
 var curpath = __dirname.replace(/\\/gi,"/");
 var app;
@@ -17,8 +17,12 @@ exports.boot = function (params) {
 
     //Create our express instance
     app = express();
+
     // Import configuration
     require(curpath + '/conf/configuration.js')(app, express);
+
+    // Initialize params
+    require(curpath + '/conf/params.js')(app,curpath);
 
     // Bootstrap application
     bootApplication(app);
@@ -38,24 +42,22 @@ exports.boot = function (params) {
 function bootApplication(app) {
 
     app.configure(function () {
-        app.use(express.logger({
-            format: ':method :url :status'
-        }));
-        app.use(express.compress());
         app.use(express.bodyParser({
             uploadDir: curpath + '/uploads',
             keepExtensions: true,
             encoding: 'utf-8'
         }));
         app.use(express.methodOverride());
-        app.use(express.cookieParser('77ecf30e77123e7ddf1db738eaa437376'));
+        app.use(express.cookieParser('secret'));
         app.use(express.session({
             cookie: {
                 maxAge: 8640000
             },
-            secret: '77ecf30e77123e7ddf1db738eaa437376'
+            secret: 'secret'
         }));
-        app.use(express.static(curpath + '/public'));  // Before router to enable dynamic routing
+        app.use(express.csrf());
+        // Before router to enable dynamic routing
+        app.use(express.static(curpath + '/public'));
 
         // Setup ejs views as default, with .html as the extension
         app.set('port', process.env.PORT || 3000);
@@ -65,38 +67,14 @@ function bootApplication(app) {
         app.set('view options', {
             complexNames: true
         });
-
-        app.use(function(req, res, next) {
-            var session = req.session;
-            res.locals.session = req.session;
-            res.locals.request = req;
-            res.locals.hasMessages = Object.keys(req.session.messages || {}).length,
-            res.locals.messages = function messages() {
-                var msgs = session.messages;
-                return Object.keys(msgs).reduce(function (arr, type) {
-                    return arr.concat(msgs[type]);
-                }, []);
-            };
-            req.flash = function (type, msg) {
-                req.session.messages = req.session.messages ? req.session.messages : [];
-                if(type && msg) {
-                    req.session.messages.push({
-                        type : type,
-                        message : msg
-                    });
-                } else {
-                    return req.session.messages;
-                }
-            };   
-            next();
-        });
+        app.use(helper.init());
         app.use(app.router);
 
         // Example 500 page
-        // app.use(function(req, res){
-        //    console.log('Internal Server Error: ' + err.message);
-        //    res.render('500');
-        // });
+        app.use(function(req, res){
+            console.log('Internal Server Error: ' + err.message);
+            res.render('500');
+        });
 
         // Example 404 page via simple Connect middleware
         app.use(function (req, res) {

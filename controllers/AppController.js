@@ -1,5 +1,5 @@
 var fs = require('fs')
-, inflection = require('../lib/inflection');
+    , inflection = require('../lib/inflection');
 
 module.exports = function (app) {
 
@@ -15,7 +15,8 @@ module.exports = function (app) {
     app.del("/:controller", router);   			// Delete all
 
     // Singular - different variable to clarify routing
-    app.get("/:controller/:id.:format?", router);  	// To support controller/index
+    app.get("/:controller/:action", router);            // Add (New)
+    app.get("/:controller/:id.:format?", router);  	    // To support controller/index
     app.get("/:controller/:id/:action", router);		// Show edit
     app.put("/:controller/:id", router);				// Update
     app.del("/:controller/:id", router);				// Delete
@@ -43,7 +44,11 @@ function router(req, res, next) {
         // We are plural
         switch (method) {
             case 'get':
-                fn = 'index';
+                if (action.length > 0) {
+                    fn = action;
+                } else {
+                    fn = 'index';
+                }
                 break;
             case 'post':
                 fn = 'create';

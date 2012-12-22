@@ -32,7 +32,7 @@ exports.execute = function(params,appPath) {
     var controllerTemplate = __dirname + '/templates/create-controller.template.ejs';
 
     // Check if the model exists
-    var fileCheck = path.existsSync(modelFile);
+    var fileCheck = fs.existsSync(modelFile);
     if(!fileCheck) {
         console.log("The model you have specified doesn't exist!");
         console.log("You need to create the model first.");
@@ -41,7 +41,7 @@ exports.execute = function(params,appPath) {
     }
 
     // Check if the controller exists
-    var fileCheck = path.existsSync(controllerFile);
+    var fileCheck = fs.existsSync(controllerFile);
     if(fileCheck) {
         if(params[1] != "force") {
             console.log("The controller already exists!");

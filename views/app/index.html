@@ -1,5 +1,16 @@
 <% layout('../layout') -%>
-<h1>Welcome!</h1>
+<div class="hero-unit">
+    <h1>Welcome!</h1>
+
+    <p>I built this application to create a template MVC style app that I could then use as the start point for further development. I used the excellent examples in the main Express github repository, specifically the MVC example, as the starting point. I have however changed it quite substantially to make it clearer and remove some of the magic that confused me at first when learning. If you are familiar with other MVC frameworks hopefully my file structure makes some sense.</p>
+
+    <p>
+        <a target="_blank" href="https://github.com/biggora/trinte" class="btn btn-primary btn-large">
+            Learn more
+        </a>
+    </p>
+</div>
+
 <p>The following controllers are available:</p>
 
 <% if (controllers.length) { %>
@@ -32,10 +43,9 @@ You are viewing the default home page - edit views/app/index.html to edit this p
         </li>
         <li><a href="http://jquery.com/">jQuery</a>: Javascript Library</li>
         <li><a href="http://jqueryui.com/">jQuery UI</a>: UI Library</li>
-        <li><a href="http://taitems.tumblr.com/post/482577430/introducing-aristo-a-jquery-ui-theme">jQuery Aristo Template</a>: Fantastic looking jQuery UI Template.</li>
+        <li>
+            <a href="http://taitems.tumblr.com/post/482577430/introducing-aristo-a-jquery-ui-theme">jQuery Aristo Template</a>: Fantastic looking jQuery UI Template.
+        </li>
     </ul>
 </div>
 </p>
-
-
-<p>Contact me via github : <a href="https://github.com/biggora" target="_new">Trinte @ Github</a></p>
