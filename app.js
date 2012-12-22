@@ -5,9 +5,10 @@ var fs = require('fs'),
 express = require('express'),
 mongoose = require('mongoose'),
 engine = require('ejs-locals'),
+useragent = require('express-useragent'),
 helper = require('./utils/helper');
 
-var curpath = __dirname.replace(/\\/gi,"/");
+var curpath = __dirname.replace(/\\/gi,"/"); // Fix for Windows
 var app;
 
 /**
@@ -56,6 +57,7 @@ function bootApplication(app) {
             secret: 'secret'
         }));
         app.use(express.csrf());
+        app.use(useragent.express());
         // Before router to enable dynamic routing
         app.use(express.static(curpath + '/public'));
 
@@ -94,7 +96,6 @@ function bootModels(app) {
     });
     // Connect to mongoose
     mongoose.connect(app.set('db-uri'));
-
 }
 
 // Bootstrap controllers
