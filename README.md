@@ -27,7 +27,7 @@ To install trinte:
 * [Created application](#directory-structure)
   * [Directory structure](#directory-structure)
   * [Routing and params](#routing)
-  * [Middleware](#middleware)
+  * [Used Middleware](#middleware)
 * [Credits](#credits)
 * [Peoject Author](#author)
 * [Copyright & License](#license)
@@ -64,7 +64,9 @@ To install trinte:
 
       $ trinte create-app HelloWorld    # Create application
       $ cd HelloWorld && npm -l install # intall dependencies
-      $ trinte script generate-all User name email password active # generate scaffold
+
+      # generate scaffold
+      $ trinte script generate-all User name email password active
       $ trinte                          # running server (default in cluster mode)
 
   - Browse your application to [http://localhost:3000](http://localhost:3000)
@@ -142,7 +144,7 @@ Following are all valid field types.
       Array
 
 <a name="directory-structure"></a>
-## Directory structure
+### Directory structure
 
 On initialization directories tree generated, like that:
 
@@ -186,8 +188,7 @@ On initialization directories tree generated, like that:
     `-- app-cluster.js
 
 <a name="routing"></a>
-Routing
--------
+### Routing
 
     // Plural
     app.get("/:controller?", router);                           // Index
@@ -206,8 +207,12 @@ Routing
     app.del("/:controller/:id", router);                        // Delete
 
 
+<a name="middleware"></a>
+### Used Middleware
 
-
+- [express-useragent](https://github.com/biggora/express-useragent) NodeJS user-agent middleware.
+- [express-mongodb](https://github.com/biggora/express-mongodb) MongoDB Session Storage for ExpressJS.
+- [csrf](http://www.senchalabs.org/connect/csrf.html) CSRF protection middleware.
 
 <a name="in-the-wild"></a>
 ## In the Wild

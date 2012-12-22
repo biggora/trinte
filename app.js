@@ -6,6 +6,7 @@ express = require('express'),
 mongoose = require('mongoose'),
 engine = require('ejs-locals'),
 useragent = require('express-useragent'),
+MongooseStore = require("express-mongodb")(express),
 helper = require('./utils/helper');
 
 var curpath = __dirname.replace(/\\/gi,"/"); // Fix for Windows
@@ -25,13 +26,15 @@ exports.boot = function (params) {
     // Initialize params
     require(curpath + '/conf/params.js')(app,curpath);
 
+    // Connect to mongoose
+    mongoose.connect(app.set('db-uri'));
+
     // Bootstrap application
     bootApplication(app);
     bootModels(app);
     bootControllers(app);
 
     return app;
-
 };
 
 /**
@@ -54,7 +57,11 @@ function bootApplication(app) {
             cookie: {
                 maxAge: 8640000
             },
-            secret: 'secret'
+            secret: 'secret',
+            store: new MongooseStore({
+                collection: 'session',
+                clear_interval: 60
+            })
         }));
         app.use(express.csrf());
         app.use(useragent.express());
@@ -94,8 +101,6 @@ function bootModels(app) {
             bootModel(app, file);
         });
     });
-    // Connect to mongoose
-    mongoose.connect(app.set('db-uri'));
 }
 
 // Bootstrap controllers
