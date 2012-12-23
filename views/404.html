@@ -1,3 +1,13 @@
-<% layout('layout') -%>
-<h1>Cannot find <%= request.url %></h1>
-<p>Sorry we failed to locate this page or resource.</p>
+<% layout('error') -%>
+<div class="row">
+    <div class="offset3 span6 well" style="margin-top:100px">
+            <h1 style="text-align:center;margin-top:50px"><span style="font-size:84px;">404</span></h1>
+            <h3 style="text-align:center;color:#666">OOPS! PAGE NOT FOUND!</h3>
+            <p style="text-align:center;margin-bottom:50px">
+            <a href="<%= request.url %>"><%= request.url %></a><br />
+            Sorry we failed to locate this page or resource.
+            <br /><br />navigate back to <a href="/">Home</a>
+            </p>
+        </div>
+    </div>
+</div>

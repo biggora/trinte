@@ -7,7 +7,8 @@ mongoose = require('mongoose'),
 engine = require('ejs-locals'),
 useragent = require('express-useragent'),
 MongooseStore = require("express-mongodb")(express),
-helper = require('./utils/helper');
+helper = require('./utils/helper'),
+flash = require('./utils/flash');
 
 var curpath = __dirname.replace(/\\/gi,"/"); // Fix for Windows
 var app;
@@ -55,12 +56,12 @@ function bootApplication(app) {
         app.use(express.cookieParser('secret'));
         app.use(express.session({
             cookie: {
-                maxAge: 8640000,
-                secure: true
+                maxAge: 8640000
             },
             key: 'trinte',
             secret: 'secret'
         }));
+        app.use(flash());
         app.use(express.csrf());
         app.use(useragent.express());
         // Before router to enable dynamic routing
@@ -78,9 +79,12 @@ function bootApplication(app) {
         app.use(app.router);
 
         // Example 500 page
-        app.use(function(req, res){
+        app.use(function(err, req, res, next){
             console.log('Internal Server Error: ' + err.message);
-            res.render('500');
+            res.status(err.status || 500);
+            res.render('500', {
+                error: err
+            });
         });
 
         // Example 404 page via simple Connect middleware

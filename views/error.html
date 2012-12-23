@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset='utf-8'>
+    <meta name="generator" content="TrinteJS! - Javascript MVC Framework">
+    <meta name="author" content="Project Author">
+    <title>TrinteJS Error page</title>
+    <link type="text/css" href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/style.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/rails.min.js"></script>
+    <meta name="csrf-param" content="_csrf">
+    <meta name="csrf-token" content="<%= session._csrf %>">
+</head>
+<body>
+<div id="page" class="container">
+    <div id="content" class="row">
+        <!--page content-->
+        <%- body %>
+    </div>
+</div>
+</body>
+</html>
