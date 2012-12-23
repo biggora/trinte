@@ -1,7 +1,6 @@
-
 /**
- * 	NOT YET USED
- **/
+ * Module dependencies.
+ */
 
 var io = require('socket.io');
 

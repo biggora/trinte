@@ -6,7 +6,7 @@ express = require('express'),
 mongoose = require('mongoose'),
 engine = require('ejs-locals'),
 useragent = require('express-useragent'),
-MongooseStore = require("express-mongodb")(express),
+sessionStore = require("./utils/session")(express),
 helper = require('./utils/helper'),
 flash = require('./utils/flash');
 
@@ -26,9 +26,6 @@ exports.boot = function (params) {
 
     // Initialize params
     require(curpath + '/conf/params.js')(app,curpath);
-
-    // Connect to mongoose
-    mongoose.connect(app.set('db-uri'));
 
     // Bootstrap application
     bootApplication(app);
@@ -59,7 +56,8 @@ function bootApplication(app) {
                 maxAge: 8640000
             },
             key: 'trinte',
-            secret: 'secret'
+            secret: 'secret',
+            store: new sessionStore({ url : app.set('db-uri') })
         }));
         app.use(flash());
         app.use(express.csrf());
@@ -103,6 +101,8 @@ function bootModels(app) {
             bootModel(app, file);
         });
     });
+    // Connect to mongoose
+    mongoose.connect(app.set('db-uri'));
 }
 
 // Bootstrap controllers

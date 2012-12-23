@@ -5,12 +5,12 @@
     "author": "",
     "private": true,
     "dependencies": {
-        "trinte"     : ">0.0.2",
-        "express"     : "3.x",
         "ejs-locals"  : ">=1.0.2",
-        "socket.io"   : ">=0.8.0",
+        "express"     : "3.x",
+        "mongodb"     : ">=1.2.5",
         "mongoose"    : ">=3.0.0",
+        "socket.io"   : ">=0.8.0",
         "express-useragent"   : ">=0.0.7",
-        "express-mongodb"     : ">=0.0.3"
+        "trinte"      : ">0.0.4"
     }
 }
