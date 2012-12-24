@@ -25,6 +25,7 @@ To install trinte:
   * [Field types](#field-types)
   * [Runs server](#runs-server)
 * [Created application](#directory-structure)
+  * [Application configuration](#app-config)
   * [Directory structure](#directory-structure)
   * [Routing and params](#routing)
   * [Used Middleware](#middleware)
@@ -145,8 +146,34 @@ Following are all valid field types.
 
 Learn more on [MongooseJS](http://mongoosejs.com/docs/schematypes.html).
 
-<a name="directory-structure"></a>
+<a name="app-config"></a>
 ## Created application
+
+### Application configuration
+/config.js
+
+```js
+module.exports = {
+    port : 3000,
+    session: {
+        maxAge : 8640000,
+        key : "trinte",
+        secret : "Web-based Application"
+    },
+    parser : {
+        encoding : "utf-8",
+        keepExtensions : true
+    },
+    db: {
+        host       : "localhost",
+        port       : "27017",
+        username   : "",
+        password   : "",
+        database   : "trinte-dev"
+    } ...
+```
+
+<a name="directory-structure"></a>
 ### Directory structure
 
 On initialization directories tree generated, like that:
