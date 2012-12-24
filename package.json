@@ -27,7 +27,7 @@
         "should": ">=1.2.0",
         "wrench": ">=1.4.4",
         "ejs": ">=0.8.0",
-        "mongodb": ">=1.2.6",
+        "mongodb": ">=1.2.6"
     },
     "devDependencies": {
         "express": ">=3.0.0",
