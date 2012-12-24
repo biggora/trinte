@@ -44,12 +44,13 @@ exports.boot = function (params) {
 function bootApplication(app) {
 
     app.configure(function () {
+        app.use(express.compress());
+        app.use(express.methodOverride());
         app.use(express.bodyParser({
             uploadDir: curpath + '/uploads',
             keepExtensions: true,
             encoding: 'utf-8'
         }));
-        app.use(express.methodOverride());
         app.use(express.cookieParser('secret'));
         app.use(express.session({
             cookie: {
