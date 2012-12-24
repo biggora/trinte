@@ -3,7 +3,6 @@ var  ejs = require('ejs')
 , path = require('path')
 , inflection = require('../lib/inflection');
 
-
 /**
  * Script to create a default test scripts, requires the model to exist
  */
@@ -15,8 +14,8 @@ exports.execute = function(params,appPath) {
     }
 
     /**
-	 * Create the model based on a singular (e.g. people becomes person, users becomes user)
-	 */
+     * Create the model based on a singular (e.g. people becomes person, users becomes user)
+     */
     var modelName = params[0].singularize();
     if(modelName != params[0]) {
         console.log("Using model name as singular not plural: " + modelName);
@@ -26,11 +25,8 @@ exports.execute = function(params,appPath) {
     modelName = modelName.capitalize();
 
     var modelFile = appPath + "/models/" + modelName + '.js'
-
     var controllerName = modelName.pluralize();
-
     var testFolder = appPath + "/tests/";
-
     var unitTemplate = __dirname + '/templates/create-test.template.unit.ejs';
     var integrationTemplate = __dirname + '/templates/create-test.template.integration.ejs';
     var functionalTemplate = __dirname + '/templates/create-test.template.functional.ejs';

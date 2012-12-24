@@ -3,7 +3,6 @@
  * TEST Environment settings
  */
 module.exports = function(app,express) {
-    app.set('db-uri', 'mongodb://localhost/trinte-production');
     app.use(express.logger({
         format: ':method :url :status'
     }));

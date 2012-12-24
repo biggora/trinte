@@ -11,7 +11,7 @@
     "express",
     "mongodb"
     ],
-    "version": "0.0.4-7",
+    "version": "0.0.5",
     "homepage": "https://github.com/biggora/trinte",
     "repository": {
         "type": "git",
@@ -20,16 +20,18 @@
     "main": "trinte",
     "author": "Aleksej Gordejev <aleksej@gordejev.lv> (https://github.com/biggora/)",
     "engines": {
-        "node": ">=0.8"
+        "node": ">=0.8",
+        "npm": ">=1.0"
     },
     "dependencies": {
         "should": ">=1.2.0",
-        "wrench": ">=1.4.4"
+        "wrench": ">=1.4.4",
+        "ejs": ">=0.8.0",
+        "mongodb": ">=1.2.6",
     },
     "devDependencies": {
         "express": ">=3.0.0",
         "connect": ">=2.0.0",
-        "ejs": ">=0.8.0",
         "socket.io": ">=0.8.0",
         "mongoose": ">=3.0.0"
     },

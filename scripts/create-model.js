@@ -109,7 +109,7 @@ exports.execute = function (params, appPath) {
     var ret = ejs.render(str, {
         locals: {
             name: modelName,
-            package: projectdata.name,
+            pack: projectdata.name,
             description: projectdata.description,
             version: projectdata.version,
             author: projectdata.author,

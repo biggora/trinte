@@ -51,6 +51,19 @@ exports.execute = function(params,appPath) {
         }
     }
 
+    var projectdata = {
+        name: "",
+        description: "",
+        version: "",
+        author: ""
+    };
+    if (fs.existsSync(appPath + '/package.json')) {
+        var pd = fs.readFileSync(appPath + '/package.json', "utf-8");
+        try {
+            projectdata = JSON.parse(pd);
+        } catch (err) {
+        }
+    }
 
     // Read the template
     var str = fs.readFileSync(controllerTemplate, 'utf8');
@@ -58,6 +71,11 @@ exports.execute = function(params,appPath) {
     // Render the model
     var ret = ejs.render(str, {
         locals: {
+            pack: projectdata.name,
+            description: projectdata.description,
+            version: projectdata.version,
+            author: projectdata.author,
+            created: new Date().toISOString(),
             controllerName:controllerName,
             modelName:modelName
         },

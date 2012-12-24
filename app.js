@@ -8,7 +8,8 @@ engine = require('ejs-locals'),
 useragent = require('express-useragent'),
 sessionStore = require("./utils/session")(express),
 helper = require('./utils/helper'),
-flash = require('./utils/flash');
+flash = require('./utils/flash'),
+config = require('./config');
 
 var curpath = __dirname.replace(/\\/gi,"/"); // Fix for Windows
 var app;
@@ -45,20 +46,20 @@ function bootApplication(app) {
 
     app.configure(function () {
         app.use(express.compress());
-        app.use(express.methodOverride());
         app.use(express.bodyParser({
             uploadDir: curpath + '/uploads',
             keepExtensions: true,
-            encoding: 'utf-8'
+            encoding: config.parser.encoding
         }));
-        app.use(express.cookieParser('secret'));
+        app.use(express.methodOverride());
+        app.use(express.cookieParser(config.session.secret));
         app.use(express.session({
             cookie: {
-                maxAge: 8640000
+                maxAge: config.session.maxAge
             },
-            key: 'trinte',
-            secret: 'secret',
-            store: new sessionStore({ url : app.set('db-uri') })
+            key: config.session.key,
+            secret: config.session.secret,
+            store: new sessionStore({ url : config.dburi() })
         }));
         app.use(flash());
         app.use(express.csrf());
@@ -67,7 +68,7 @@ function bootApplication(app) {
         app.use(express.static(curpath + '/public'));
 
         // Setup ejs views as default, with .html as the extension
-        app.set('port', process.env.PORT || 3000);
+        app.set('port', process.env.PORT || config.port);
         app.set('views', curpath + '/views');
         app.engine('html', engine);
         app.set('view engine', 'html');
@@ -90,7 +91,6 @@ function bootApplication(app) {
         app.use(function (req, res) {
             res.render('404');
         });
-
     });
 }
 
@@ -103,7 +103,7 @@ function bootModels(app) {
         });
     });
     // Connect to mongoose
-    mongoose.connect(app.set('db-uri'));
+    mongoose.connect(config.dburi());
 }
 
 // Bootstrap controllers
@@ -121,7 +121,6 @@ function bootControllers(app) {
 function bootModel(app, file) {
     var name = file.replace('.js', ''),
     schema = require(curpath + '/models/' + name);				// Include the mongoose file
-
 }
 
 // Load the controller, link to its view file from here

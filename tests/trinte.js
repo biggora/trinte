@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * ExpressJs MVC Bootstrap
+ * TrinteJS MVC Bootstrap
  * @Params - cmd - serve
  r | script | params
  */

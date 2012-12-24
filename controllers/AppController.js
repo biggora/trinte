@@ -1,29 +1,12 @@
 var fs = require('fs')
-    , inflection = require('../lib/inflection');
+, inflection = require('../lib/inflection');
 
-module.exports = function (app) {
-
-    // app.get("/favicon.ico", function() {}); // Required if you delete the favicon.ico from public
-
-    // Plural
-    app.get("/:controller?", router);				        // Index
-    app.get("/:controller.:format?", router);				// Index
-    app.get("/:controller/:from-:to.:format?", router);		// Index
-
-    // Plural Create & Delete
-    app.post("/:controller", router);			// Create
-    app.del("/:controller", router);   			// Delete all
-
-    // Singular - different variable to clarify routing
-    app.get("/:controller/:action", router);            // Add (New)
-    app.get("/:controller/:id.:format?", router);  	    // To support controller/index
-    app.get("/:controller/:id/:action", router);		// Show edit
-    app.put("/:controller/:id", router);				// Update
-    app.del("/:controller/:id", router);				// Delete
-
-}
-
-///
+/*
+ * Default Application router.
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
 function router(req, res, next) {
 
     var controller = req.params.controller ? req.params.controller : '';
@@ -91,12 +74,12 @@ function router(req, res, next) {
     }
 };
 
-
 /**
  * Default Application index - shows a list of the controllers.
  * Redirect here if you prefer another controller to be your index.
- * @param req
- * @param res
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
  */
 function index(req, res, next) {
 
@@ -121,3 +104,26 @@ function index(req, res, next) {
         });
     });
 };
+
+
+module.exports = function (app) {
+
+    // app.get("/favicon.ico", function() {}); // Required if you delete the favicon.ico from public
+
+    // Plural
+    app.get("/:controller?", router);				        // Index
+    app.get("/:controller.:format?", router);				// Index
+    app.get("/:controller/:from-:to.:format?", router);		        // Index
+
+    // Plural Create & Delete
+    app.post("/:controller", router);			                // Create
+    app.del("/:controller", router);   			                // Delete all
+
+    // Singular - different variable to clarify routing
+    app.get("/:controller/:action", router);                            // Add (New)
+    app.get("/:controller/:id.:format?", router);  	                // To support controller/index
+    app.get("/:controller/:id/:action", router);		        // Show edit
+    app.put("/:controller/:id", router);				// Update
+    app.del("/:controller/:id", router);				// Delete
+
+}

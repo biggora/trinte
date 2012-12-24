@@ -242,6 +242,7 @@ function createApplicationAt(path,appname) {
 
     copy(bootstrapPath + '/app-cluster.js', appdir + '/app-cluster.js');
     copy(bootstrapPath + '/app.js', appdir + '/app.js');
+    copy(bootstrapPath + '/config.js', appdir + '/config.js');
 
     var layout = fs.readFileSync(bootstrapPath + '/views/layout.html', 'utf-8');
     write(appdir + '/views/layout.html', layout.toString().replace(/APPNAME/gi,appname));
