@@ -1,14 +1,21 @@
-var  ejs = require('ejs')
-, fs = require('fs')
-, path = require('path')
-, inflection = require('../lib/inflection');
+var  ejs = require('ejs'),
+fs = require('fs'),
+path = require('path'),
+wrench = require('wrench'),
+inflection = require('../lib/inflection');
 
 /**
  * Script to create a default test scripts, requires the model to exist
+ * @param params
+ * @param appPath
+ * @param options
  */
-exports.execute = function(params,appPath) {
+exports.execute = function(params,appPath,options) {
 
-    if(params.length == 0 ) {
+    var scrPath = appPath + '/app';
+    var modPath = scrPath + '/models';
+
+    if(params.length === 0 ) {
         console.log("You must specifiy a model name to generate the tests against!");
         return;
     }
@@ -16,20 +23,36 @@ exports.execute = function(params,appPath) {
     /**
      * Create the model based on a singular (e.g. people becomes person, users becomes user)
      */
-    var modelName = params[0].singularize();
-    if(modelName != params[0]) {
+    var modelName = options.model.singularize();
+    if (modelName !== options.model) {
         console.log("Using model name as singular not plural: " + modelName);
     }
 
     // Capitalise
     modelName = modelName.capitalize();
 
-    var modelFile = appPath + "/models/" + modelName + '.js'
+    var modelFile = scrPath + "/models/" + modelName + '.js';
     var controllerName = modelName.pluralize();
     var testFolder = appPath + "/tests/";
     var unitTemplate = __dirname + '/templates/create-test.template.unit.ejs';
     var integrationTemplate = __dirname + '/templates/create-test.template.integration.ejs';
     var functionalTemplate = __dirname + '/templates/create-test.template.functional.ejs';
+
+    if(!fs.existsSync(testFolder)) {
+       wrench.mkdirSyncRecursive(testFolder,755);
+    }
+
+    if(!fs.existsSync(testFolder + "/unit")) {
+       wrench.mkdirSyncRecursive(testFolder + "/unit",755);
+    }
+
+    if(!fs.existsSync(testFolder + "/integration")) {
+       wrench.mkdirSyncRecursive(testFolder + "/integration",755);
+    }
+
+    if(!fs.existsSync(testFolder + "/functional")) {
+       wrench.mkdirSyncRecursive(testFolder + "/functional",755);
+    }
 
     // Check if the model exists
     var fileCheck = fs.existsSync(modelFile);
@@ -43,7 +66,7 @@ exports.execute = function(params,appPath) {
     // Check if the unit test exists
     var fileCheck = fs.existsSync(testFolder + "/unit/" + modelName + '.js');
     if(fileCheck) {
-        if(params[1] != "force") {
+        if(params[0] !== "force") {
             console.log("Tests appear to already exist for this model!");
             console.log("Add an additional paramater of 'force' to over write the tests.");
             console.log("e.g. script create-test " + modelName + " force");

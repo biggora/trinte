@@ -1,16 +1,18 @@
-var ejs = require('ejs')
-, fs = require('fs');
+var ejs = require('ejs'),
+fs = require('fs');
 
 /**
  * Help file
+ * @param params
+ * @param appPath
  */
 exports.execute = function(params,appPath) {
-
-    if(params.length == 0) {
-        var str = fs.readFileSync(__dirname + '/templates/help.ejs', 'utf8');
+    var str;
+    if(params.length === 0) {
+        str = fs.readFileSync(__dirname + '/templates/help.ejs', 'utf8');
     } else {
         if(fs.existsSync(__dirname + '/templates/' + params[0] + '.help.ejs')) {
-            var str = fs.readFileSync(__dirname + '/templates/' + params[0] + '.help.ejs', 'utf8');
+            str = fs.readFileSync(__dirname + '/templates/' + params[0] + '.help.ejs', 'utf8');
         } else {
             console.error('   \033[31mHelp file not specified\x1b[0m\r\n');
             process.exit(1);
@@ -26,7 +28,7 @@ exports.execute = function(params,appPath) {
         }
 
         files.forEach(function(file){
-            if(file.replace('.js','') != file) {
+            if(file.replace('.js','') !== file) {
                 scripts.push(file.replace('.js',''));
             }
         });

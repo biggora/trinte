@@ -7,10 +7,8 @@
     "dependencies": {
         "ejs-locals"          : ">=1.0.2",
         "express"             : ">=3.0.0",
-        "mongodb"             : ">=1.2.6",
-        "mongoose"            : ">=3.0.0",
-        "socket.io"           : ">=0.8.0",
+        "caminte"             : ">=0.0.5",
         "express-useragent"   : ">=0.0.7",
-        "trinte"              : ">0.0.4"
+        "trinte"              : ">=0.0.5"
     }
 }

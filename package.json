@@ -1,17 +1,20 @@
 {
     "name": "trinte",
     "description": "TrinteJS - MVC framework for NodeJS",
+    "version": "0.0.6",
     "keywords": [
     "app",
     "mvc",
     "web-framework",
     "framework",
     "trinte",
+    "trintejs",
     "mongoose",
     "express",
-    "mongodb"
+    "mongodb",
+    "mysql",
+    "sqlite3"
     ],
-    "version": "0.0.5",
     "homepage": "https://github.com/biggora/trinte",
     "repository": {
         "type": "git",
@@ -26,16 +29,21 @@
     "dependencies": {
         "should": ">=1.2.0",
         "wrench": ">=1.4.4",
+        "express": ">=3.0.0",
         "ejs": ">=0.8.0",
-        "mongodb": ">=1.2.6"
+        "caminte": ">=0.0.2"
     },
     "devDependencies": {
         "express": ">=3.0.0",
         "connect": ">=2.0.0",
-        "socket.io": ">=0.8.0",
-        "mongoose": ">=3.0.0"
+        "ejs": ">=0.8.0",
+        "caminte": ">=0.0.2",
+        "methods": ">=0.0.1"
     },
-    "optionalDependencies": {},
+    "optionalDependencies": {
+        "ejs-locals": ">=1.0.2",
+        "express-useragent": ">=0.0.7"
+    },
     "bin": {
         "trinte": "./bin/trinte",
         "trintejs": "./bin/trinte"

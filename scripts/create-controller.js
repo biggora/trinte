@@ -1,39 +1,59 @@
-var ejs = require('ejs')
-, fs = require('fs')
-, path = require('path')
-, inflection = require('../lib/inflection');
+var ejs = require('ejs'),
+fs = require('fs'),
+wrench = require('wrench'),
+path = require('path'),
+inflection = require('../lib/inflection'),
+helper = require('./helper');
 
 /**
  * Script to create a default controller, requires the model to exist
+ *
+ * @param {Array} params
+ * @param {String} appPath
+ * @param {Object} options
  */
-exports.execute = function(params,appPath) {
+exports.execute = function(params, appPath, options) {
 
-    if(params.length == 0 ) {
+    var scrPath = appPath + '/app';
+    var cntPath = scrPath + '/controllers';
+
+    if(params.length === 0 ) {
         console.log("You must specifiy a model name to generate the controller against!");
         return;
     }
+    var modelName = options.model.singularize();
+    var namespace = options.namespace ? '/' + options.namespace : null;
+
+    if(namespace) {
+       cntPath += namespace;
+    }
 
     /**
-	 * Create the model based on a singular (e.g. people becomes person, users becomes user)
-	 */
-    var modelName = params[0].singularize();
-    if(modelName != params[0]) {
+     * Create the model based on a singular (e.g. people becomes person, users becomes user)
+     */
+
+    if(modelName !== options.model) {
         console.log("Using model name as singular not plural: " + modelName);
     }
 
-    // Capitalise
+    // Capitalize
     modelName = modelName.capitalize();
 
-    var modelFile = appPath + "/models/" + modelName + '.js'
+    var modelFile = scrPath + "/models/" + modelName + '.js';
 
     var controllerName = modelName.pluralize();
 
-    var controllerFile = appPath + "/controllers/" + controllerName + 'Controller.js'
+    var controllerFile = cntPath + '/' + controllerName + 'Controller.js';
     var controllerTemplate = __dirname + '/templates/create-controller.template.ejs';
+
+    if(!fs.existsSync(cntPath)) {
+       wrench.mkdirSyncRecursive(cntPath,755);
+    }
 
     // Check if the model exists
     var fileCheck = fs.existsSync(modelFile);
     if(!fileCheck) {
+        console.log("The controller generator report!");
         console.log("The model you have specified doesn't exist!");
         console.log("You need to create the model first.");
         console.log("e.g. script create-model " + modelName);
@@ -43,10 +63,11 @@ exports.execute = function(params,appPath) {
     // Check if the controller exists
     var fileCheck = fs.existsSync(controllerFile);
     if(fileCheck) {
-        if(params[1] != "force") {
+        if(params[0] !== "force") {
             console.log("The controller already exists!");
             console.log("Add an additional paramater of 'force' to over write the controller.");
             console.log("e.g. script create-controller " + modelName + " force");
+            console.log("or   g controller " + modelName + " force");
             return;
         }
     }
@@ -77,14 +98,15 @@ exports.execute = function(params,appPath) {
             author: projectdata.author,
             created: new Date().toISOString(),
             controllerName:controllerName,
-            modelName:modelName
+            modelName:modelName,
+            namespace:options.namespace
         },
         open: "<?",
         close: "?>"
     });
-
+    if(!namespace) { namespace = ""; }
     // Write the file
     fs.writeFileSync(controllerFile, ret,'utf8');
-
-    console.log('Controller for model ' + modelName + ' created in controllers/' + controllerName + 'Controller.js');
+    helper.writeRoute(options, appPath);
+    console.log('Controller for model ' + modelName + ' created in app' + namespace + '/' + controllerName + 'Controller.js');
 };

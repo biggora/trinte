@@ -1,5 +1,5 @@
 /**
- *  <?= name ?> schema
+ *  <?= controllerName ?> Controller
  *
  *  @package     <?= pack ?>
  *  @version     <?= version ?>
@@ -7,14 +7,14 @@
  *  @author      <?= author ?>
  *  @created     <?= created ?>
  *
- *  Created by create-model script
+ *  Created by create-controller script
  *  App based on TrinteJS MVC framework
  *  TrinteJS homepage http://www.trintejs.com
  **/
 
-module.exports = function(schema){
-    var <?= name ?> = schema.define('<?= name ?>', {
+var pager = require('../lib/pager.js'),
+ViewTemplatePath = '<?= basePathPlural ?>';
+
+module.exports = {
 <?= fields ?>
-    });
-    return <?= name ?>;
 };

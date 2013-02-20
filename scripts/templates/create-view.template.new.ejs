@@ -2,22 +2,25 @@
 	var modelVariable = modelName.toLowerCase();
 	var basePath = modelName.toLowerCase();
 	var basePathPlural = controllerName.toLowerCase();
+  var addIncl = namespace ? "../" : "" ;
+  var nsPath = namespace ? namespace + "_" : "" ;
 ?>
-<% layout('../layout') -%>
-<!--page breadcrumb-->
+<% layout('../default_layout') -%>
+<!-- new page -->
+<!-- page breadcrumb -->
 <ul class="breadcrumb">
     <li><a href="/">Home</a> <span class="divider">/</span></li>
-    <li><a href="/<?= basePathPlural ?>"><?= controllerName ?></a> <span class="divider">/</span></li>
-    <li class="active"><a href="#">New <?= modelName ?></a></li>
+    <li><a href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>"><?= controllerName ?></a> <span class="divider">/</span></li>
+    <li class="active"><a href="#"><%- title %></a></li>
 </ul>
-<%- partial('../messages') %>
-<!--page title-->
+<%- partial('<?= addIncl ?>../messages') %>
+<!-- page title -->
 <div class="page-header">
-    <h1>New <?= modelName ?></h1>
+    <h1><%- title %></h1>
 </div>
 
-<!--form-->
-<form method="post" action="/<?= basePathPlural ?>" class="form-horizontal">
+<!-- form -->
+<form method="post" action="<%- pathTo.create_<?= nsPath ?><?= basePathPlural ?>() %>" class="form-horizontal">
     <input type="hidden" name="_method" value="post"/>
     <input type="hidden" name="_csrf" value="<%= session._csrf %>" />
     <%- partial('form',{ locals : { <?= modelVariable ?> : <?= modelVariable ?> } }) %>
@@ -26,9 +29,10 @@
             <i class="icon-ok icon-white"></i>
             Save
         </button>
-        <a class="btn button-cancel" href="/<?= basePathPlural ?>">
+        <a class="btn button-cancel" href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>">
             <i class="icon-tasks"></i>
             Cancel
         </a>
     </div>
 </form>
+<!-- end new page -->

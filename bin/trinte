@@ -10,15 +10,16 @@
  * Framework version.
  */
 
-var version = '0.0.4';
+var version = '0.0.6';
 
 /**
  * Explicit module dependencies
  */
-var fs = require('fs')
-    , wrench = require('wrench')
-    , nodepath = require('path')
-    , exec = require('child_process').exec;
+var fs = require('fs'),
+wrench = require('wrench'),
+nodepath = require('path'),
+exec = require('child_process').exec,
+inflection = require('../lib/inflection');
 
 /**
  * Paths
@@ -63,9 +64,11 @@ function runLauncher(appLauncher) {
         console.log('   \033[31mDo not run this from the bootstrap library folder, please run from an empty directory or a bootstrapped app, or please run "npm install"\x1b[0m\r\n');
         return;
     }
-
+    if(process.env.PORT) {
+       appLauncher.server.port = process.env.PORT;
+    }
     // Check if this is a bootstrap application?
-    if (!isBootstrap() && appLauncher.command != 'create-app') {
+    if (!isBootstrap() && appLauncher.command != 'create-app' && appLauncher.command != 'init') {
         console.log('   \033[31mApplication not bootstrapped - you must run:\x1b[0m trinte create-app\r\n');
         return;
     }
@@ -124,8 +127,53 @@ function isBootstrap() {
  * Runs by default from path where bootstrap runs via __dirname.
  */
 function runScript(scriptLauncher) {
-    var script = require(bootstrapPath + '/scripts/' + scriptLauncher.name);
-    script.execute(scriptLauncher.params, path);
+
+    var script_name = "";
+
+    switch(scriptLauncher.name) {
+           case "controller":
+           case "model":
+           case "view":
+             script_name = "create-" + scriptLauncher.name;
+             break;
+           case "crud":
+             script_name = "generate-all";
+             break;
+           default:
+           script_name = scriptLauncher.name;
+    }
+
+    try {
+        var script = require(bootstrapPath + '/scripts/' + script_name);
+    } catch(err) {
+        console.log("You must specifiy a correct script name!" + script_name);
+        return;
+    }
+
+    var params = scriptLauncher.params, options = {};
+    options.action = script_name.replace("create-","");
+
+    if(params.length == 0 ) {
+        console.log("You must specifiy a name to generate the scripts against!");
+        return;
+    }
+
+    var tmpName = params[0];
+    var tmpTpl = tmpName.split(':');
+    var tmpNs = tmpTpl[0].split('#');
+
+    if(typeof tmpNs[1] != 'undefined') {
+        options.namespace = tmpNs[0];
+        options.model = tmpNs[1];
+    } else {
+        options.model = tmpTpl[0];
+    }
+
+    if(typeof tmpTpl[1] != 'undefined') {
+        options.anyside = tmpTpl[1];
+    }
+    options.bootstrapPath = bootstrapPath;
+    script.execute(params.slice(1), path, options);
 }
 
 /**
@@ -211,41 +259,28 @@ function runCluster(port) {
  * @param {String} path
  * @param {String} appname
  */
-function createApplicationAt(path,appname) {
+function createApplicationAt(path, appname) {
     var appdir = path + '/' + appname;
 
-    wrench.mkdirSyncRecursive(appdir + '/models',755);
-    wrench.mkdirSyncRecursive(appdir + '/controllers',755);
-    wrench.mkdirSyncRecursive(appdir + '/conf',755);
-    wrench.mkdirSyncRecursive(appdir + '/utils',755);
-    wrench.mkdirSyncRecursive(appdir + '/views',755);
-    wrench.mkdirSyncRecursive(appdir + '/public',755);
-    wrench.mkdirSyncRecursive(appdir + '/lib',755);
-    wrench.mkdirSyncRecursive(appdir + '/tests',755);
-    wrench.mkdirSyncRecursive(appdir + '/logs',755);
-    wrench.mkdirSyncRecursive(appdir + '/uploads',755);
+    wrench.mkdirSyncRecursive(appdir + '/app/models',755);
+    wrench.mkdirSyncRecursive(appdir + '/app/controllers',755);
+    wrench.mkdirSyncRecursive(appdir + '/app/views',755);
+    wrench.mkdirSyncRecursive(appdir + '/app/helpers',755);
+    wrench.mkdirSyncRecursive(appdir + '/app/lib',755);
 
-    wrench.copyDirSyncRecursive(bootstrapPath + '/controllers', appdir + '/controllers');
-    console.log('   \x1b[36mCopied\x1b[0m : ' + bootstrapPath + '/controllers to ' + appdir + '/controllers');
-    wrench.copyDirSyncRecursive(bootstrapPath + '/conf', appdir + '/conf');
-    console.log('   \x1b[36mCopied\x1b[0m : ' + bootstrapPath + '/conf to ' + appdir + '/conf');
-    wrench.copyDirSyncRecursive(bootstrapPath + '/utils', appdir + '/utils');
-    console.log('   \x1b[36mCopied\x1b[0m : ' + bootstrapPath + '/utils to ' + appdir + '/utils');
-    wrench.copyDirSyncRecursive(bootstrapPath + '/views', appdir + '/views');
-    console.log('   \x1b[36mCopied\x1b[0m : ' + bootstrapPath + '/views to ' + appdir + '/views');
+    wrench.copyDirSyncRecursive(bootstrapPath + '/app', appdir);
+    console.log('   \x1b[36mCopied\x1b[0m : ' + bootstrapPath + '/app to ' + appdir + '/');
     wrench.copyDirSyncRecursive(bootstrapPath + '/public', appdir + '/public');
     console.log('   \x1b[36mCopied\x1b[0m : ' + bootstrapPath + '/public to ' + appdir + '/public');
-    wrench.copyDirSyncRecursive(bootstrapPath + '/lib', appdir + '/lib');
-    console.log('   \x1b[36mCopied\x1b[0m : ' + bootstrapPath + '/lib to ' + appdir + '/lib');
     wrench.copyDirSyncRecursive(bootstrapPath + '/tests', appdir + '/tests');
     console.log('   \x1b[36mCopied\x1b[0m : ' + bootstrapPath + '/tests to ' + appdir + '/tests');
 
+    copy(bootstrapPath + '/lib/inflection.js', appdir + '/tools/inflection.js');
     copy(bootstrapPath + '/app-cluster.js', appdir + '/app-cluster.js');
     copy(bootstrapPath + '/app.js', appdir + '/app.js');
-    copy(bootstrapPath + '/config.js', appdir + '/config.js');
 
-    var layout = fs.readFileSync(bootstrapPath + '/views/layout.html', 'utf-8');
-    write(appdir + '/views/layout.html', layout.toString().replace(/APPNAME/gi,appname));
+    var layout = fs.readFileSync(bootstrapPath + '/app/app/views/default_layout.ejs', 'utf-8');
+    write(appdir + '/app/views/default_layout.ejs', layout.toString().replace(/APPNAME/gi, appname));
 
     var jpackage = fs.readFileSync(bootstrapPath + '/app.json', 'utf-8');
     write(appdir + '/package.json', jpackage.toString().replace(/APPNAME/gi,appname));
@@ -294,7 +329,7 @@ function emptyDirectory(path, fn) {
  */
 
 function write(path, str) {
-    fs.writeFile(path, str);
+    fs.writeFileSync(path, str, "utf8");
     console.log('   \x1b[36mcreate\x1b[0m : ' + path);
 }
 

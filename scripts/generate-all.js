@@ -1,9 +1,13 @@
 /**
  * Script to create a model, controller and views
+ *
+ * @param {Array} params
+ * @param {String} appPath
+ * @param {Object} options
  */
-exports.execute = function(params,appPath) {
+exports.execute = function(params, appPath, options) {
 
-    if(params.length == 0 ) {
+    if(params.length === 0 ) {
         console.log("You must specifiy a model name to generate all of the assets for!");
         return;
     }
@@ -13,8 +17,8 @@ exports.execute = function(params,appPath) {
     var viewScript = require('./create-view');
     var testScript = require('./create-test');
 
-    modelScript.execute(params,appPath);
-    controllerScript.execute(params,appPath);
-    viewScript.execute(params,appPath);
-    testScript.execute(params,appPath);
+    modelScript.execute(params, appPath, options);
+    controllerScript.execute(params, appPath, options);
+    viewScript.execute(params, appPath, options);
+    testScript.execute(params, appPath, options);
 };

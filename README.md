@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/biggora/trinte.png?branch=master)](https://travis-ci.org/biggora/trinte)
 # TrinteJS Javascript MVC Framework for NodeJS
 
 A [MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) boilerplate for [ExpressJS](http://expressjs.com/) backed by [MongooseJS](http://mongoosejs.com/) and [Bootstrap](http://twitter.github.com/bootstrap/index.html),

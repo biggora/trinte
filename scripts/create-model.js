@@ -1,12 +1,21 @@
-var ejs = require('ejs')
-    , fs = require('fs')
-    , inflection = require('../lib/inflection');
+var ejs = require('ejs'),
+fs = require('fs'),
+wrench = require('wrench'),
+inflection = require('../lib/inflection');
 
 /**
  * Script to create a default model
+ *
+ * @param {Array} params
+ * @param {String} appPath
+ * @param {Object} options
  */
-exports.execute = function (params, appPath) {
-    if (params.length == 0) {
+exports.execute = function(params, appPath, options) {
+
+    var scrPath = appPath + '/app';
+    var modPath = scrPath + '/models';
+
+    if (params.length === 0) {
         console.log("You must specifiy a model name.");
         return;
     }
@@ -14,8 +23,8 @@ exports.execute = function (params, appPath) {
     /**
      * Create the model based on a singular (e.g. people becomes person, users becomes user)
      */
-    var modelName = params[0].singularize();
-    if (modelName != params[0]) {
+    var modelName = options.model.singularize();
+    if (modelName !== options.model) {
         console.log("Creating model using singular not plural: " + modelName);
     }
 
@@ -23,13 +32,18 @@ exports.execute = function (params, appPath) {
     modelName = modelName.capitalize();
 
     // Define the files
-    var modelFile = appPath + "/models/" + modelName + '.js'
+    var modelFile = modPath + "/" + modelName + '.js';
     var modelTemplate = __dirname + '/templates/create-model.template.ejs';
+
+
+    if (!fs.existsSync(modPath)) {
+        wrench.mkdirSyncRecursive(modPath, 755);
+    }
 
     // Check if it already exists
     var fileCheck = fs.existsSync(modelFile);
     if (fileCheck) {
-        if (params[1] != "force") {
+        if (params[0] !== "force") {
             console.log("The model already exists!");
             console.log("Add an additional paramater of 'force' to over write the model.");
             console.log("e.g. script create-model " + modelName + " force");
@@ -40,11 +54,11 @@ exports.execute = function (params, appPath) {
     // Read the template
     var str = fs.readFileSync(modelTemplate, 'utf8');
     var fields = [];
-    var field = "	  FIELDNAME:{ type: FIELDTYPE }";
-    params.slice(1);
-    params.forEach(function (param) {
+    var field = "	         FIELDNAME : { type: FIELDTYPE }";
+    // params.slice(1);
+    params.forEach(function(param) {
         var wf = param.split(':');
-        if (wf[0] != 'force') {
+        if (wf[0] !== 'force') {
             var cf = field.replace(/FIELDNAME/gi, wf[0]);
             var ct = typeof wf[1] !== undefined ? wf[1] : "String";
 
@@ -85,12 +99,12 @@ exports.execute = function (params, appPath) {
                     ct = "String";
             }
 
-            cf = cf.replace(/FIELDTYPE/gi, ct)
+            cf = cf.replace(/FIELDTYPE/gi, ct);
             fields.push(cf);
         }
     });
     if (!fields.length) {
-        fields.push("	  name:{ type: String }");
+        fields.push("	         name:{ type: String }");
     }
     var projectdata = {
         name: "",
@@ -123,5 +137,5 @@ exports.execute = function (params, appPath) {
     // Write the file
     fs.writeFileSync(modelFile, ret, 'utf8');
 
-    console.log('Model ' + modelName + ' created in models/' + modelName + '.js');
+    console.log('Model ' + modelName + ' created in app/models/' + modelName + '.js');
 };

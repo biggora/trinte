@@ -1,0 +1,24 @@
+<?
+	var modelVariable = modelName.toLowerCase();
+	var basePath = modelName.toLowerCase();
+	var basePathPlural = controllerName.toLowerCase();
+  var addIncl = namespace ? "../" : "" ;
+  var addView = namespace ? namespace + "/" : "" ;
+  var nsPath = namespace ? namespace + "_" : "" ;
+?>
+<% layout('../default_layout') -%>
+<!-- show page -->
+<!-- page breadcrumb -->
+<ul class="breadcrumb">
+    <li><a href="/">Home</a> <span class="divider">/</span></li>
+    <li class="active"><a href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>"><%- title %></a></li>
+</ul>
+<%- partial('../messages') %>
+<!-- page title -->
+<div class="page-header">
+    <h1><%- title %></h1>
+</div>
+
+<!-- page content here -->
+
+<!-- end default page -->

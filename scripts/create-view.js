@@ -1,41 +1,70 @@
-var ejs = require('ejs')
-    , fs = require('fs')
-    , path = require('path')
-    , inflection = require('../lib/inflection');
-
+var ejs = require('ejs'),
+fs = require('fs'),
+wrench = require('wrench'),
+path = require('path'),
+inflection = require('../lib/inflection');
 
 /**
  * Script to create a default view, requires the model to exist
+ *
+ * @param {Array} params
+ * @param {String} appPath
+ * @param {Object} options
  */
-exports.execute = function (params, appPath) {
+exports.execute = function (params, appPath, options) {
 
-    if (params.length == 0) {
+    var scrPath = appPath + '/app';
+    var cvwPath = scrPath + '/views';
+    var nvwPath = scrPath + '/views';
+    var fileCheck;
+
+    if (!options.model || options.model === "") {
         console.log("You must specifiy a model name to generate the views against!");
         return;
+    }
+
+    var modelName = options.model.singularize();
+    var namespace = options.namespace ? '/' + options.namespace : null;
+
+    if(namespace) {
+       nvwPath += namespace;
+
+       if(!fs.existsSync(nvwPath)) {
+          wrench.mkdirSyncRecursive(nvwPath,755);
+       }
+       if(!fs.existsSync(nvwPath + "/default_layout.html")) {
+          wrench.copyDirSyncRecursive(options.bootstrapPath + '/app/app/views', nvwPath);
+          wrench.rmdirSyncRecursive(nvwPath + '/app');
+       }
     }
 
     /**
      * Create the model based on a singular (e.g. people becomes person, users becomes user)
      */
-    var modelName = params[0].singularize();
-    if (modelName != params[0]) {
+
+    if (modelName !== options.model) {
         console.log("Using model name as singular not plural: " + modelName);
     }
 
-    // Capitalise
+    // Capitalize
     modelName = modelName.capitalize();
-    var modelFile = appPath + "/models/" + modelName + '.js'
+    var modelFile = scrPath + "/models/" + modelName + '.js';
     var controllerName = modelName.pluralize();
-    var viewFolder = appPath + "/views/" + controllerName.toLowerCase();
+    var viewFolder = nvwPath + "/" + controllerName.toLowerCase();
     var viewIndexTemplate = __dirname + '/templates/create-view.template.index.ejs';
     var viewEditTemplate = __dirname + '/templates/create-view.template.edit.ejs';
     var viewShowTemplate = __dirname + '/templates/create-view.template.show.ejs';
     var viewFormTemplate = __dirname + '/templates/create-view.template.form.ejs';
     var viewNewTemplate = __dirname + '/templates/create-view.template.new.ejs';
 
+    if(!fs.existsSync(viewFolder)) {
+       wrench.mkdirSyncRecursive(viewFolder,755);
+    }
+
     // Check if the model exists
-    var fileCheck = fs.existsSync(modelFile);
+    fileCheck = fs.existsSync(modelFile);
     if (!fileCheck) {
+        console.log("The views generator report!");
         console.log("The model you have specified doesn't exist!");
         console.log("You need to create the model first.");
         console.log("e.g. script create-model " + modelName);
@@ -43,9 +72,9 @@ exports.execute = function (params, appPath) {
     }
 
     // Check if the view exists
-    var fileCheck = fs.existsSync(viewFolder);
+    fileCheck = fs.existsSync(viewFolder);
     if (fileCheck) {
-        if (params[1] != "force") {
+        if(params[0] !== "force") {
             console.log("The views folder already exists for this model!");
             console.log("Add an additional paramater of 'force' to over write the views.");
             console.log("e.g. script create-view " + modelName + " force");
@@ -65,13 +94,14 @@ exports.execute = function (params, appPath) {
     var fields = [];
     params.forEach(function (param) {
         var wf = param.split(':');
-        if (wf[0] != 'force' && wf[0] != modelName) {
+        if (wf[0] !== 'force' && wf[0] !== modelName) {
             fields.push({
                 param_name : wf[0].capitalize(),
                 param_val  : wf[0]
             });
         }
     });
+
     if (!fields.length) {
         fields.push({
             param_name : "Name",
@@ -79,19 +109,49 @@ exports.execute = function (params, appPath) {
         });
     }
 
+    var locals = {
+        fields : fields,
+        modelName : modelName,
+        controllerName : controllerName,
+        namespace : options.namespace
+     };
+
     // Render the views
-    var retIndex = ejs.render(tmpIndex, { locals: { fields: fields, modelName: modelName, controllerName: controllerName }, open: "<?", close: "?>" });
-    var retEdit = ejs.render(tmpEdit, { locals: { fields: fields, modelName: modelName, controllerName: controllerName }, open: "<?", close: "?>" });
-    var retNew = ejs.render(tmpNew, { locals: { fields: fields, modelName: modelName, controllerName: controllerName }, open: "<?", close: "?>" });
-    var retShow = ejs.render(tmpShow, { locals: { fields: fields, modelName: modelName, controllerName: controllerName }, open: "<?", close: "?>" });
-    var retForm = ejs.render(tmpForm, { locals: { fields: fields, modelName: modelName, controllerName: controllerName }, open: "<?", close: "?>" });
+    var retIndex = ejs.render(tmpIndex, { locals: locals, open: "<?", close: "?>" });
+    var retEdit  = ejs.render(tmpEdit, { locals: locals, open: "<?", close: "?>" });
+    var retNew   = ejs.render(tmpNew, { locals: locals, open: "<?", close: "?>" });
+    var retShow  = ejs.render(tmpShow, { locals: locals, open: "<?", close: "?>" });
+    var retForm  = ejs.render(tmpForm, { locals: locals, open: "<?", close: "?>" });
 
     // Write the file
-    fs.writeFileSync(viewFolder + "/index.html", retIndex, 'utf8');
-    fs.writeFileSync(viewFolder + "/edit.html", retEdit, 'utf8');
-    fs.writeFileSync(viewFolder + "/show.html", retShow, 'utf8');
-    fs.writeFileSync(viewFolder + "/form.html", retForm, 'utf8');
-    fs.writeFileSync(viewFolder + "/new.html", retNew, 'utf8');
+    fs.writeFileSync(viewFolder + "/index.ejs", retIndex, 'utf8');
+    fs.writeFileSync(viewFolder + "/edit.ejs", retEdit, 'utf8');
+    fs.writeFileSync(viewFolder + "/show.ejs", retShow, 'utf8');
+    fs.writeFileSync(viewFolder + "/form.ejs", retForm, 'utf8');
+    fs.writeFileSync(viewFolder + "/new.ejs", retNew, 'utf8');
 
-    console.log('Views ' + modelName + ' created in views/' + modelName.toLowerCase());
+    if(options.anyside && options.namespace) {
+
+       // here check template name
+
+       // view filenames
+       var AnyviewIndexTemplate = __dirname + '/templates/create-view.template.client.index.ejs';
+       var AnyviewShowTemplate = __dirname + '/templates/create-view.template.client.show.ejs';
+
+       // Read the template
+       var AnytmpIndex = fs.readFileSync(AnyviewIndexTemplate, 'utf8');
+       var AnytmpShow = fs.readFileSync(AnyviewShowTemplate, 'utf8');
+
+       // Render the views
+       var AnyretIndex = ejs.render(AnytmpIndex, { locals: locals, open: "<?", close: "?>" });
+       var AnyretShow  = ejs.render(AnytmpShow, { locals: locals, open: "<?", close: "?>" });
+
+       // Write the file
+       fs.writeFileSync(cvwPath + "/" + controllerName.toLowerCase() + "/index.ejs", AnyretIndex, 'utf8');
+       fs.writeFileSync(cvwPath + "/" + controllerName.toLowerCase() + "/show.ejs", AnyretShow, 'utf8');
+
+       console.log('Views ' + modelName + ' created in app/views/' + modelName.toLowerCase());
+    }
+    if(!namespace) { namespace = ""; }
+    console.log('Views ' + modelName + ' created in app/views' + namespace + '/' + modelName.toLowerCase());
 };
