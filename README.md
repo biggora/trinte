@@ -1,6 +1,6 @@
 # TrinteJS Javascript MVC Framework for NodeJS
 
-A [MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) boilerplate for [ExpressJS](http://expressjs.com/) backed by [MongooseJS](http://mongoosejs.com/) and [Bootstrap](http://twitter.github.com/bootstrap/index.html),
+A [MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) boilerplate for [ExpressJS](http://expressjs.com/) backed by [CaminteJS](http://camintejs.com/) and [Bootstrap](http://twitter.github.com/bootstrap/index.html),
 based on [Express MVC Bootstrap](https://github.com/cliftonc/express-mvc-bootstrap).
 
 ## Description
@@ -138,19 +138,15 @@ Following are all valid field types.
       String
       Number
       Date
-      Buffer
       Boolean
-      Mixed
-      ObjectId
-      Array
 
-Learn more on [MongooseJS](http://mongoosejs.com/docs/schematypes.html).
+Learn more on [CaminteJS](http://camintejs.com).
 
 <a name="app-config"></a>
 ## Created application
 
 ### Application configuration
-/config.js
+/config/configuration.js
 
 ```js
 module.exports = {
@@ -163,8 +159,16 @@ module.exports = {
     parser : {
         encoding : "utf-8",
         keepExtensions : true
-    },
+    } ...
+```
+
+### Database configuration
+/config/database.js
+
+```js
+module.exports = {
     db: {
+        driver     : "mongoose",
         host       : "localhost",
         port       : "27017",
         username   : "",
@@ -179,20 +183,39 @@ module.exports = {
 On initialization directories tree generated, like that:
 
     .
-    |-- conf
+    |-- config
     |   |-- configuration.js
     |   |-- development.js
     |   |-- production.js
     |   `-- test.js
-    |-- controllers
-    |   |-- AppController.js
-    |   `-- PostsController.js
-    |-- lib
+    |-- tools
     |   `-- inflection.js
-    |-- models
-    |   |-- Category.js
-    |   |-- Post.js
-    |   `-- User.js
+    |-- app
+    |   |-- models
+    |   |   |-- Category.js
+    |   |   |-- Post.js
+    |   |   `-- User.js
+    |   |-- controllers
+    |   |   |-- AppController.js
+    |   |   `-- PostsController.js
+    |   |-- heplers
+    |   |   |-- ApplicationHelper.js
+    |   |   `-- ModelsHelper.js
+    |   |-- lib
+    |   |   `-- pager.js
+    |   `-- views
+    |       |-- app
+    |       |   `-- index.ejs
+    |       `-- posts
+    |       |   |-- edit.ejs
+    |       |   |-- index.ejs
+    |       |   `-- new.ejs
+    |       |-- errors
+    |       |   |-- 404.ejs
+    |       }   `-- 500.ejs
+    |       |-- default_layout.ejs
+    |       |-- error_layout.ejs
+    |       `-- messages.ejs
     |-- public
     |   |-- css
     |   |   `-- ...
@@ -200,19 +223,6 @@ On initialization directories tree generated, like that:
     |   |   `-- ...
     |   `-- img
     |   |   `-- ...
-    |-- views
-    |   |-- app
-    |   |   `-- index.html
-    |   `-- posts
-    |   |   |-- edit.html
-    |   |   |-- index.html
-    |   |   `-- new.html
-    |   |-- layout.html
-    |   |-- 404.html
-    |   `-- 500.html
-    |-- utils
-    |   |-- helper.js
-    |   `-- pager.js
     |-- package.json
     |-- app.js
     `-- app-cluster.js
@@ -270,10 +280,9 @@ by getting in touch or submitting a pull request with changes to the README.
 ## Credits
 
 - [Node.js](http://nodejs.org/): Amazing javascript asynchronous IO library, install manually.
-- [MongoDB](http://www.mongodb.org/): NoSQL Database, install manually.
 - [NPM](http://npmjs.org/): Node package manager, used to install:
 - [Express.Js](http://expressjs.com/): Application Framework for Node.js
-- [Mongoose.Js](http://mongoosejs.com/): Node.JS ORM for MongoDB.
+- [Caminte.Js](http://camintejs.com/): Node.JS ORM for Any DB.
 - [EJS](http://embeddedjs.com/): Embedded Javascript Templating Library.
 - [jQuery](http://jquery.com/): Best Javascript Library.
 - [Bootstrap](http://twitter.github.com/bootstrap/index.html): Powerful front-end CSS/JS framework
