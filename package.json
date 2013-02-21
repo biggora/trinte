@@ -1,7 +1,7 @@
 {
     "name": "trinte",
     "description": "TrinteJS - MVC framework for NodeJS",
-    "version": "0.0.7",
+    "version": "0.0.7-1",
     "keywords": [
     "app",
     "mvc",
@@ -9,10 +9,13 @@
     "framework",
     "trinte",
     "trintejs",
+    "caminte",
     "mongoose",
     "express",
+    "redis",
     "mongodb",
     "mysql",
+    "postgres",
     "sqlite3"
     ],
     "homepage": "https://github.com/biggora/trinte",
