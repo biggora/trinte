@@ -7,7 +7,7 @@
     "dependencies": {
         "ejs-locals"          : ">=1.0.2",
         "express"             : ">=3.0.0",
-        "caminte"             : ">=0.0.5",
+        "caminte"             : ">=0.0.2",
         "express-useragent"   : ">=0.0.7",
         "trinte"              : ">=0.0.5"
     }
