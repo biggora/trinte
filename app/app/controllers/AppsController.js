@@ -23,8 +23,10 @@ module.exports = {
                 throw err;
 
             files.forEach(function(file) {
-                if (file !== "AppsController.js") {
-                    controllers.push(file.replace('Controller.js', '').toLowerCase());
+                if(/\.js$/i.test(file)) {
+                   if (file !== "AppsController.js") {
+                       controllers.push(file.replace('Controller.js', '').toLowerCase());
+                   }
                 }
             });
 

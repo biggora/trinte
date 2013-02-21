@@ -147,9 +147,11 @@ function bootModels(trinte) {
 
 // simplistic model support
 function bootModel(trinte, schema, file) {
-    var name = file.replace(/\.js$/i, '');
-    trinte.models[name] = require('../app/models/' + name)(schema);// Include the mongoose file
-    global[name] = trinte.models[name];
+    if(/\.js$/i.test(file)) {
+       var name = file.replace(/\.js$/i, '');
+       trinte.models[name] = require('../app/models/' + name)(schema);// Include the mongoose file
+       global[name] = trinte.models[name];
+    }
 }
 
 /**
