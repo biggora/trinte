@@ -6,6 +6,7 @@ exports.init = function() {
     return function(req, res, next) {
         var session = req.session;
         res.locals = {
+            controllers: [],
             session: session,
             request: req,
             formVal: function(val) {
