@@ -1,7 +1,10 @@
 <% layout('../default_layout') -%>
 <div class="hero-unit">
     <h1>Welcome!</h1>
-    <p>This application help to create a webapp MVC `style` app in few minutes.</p>
+    <p>
+        This application help to create a webapp MVC `style` app in few minutes.
+
+    </p>
     <p>
         <a target="_blank" href="https://github.com/biggora/trinte" class="btn btn-primary btn-large">
             Learn more on Github
@@ -19,24 +22,24 @@
 </ul>
 <% } else { %>
 <pre class='code'>
-No controllers available - try 'trinte script generate-all ModelName'
+No controllers available - try 'trinte script generate-all ModelName' or 'trinte g crud ModelName'
 </pre>
 <% } %>
 <br/>
 <pre class='code'>
-You are viewing the default home page - edit views/app/index.html to edit this page!
+You are viewing the default home page - edit views/app/index.ejs to edit this page!
 </pre>
 <br/>
 <p>Credits:
 <div style='font-size: 0.8em;'>
     <ul>
         <li><a href="http://nodejs.org/">Node.js</a>: Amazing javascript asynchronous IO library, install manually.</li>
-        <li><a href="http://www.mongodb.org/">MongoDB</a>: NoSQL Database, install manually.</li>
         <li><a href="http://npmjs.org/">NPM</a>: Node package manager, used to install:
             <ul>
-                <li><a href="http://expressjs.com/">Express</a>: Application Framework for Node.js</li>
-                <li><a href="http://mongoosejs.com/">Mongoose</a>: Node.JS ORM for Mongo</li>
+                <li><a href="http://expressjs.com/">Express</a>: Application Framework for NodeJS</li>
+                <li><a href="http://camintejs.com/">Caminte</a>: Multi-database ORM (redis, mongodb, mysql, sqlite, postgres, neo4j) for NodeJS</li>
                 <li><a href="http://embeddedjs.com/">EJS</a>: Embedded Javascript Templating Library</li>
+                <li><a href="https://github.com/biggora/express-useragent">Express-Useragent</a>: Middleware exposing user-agent for NodeJS</li>
             </ul>
         </li>
         <li><a href="http://jquery.com/">jQuery</a>: Best Javascript Library</li>

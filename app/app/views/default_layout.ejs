@@ -33,9 +33,13 @@
                                     APPNAME
                                 </a>
                                 <ul class="nav">
-                                    <li class="active"><a href="/">Home</a></li>
-                                    <li><a href="#about">About</a></li>
-                                    <li><a href="#contact">Contact</a></li>
+                                    <li><a href="/">Home</a></li>
+                                    <li><a href="https://github.com/biggora/trinte#usage" target="_blank">Usage overview</a></li>
+                                <% if (controllers.length) { %>
+                                    <% controllers.forEach(function(controller){ %>
+                                    <li><a href="/<%= controller %>"><%= controller %></a></li>
+                                    <% }) %>
+                                <% } %>
                                 </ul>
                                 <p class="navbar-text pull-right">
                                     Logged in as <a href="#" class="navbar-link">Username</a>
@@ -51,7 +55,9 @@
             </div>
             <hr/>
             <footer id="footer" class="row">
-                <p style="text-align: center">Power MVC framework <a href="https://github.com/biggora" target="_new">TrinteJS @ Github</a></p>
+                <p style="text-align: center">
+                    Based on Powerful MVC framework <a href="http://www.trintejs.com/" target="_new">TrinteJS</a> & Cross-db ORM <a href="http://www.camintejs.com/" target="_new">CaminteJS</a>
+                </p>
             </footer>
         </div>
     </body>

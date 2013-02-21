@@ -20,6 +20,7 @@ To install trinte:
   * [Command format](#commands)
   * [Create and initialize app](#create-app)
   * [Creates a scaffold](#scaffold)
+  * [Creates a scaffold with Namespace](#namespace)
   * [Creates a Model](#model)
   * [Creates a Controller](#controller)
   * [Creates a View](#view)
@@ -30,6 +31,7 @@ To install trinte:
   * [Directory structure](#directory-structure)
   * [Routing and params](#routing)
   * [Used Middleware](#middleware)
+* [Recommend extensions](#recommend)
 * [Credits](#credits)
 * [Peoject Author](#author)
 * [Copyright & License](#license)
@@ -43,21 +45,21 @@ To install trinte:
 <a name="commands"></a>
 ### Command format:
 
-      cluster *port=3000                : Run the application using the cluster module.
-      server *port=3000                 : Run the application as a server.
-      test                              : Run all tests.
-      test unit|integration|functional  : Run a particular type of test.
-      script help *<name>               : This help script, optional script name for additional help.
-      script <name> *args               : Run a script with <name>, with params
+      cluster *port=3000                      : Run the application using the cluster module.
+      server *port=3000                       : Run the application as a server.
+      test                                    : Run all tests.
+      test unit|integration|functional        : Run a particular type of test.
+      g, script help *<name>                  : This help script, optional script name for additional help.
+      g, script <name> *args                  : Run a script with <name>, with params
 
-      Available scripts:
+      Available scripts (generators):
 
-      create-controller  args           : Creates a controller
-      create-model  args                : Creates a model
-      create-test  args                 : Creates a test
-      create-view  args                 : Creates a view
-      generate-all  args                : Creates a scaffold
-      help                              : Show help
+      controller, create-controller  args     : Creates a controller
+      model, create-model  args               : Creates a model
+      test, create-test  args                 : Creates a test
+      view, create-view  args                 : Creates a view
+      crud, generate-all  args                : Creates a scaffold
+      help                                    : Show help
 
 
 <a name="start"></a>
@@ -85,6 +87,8 @@ To install trinte:
 
       // Creates all (model, views, controller, tests)
       $ trinte script generate-all User
+      or the same
+      $ trinte g crud User
 
       // create User model and etc. with fields: name, email, password, active
       $ trinte script generate-all User name email password active:boolean
@@ -98,6 +102,8 @@ To install trinte:
 
       // Create Post model without fields
       $ trinte script create-model Post
+      or the same
+      $ trinte g model Post
 
       // create User model with fields name, email, password, active: Boolean
       $ trinte script create-model User name email password active:boolean
@@ -109,18 +115,37 @@ To install trinte:
 
       // Creates a controller
       $ trinte script create-controller Post
+      or the same
+      $ trinte g controller Post
 
 <a name="view"></a>
 ### Create a views:
 
       // Creates views
       $ trinte script create-view Post
+      or the same
+      $ trinte g view Post
 
 <a name="test"></a>
 ### Create a test:
 
       // Creates tests
       $ trinte script create-test HelloWorld
+
+<a name="namespace"></a>
+### Create a scaffold or other scripts with namespace:
+
+      // Creates all (model, views, controller, tests)
+      // all scripts will be generated in the folder 'namespase' name
+      // as example app/admin/*
+      $ trinte script generate-all admin#User
+      or the same
+      $ trinte g crud admin#User
+
+      // create User model and etc. with fields: name, email, password, active
+      $ trinte script generate-all admin#User name email password active:boolean
+
+ - See all valid field types [here](#field-types).
 
 <a name="runs-server"></a>
 ### Runs server:
@@ -140,6 +165,7 @@ Following are all valid field types.
       Number
       Date
       Boolean
+      Text
 
 Learn more on [CaminteJS](http://camintejs.com).
 
@@ -230,6 +256,7 @@ On initialization directories tree generated, like that:
 
 <a name="routing"></a>
 ### Routing
+/config/routes.js
 
     // Plural
     app.get("/:controller?", router);                           // Index
@@ -262,6 +289,12 @@ On initialization directories tree generated, like that:
 - [express-useragent](https://github.com/biggora/express-useragent) NodeJS user-agent middleware.
 - [express-mongodb](https://github.com/biggora/express-mongodb) MongoDB Session Storage for ExpressJS.
 - [csrf](http://www.senchalabs.org/connect/csrf.html) CSRF protection middleware.
+
+<a name="recommend"></a>
+### Recommend extensions
+
+- [CaminteJS](http://www.camintejs.com/) - Cross-db ORM for NodeJS
+- [2CO](https://github.com/biggora/2co) - is the module that will provide nodejs adapters for 2checkout API payment gateway.
 
 <a name="in-the-wild"></a>
 ## In the Wild
