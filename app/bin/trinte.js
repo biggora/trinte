@@ -131,20 +131,18 @@ function bootModels(trinte) {
         }
         if (!files) {
             trinte.emit('models_loaded');
-        }
-
-        var count = files.length;
-        if (count > 0) {
-            files.forEach(function(file) {
-                bootModel(trinte, schema, file);
-                if (--count === 0) {
-                    trinte.emit('models_loaded');
-                }
-            });
         } else {
-            trinte.emit('models_loaded');
+            var count = files.length;
+            if (count > 0) {
+               files.forEach(function(file) {
+                  bootModel(trinte, schema, file);
+                  if (--count === 0) {
+                      trinte.emit('models_loaded');
+                  }
+               });
+            }
         }
-    });
+   });
 }
 
 // simplistic model support
