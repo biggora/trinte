@@ -1,17 +1,16 @@
 <?
-	var modelVariable = modelName.toLowerCase();
-	var basePath = modelName.toLowerCase();
-	var basePathPlural = controllerName.toLowerCase();
+  var modelVariable = modelName.toLowerCase();
+  var basePath = modelName.toLowerCase();
+  var basePathPlural = controllerName.toLowerCase();
   var addIncl = namespace ? "../" : "" ;
   var addView = namespace ? namespace + "/" : "" ;
   var nsPath = namespace ? namespace + "_" : "" ;
 ?>
 <% layout('../default_layout') -%>
-<!-- show page -->
 <!-- page breadcrumb -->
 <ul class="breadcrumb">
     <li><a href="/">Home</a> <span class="divider">/</span></li>
-    <li class="active"><a href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>"><%- title %></a></li>
+    <li class="active"><a href="#"><%- title %></a></li>
 </ul>
 <%- partial('../messages') %>
 <!-- page title -->
@@ -20,5 +19,9 @@
 </div>
 
 <!-- page content here -->
-
+<div class="row">
+    <div class="span12">
+        <?= basePathPlural ?>#<?= controllerAction ?>
+    </div>
+</div>
 <!-- end default page -->

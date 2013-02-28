@@ -1,8 +1,8 @@
 var ejs = require('ejs'),
-fs = require('fs'),
-wrench = require('wrench'),
-path = require('path'),
-inflection = require('../lib/inflection');
+    fs = require('fs'),
+    wrench = require('wrench'),
+    path = require('path'),
+    inflection = require('../lib/inflection');
 
 /**
  * Script to create a default view, requires the model to exist
@@ -26,16 +26,16 @@ exports.execute = function (params, appPath, options) {
     var modelName = options.model.singularize();
     var namespace = options.namespace ? '/' + options.namespace : null;
 
-    if(namespace) {
-       nvwPath += namespace;
+    if (namespace) {
+        nvwPath += namespace;
 
-       if(!fs.existsSync(nvwPath)) {
-          wrench.mkdirSyncRecursive(nvwPath,755);
-       }
-       if(!fs.existsSync(nvwPath + "/default_layout.html")) {
-          wrench.copyDirSyncRecursive(options.bootstrapPath + '/app/app/views', nvwPath);
-          wrench.rmdirSyncRecursive(nvwPath + '/app');
-       }
+        if (!fs.existsSync(nvwPath)) {
+            wrench.mkdirSyncRecursive(nvwPath, 755);
+        }
+        if (!fs.existsSync(nvwPath + "/default_layout.html")) {
+            wrench.copyDirSyncRecursive(options.bootstrapPath + '/app/app/views', nvwPath);
+            wrench.rmdirSyncRecursive(nvwPath + '/app');
+        }
     }
 
     /**
@@ -57,8 +57,8 @@ exports.execute = function (params, appPath, options) {
     var viewFormTemplate = __dirname + '/templates/create-view.template.form.ejs';
     var viewNewTemplate = __dirname + '/templates/create-view.template.new.ejs';
 
-    if(!fs.existsSync(viewFolder)) {
-       wrench.mkdirSyncRecursive(viewFolder,755);
+    if (!fs.existsSync(viewFolder)) {
+        wrench.mkdirSyncRecursive(viewFolder, 755);
     }
 
     // Check if the model exists
@@ -74,7 +74,7 @@ exports.execute = function (params, appPath, options) {
     // Check if the view exists
     fileCheck = fs.existsSync(viewFolder);
     if (fileCheck) {
-        if(params[0] !== "force") {
+        if (params[0] !== "force") {
             console.log("The views folder already exists for this model!");
             console.log("Add an additional paramater of 'force' to over write the views.");
             console.log("e.g. script create-view " + modelName + " force");
@@ -96,32 +96,32 @@ exports.execute = function (params, appPath, options) {
         var wf = param.split(':');
         if (wf[0] !== 'force' && wf[0] !== modelName) {
             fields.push({
-                param_name : wf[0].capitalize(),
-                param_val  : wf[0]
+                param_name:wf[0].capitalize(),
+                param_val:wf[0]
             });
         }
     });
 
     if (!fields.length) {
         fields.push({
-            param_name : "Name",
-            param_val  : "name"
+            param_name:"Name",
+            param_val:"name"
         });
     }
 
     var locals = {
-        fields : fields,
-        modelName : modelName,
-        controllerName : controllerName,
-        namespace : options.namespace
-     };
+        fields:fields,
+        modelName:modelName,
+        controllerName:controllerName,
+        namespace:options.namespace
+    };
 
     // Render the views
-    var retIndex = ejs.render(tmpIndex, { locals: locals, open: "<?", close: "?>" });
-    var retEdit  = ejs.render(tmpEdit, { locals: locals, open: "<?", close: "?>" });
-    var retNew   = ejs.render(tmpNew, { locals: locals, open: "<?", close: "?>" });
-    var retShow  = ejs.render(tmpShow, { locals: locals, open: "<?", close: "?>" });
-    var retForm  = ejs.render(tmpForm, { locals: locals, open: "<?", close: "?>" });
+    var retIndex = ejs.render(tmpIndex, { locals:locals, open:"<?", close:"?>" });
+    var retEdit = ejs.render(tmpEdit, { locals:locals, open:"<?", close:"?>" });
+    var retNew = ejs.render(tmpNew, { locals:locals, open:"<?", close:"?>" });
+    var retShow = ejs.render(tmpShow, { locals:locals, open:"<?", close:"?>" });
+    var retForm = ejs.render(tmpForm, { locals:locals, open:"<?", close:"?>" });
 
     // Write the file
     fs.writeFileSync(viewFolder + "/index.ejs", retIndex, 'utf8');
@@ -130,28 +130,30 @@ exports.execute = function (params, appPath, options) {
     fs.writeFileSync(viewFolder + "/form.ejs", retForm, 'utf8');
     fs.writeFileSync(viewFolder + "/new.ejs", retNew, 'utf8');
 
-    if(options.anyside && options.namespace) {
+    if (options.anyside && options.namespace) {
 
-       // here check template name
+        // here check template name
 
-       // view filenames
-       var AnyviewIndexTemplate = __dirname + '/templates/create-view.template.client.index.ejs';
-       var AnyviewShowTemplate = __dirname + '/templates/create-view.template.client.show.ejs';
+        // view filenames
+        var AnyviewIndexTemplate = __dirname + '/templates/create-view.template.client.index.ejs';
+        var AnyviewShowTemplate = __dirname + '/templates/create-view.template.client.show.ejs';
 
-       // Read the template
-       var AnytmpIndex = fs.readFileSync(AnyviewIndexTemplate, 'utf8');
-       var AnytmpShow = fs.readFileSync(AnyviewShowTemplate, 'utf8');
+        // Read the template
+        var AnytmpIndex = fs.readFileSync(AnyviewIndexTemplate, 'utf8');
+        var AnytmpShow = fs.readFileSync(AnyviewShowTemplate, 'utf8');
 
-       // Render the views
-       var AnyretIndex = ejs.render(AnytmpIndex, { locals: locals, open: "<?", close: "?>" });
-       var AnyretShow  = ejs.render(AnytmpShow, { locals: locals, open: "<?", close: "?>" });
+        // Render the views
+        var AnyretIndex = ejs.render(AnytmpIndex, { locals:locals, open:"<?", close:"?>" });
+        var AnyretShow = ejs.render(AnytmpShow, { locals:locals, open:"<?", close:"?>" });
 
-       // Write the file
-       fs.writeFileSync(cvwPath + "/" + controllerName.toLowerCase() + "/index.ejs", AnyretIndex, 'utf8');
-       fs.writeFileSync(cvwPath + "/" + controllerName.toLowerCase() + "/show.ejs", AnyretShow, 'utf8');
+        // Write the file
+        fs.writeFileSync(cvwPath + "/" + controllerName.toLowerCase() + "/index.ejs", AnyretIndex, 'utf8');
+        fs.writeFileSync(cvwPath + "/" + controllerName.toLowerCase() + "/show.ejs", AnyretShow, 'utf8');
 
-       console.log('Views ' + modelName + ' created in app/views/' + modelName.toLowerCase());
+        console.log('Views ' + modelName + ' created in app/views/' + modelName.toLowerCase());
     }
-    if(!namespace) { namespace = ""; }
+    if (!namespace) {
+        namespace = "";
+    }
     console.log('Views ' + modelName + ' created in app/views' + namespace + '/' + modelName.toLowerCase());
 };

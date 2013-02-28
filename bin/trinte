@@ -16,6 +16,7 @@ var version = '0.0.4';
  * Explicit module dependencies
  */
 var fs = require('fs'),
+os = require('os'),
 wrench = require('wrench'),
 nodepath = require('path'),
 exec = require('child_process').exec,
@@ -39,6 +40,11 @@ var appLauncher = {
         params: []
     }
 };
+
+var ucmd = "echo $(whoami)";
+if(/win/gi.test(os.platform())) {
+    ucmd = "echo %username%";
+}
 
 for (var i in process.argv) {
     // Skip the first two - Node and app.js path
@@ -91,8 +97,11 @@ function runLauncher(appLauncher) {
         case 'init':
             appLauncher.appname = args.shift();
             if(typeof appLauncher.appname !== 'undefined') {
-                createApplication(path,appLauncher.appname);
-                console.log('   \x1b[1mCreate Application ' + appLauncher.appname + ': \x1b[0m ' + path + '/' + appLauncher.appname);
+                exec(ucmd, function (error, stdout, stderr) {
+                    appLauncher.author = stdout;
+                    createApplication(path,appLauncher.appname,appLauncher.author);
+                    console.log('   \x1b[1mCreate Application ' + appLauncher.appname + ': \x1b[0m ' + path + '/' + appLauncher.appname);
+                });
             } else {
                 console.log('   \033[31mApplication Name not specified - you must run:\x1b[0m trinte create-app AppName\r\n');
                 return;
@@ -260,9 +269,11 @@ function runCluster(port) {
  * @param {String} path
  * @param {String} appname
  */
-function createApplicationAt(path, appname) {
+function createApplicationAt(path, appname, author) {
     var appdir = path + '/' + appname;
-
+    if(author != "") {
+         author = author.replace(/^\s+|\s+$/g, '');
+    }
     wrench.mkdirSyncRecursive(appdir + '/app/models',755);
     wrench.mkdirSyncRecursive(appdir + '/app/controllers',755);
     wrench.mkdirSyncRecursive(appdir + '/app/views',755);
@@ -284,22 +295,23 @@ function createApplicationAt(path, appname) {
     write(appdir + '/app/views/default_layout.ejs', layout.toString().replace(/APPNAME/gi, appname));
 
     var jpackage = fs.readFileSync(bootstrapPath + '/app.json', 'utf-8');
-    write(appdir + '/package.json', jpackage.toString().replace(/APPNAME/gi,appname));
+    jpackage = jpackage.toString().replace(/APPNAME/gi, appname).replace(/DEVELOPER/gi, author);
+    write(appdir + '/package.json', jpackage);
 
     write(appdir + '/.trinte-status', 'Created @ ' + new Date());
     console.log('   \x1b[1mApplication created! \x1b[0m ');
     console.log('   \x1b[1mNext step install dependencies: \r\n   cd ' + appdir + ' && npm -l install\x1b[0m ');
 }
 
-function createApplication(path,appname) {
+function createApplication(path, appname, author) {
     emptyDirectory(path + '/' + appname, function (empty) {
         if (empty) {
-            createApplicationAt(path,appname);
+            createApplicationAt(path, appname, author);
         } else {
             confirm('\r\n   This will over-write the existing application, \x1b[1mcontinue (y/n)? \x1b[0m', function (ok) {
                 if (ok) {
                     process.stdin.destroy();
-                    createApplicationAt(path,appname);
+                    createApplicationAt(path, appname, author);
                 } else {
                     abort('Aborting');
                 }

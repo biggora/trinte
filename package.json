@@ -1,8 +1,8 @@
 {
-    "name": "trinte",
-    "description": "TrinteJS - MVC framework for NodeJS",
-    "version": "0.0.8-1",
-    "keywords": [
+  "name": "trinte",
+  "description": "TrinteJS - MVC framework for NodeJS",
+  "version": "0.0.8-2",
+  "keywords": [
     "app",
     "mvc",
     "web-framework",
@@ -17,39 +17,55 @@
     "mysql",
     "postgres",
     "sqlite3"
-    ],
-    "homepage": "https://github.com/biggora/trinte",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/biggora/trinte.git"
-    },
-    "main": "trinte",
-    "author": "Aleksej Gordejev <aleksej@gordejev.lv> (https://github.com/biggora/)",
-    "engines": {
-        "node": ">=0.8",
-        "npm": ">=1.0"
-    },
-    "dependencies": {
-        "should": ">=1.2.0",
-        "wrench": ">=1.4.4",
-        "express": ">=3.0.0",
-        "ejs": ">=0.8.0",
-        "caminte": ">=0.0.2"
-    },
-    "devDependencies": {
-        "express": ">=3.0.0",
-        "connect": ">=2.0.0",
-        "ejs": ">=0.8.0",
-        "caminte": ">=0.0.2",
-        "methods": ">=0.0.1"
-    },
-    "optionalDependencies": {
-        "ejs-locals": ">=1.0.2",
-        "express-useragent": ">=0.0.7"
-    },
-    "bin": {
-        "trinte": "./bin/trinte",
-        "trintejs": "./bin/trinte"
-    },
-    "license": "MIT"
+  ],
+  "homepage": "https://github.com/biggora/trinte",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/biggora/trinte.git"
+  },
+  "main": "trinte",
+  "author": {
+    "name": "Aleksej Gordejev",
+    "email": "aleksej@gordejev.lv",
+    "url": "https://github.com/biggora/"
+  },
+  "engines": {
+    "node": ">=0.8",
+    "npm": ">=1.0"
+  },
+  "dependencies": {
+    "should": ">=1.2.0",
+    "wrench": ">=1.4.4",
+    "express": ">=3.0.0",
+    "ejs": ">=0.8.0",
+    "caminte": ">=0.0.2",
+    "ejs-locals": ">=1.0.2",
+    "express-useragent": ">=0.0.7"
+  },
+  "devDependencies": {
+    "express": ">=3.0.0",
+    "connect": ">=2.0.0",
+    "ejs": ">=0.8.0",
+    "caminte": ">=0.0.2",
+    "methods": ">=0.0.1"
+  },
+  "optionalDependencies": {
+    "ejs-locals": ">=1.0.2",
+    "express-useragent": ">=0.0.7"
+  },
+  "bin": {
+    "trinte": "./bin/trinte",
+    "trintejs": "./bin/trinte"
+  },
+  "license": "MIT",
+  "_npmUser": {
+    "name": "biggora",
+    "email": "aleksej@gordejev.lv"
+  },
+  "_id": "trinte@0.0.8-1",
+  "_engineSupported": true,
+  "_npmVersion": "1.1.12",
+  "_nodeVersion": "v0.8.8",
+  "_defaultsLoaded": true,
+  "_from": "trinte@latest"
 }

@@ -2,7 +2,7 @@
     "name": "APPNAME",
     "description": "Web-based Application",
     "version": "0.0.1",
-    "author": "",
+    "author": "DEVELOPER",
     "private": true,
     "dependencies": {
         "ejs-locals"          : ">=1.0.2",
