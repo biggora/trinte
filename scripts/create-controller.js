@@ -105,7 +105,7 @@ exports.execute = function (params, appPath, options) {
     action += "    **/\n";
     action += "    'CACTION': function(req, res, next) {\n";
     action += "           var title = 'CONTROLLER';\n";
-    action += "           res.render(ViewTemplatePath + '/' + CACTION);\n";
+    action += "           res.render(ViewTemplatePath + '/CACTION', { title : title });\n";
     action += "    }";
 
     // Write the files
