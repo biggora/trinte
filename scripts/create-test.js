@@ -15,7 +15,7 @@ exports.execute = function(params,appPath,options) {
     var scrPath = appPath + '/app';
     var modPath = scrPath + '/models';
 
-    if(params.length === 0 ) {
+    if(!options.model) {
         console.log("You must specifiy a model name to generate the tests against!");
         return;
     }

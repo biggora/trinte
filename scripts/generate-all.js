@@ -7,7 +7,7 @@
  */
 exports.execute = function(params, appPath, options) {
 
-    if(params.length === 0 ) {
+    if(!options.model) {
         console.log("You must specifiy a model name to generate all of the assets for!");
         return;
     }

@@ -1,4 +1,7 @@
 var inflection = require('../tools/inflection');
+var fs = require('fs');
+var path = require('path');
+var fileExists = fs.existsSync || path.exists;
 
 exports.Resource = Resource;
 
@@ -32,11 +35,22 @@ function Resource(app) {
  * @return {Function} responseHandler
  */
 function TrinteBridge(namespace, controller, action) {
+    var responseHandler;
     try {
         controller = controller.pluralize().capitalize();
-        var ctlFile = './../app/controllers/' + namespace + controller + 'Controller';
-        var responseHandler =  require(ctlFile)[action];
+        var ctlFileA = './../app/controllers/' + namespace + controller + 'Controller';
+        var ctlFileB = './../app/controllers/' + namespace + controller + 'esController';
+        var ctlFileC = './../app/controllers/' + namespace + controller + 'sesController';
+
+        if(fileExists(path.resolve(__dirname, ctlFileA) + '.js')) {
+            responseHandler =  require(ctlFileA)[action];
+        } else if(fileExists(path.resolve(__dirname, ctlFileB) + '.js')) {
+            responseHandler =  require(ctlFileB)[action];
+        } else {
+            responseHandler =  require(ctlFileC)[action];
+        }
     } catch(e) {
+        console.log('Route Action: ' + action);
         console.log(e);
     }
 
@@ -104,7 +118,10 @@ Resource.prototype.urlHelperName = function (path, action) {
                 break;
             default:
         }
-        helperName = helperName.filter(function(el,i,a){if(i===a.indexOf(el))return 1;return 0;});
+        helperName = helperName.filter(function(el,i,a){
+            if(i===a.indexOf(el))return 1;
+            return 0;
+        });
         helperName.push(token);
     });
     return helperName.join('_');
@@ -479,7 +496,7 @@ Resource.prototype.resources = function (name, params, actions) {
 
 /*
  * Make Resource.
- * 
+ *
  * @param {String} name
  * @param {Object} params
  * @param {Function} actions

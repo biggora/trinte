@@ -18,7 +18,7 @@ exports.execute = function (params, appPath, options) {
     var cntPath = scrPath + '/controllers';
     var nvwPath = scrPath + '/views';
 
-    if (params.length === 0) {
+    if (!options.model) {
         console.log("You must specifiy a model name to generate the controller against!");
         return;
     }

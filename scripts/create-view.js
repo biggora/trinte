@@ -57,10 +57,6 @@ exports.execute = function (params, appPath, options) {
     var viewFormTemplate = __dirname + '/templates/create-view.template.form.ejs';
     var viewNewTemplate = __dirname + '/templates/create-view.template.new.ejs';
 
-    if (!fs.existsSync(viewFolder)) {
-        wrench.mkdirSyncRecursive(viewFolder, 755);
-    }
-
     // Check if the model exists
     fileCheck = fs.existsSync(modelFile);
     if (!fileCheck) {
@@ -81,7 +77,7 @@ exports.execute = function (params, appPath, options) {
             return;
         }
     } else {
-        fs.mkdirSync(viewFolder, '755');
+        wrench.mkdirSyncRecursive(viewFolder, 755);
     }
 
     // Read the template

@@ -69,7 +69,10 @@ exports.init = function init(app, root) {
 
     trinte.on('models_loaded', function() {
         require('../app/helpers/ModelsHelper');
-        require('../app/helpers/ApplicationHelper');
+        var ApplicationHelper = require('../app/helpers/ApplicationHelper');
+        app.locals(ApplicationHelper);
+        var ViewsHelper = require('../app/helpers/ViewsHelper');
+        app.locals(ViewsHelper);
         trinte.emit('helpers_loaded');
     });
 
@@ -80,7 +83,6 @@ exports.init = function init(app, root) {
 
     trinte.on('routes_loaded', function() {
         global.pathTo = map.pathTo;
-        // console.log(map.pathTo);
     });
 
     // everything else can be done after starting server

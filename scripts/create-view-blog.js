@@ -7,9 +7,9 @@ var ejs = require('ejs')
 /**
  * Script to create a default view, requires the model to exist
  */
-exports.execute = function (params, appPath) {
+exports.execute = function (params, appPath, options) {
 
-    if (params.length == 0) {
+    if (!options.model) {
         console.log("You must specifiy a model name to generate the views against!");
         return;
     }
