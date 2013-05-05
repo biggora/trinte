@@ -10,9 +10,8 @@
         <link type="text/css" href="/css/bootstrap.min.css" rel="stylesheet"/>
         <link type="text/css" href="/css/style.css" rel="stylesheet"/>
         <link type="text/css" href="/css/bootstrap-responsive.min.css" rel="stylesheet"/>
-        <script type="text/javascript" charset="utf-8" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="/js/jquery.min.js"></script>
         <script type="text/javascript" charset="utf-8" src="/js/bootstrap.min.js"></script>
-        <script type="text/javascript" charset="utf-8" src="/js/rails.min.js"></script>
         <meta name="csrf-param" content="_csrf">
         <meta name="csrf-token" content="<%= session._csrf %>">
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -35,11 +34,11 @@
                                 <ul class="nav">
                                     <li><a href="/">Home</a></li>
                                     <li><a href="https://github.com/biggora/trinte#usage" target="_blank">Usage overview</a></li>
-                                <% if (controllers.length) { %>
+                                    <% if (controllers.length) { %>
                                     <% controllers.forEach(function(controller){ %>
                                     <li><a href="/<%= controller %>"><%= controller %></a></li>
                                     <% }) %>
-                                <% } %>
+                                    <% } %>
                                 </ul>
                                 <p class="navbar-text pull-right">
                                     Logged in as <a href="#" class="navbar-link">Username</a>
@@ -59,6 +58,37 @@
                     Based on Powerful MVC framework <a href="http://www.trintejs.com/" target="_new">TrinteJS</a> & Cross-db ORM <a href="http://www.camintejs.com/" target="_new">CaminteJS</a>
                 </p>
             </footer>
+            <!-- end index page -->
+            <!-- confirm modal dialog -->
+            <div id="dialog-confirm" class="modal hide fade" title=""  tabindex="-1" role="dialog" aria-labelledby="dialog-confirm-header" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="dialog-confirm-header"></h3>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+                    <button class="btn btn-danger btn-confirm-ok">Delete</button>
+                </div>
+            </div>
+            <!-- modal templates -->
+            <div id="modal-templates" style="visibility: hidden;">
+                <div class="modal-delete">
+                    <div class="header-text">Delete %s?</div>
+                    <div class="body-text">
+                        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;">
+                            <img src="/img/glyphicons/glyphicons_196_circle_exclamation_mark.png"/>
+                        </span>Delete %s id %d!<br> This will be permanently deleted and cannot be recovered. Are you sure?
+                    </div>
+                    <div class="btn-text">Delete %s</div>
+                </div>
+                <div class="modal-save">
+                    <div class="header-text">Save %s?</div>
+                    <div class="body-text"></div>
+                    <div class="btn-text">Save Changes</div>
+                </div>
+            </div>
         </div>
+        <script type="text/javascript" charset="utf-8" src="/js/app.js"></script>
     </body>
 </html>

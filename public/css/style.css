@@ -9,10 +9,14 @@
     padding: 8px 10px 8px;
     margin-left: -20px;
 }
-
+input.ajax-loading {
+    background-image: url('/img/ajax-small.gif');
+    background-repeat: no-repeat;
+    background-position: center right;
+}
 /* Sorting columns */
 a.sorter {
-    background-image: url(/img/bg.gif);
+    background-image: url('/img/bg.gif');
     background-repeat: no-repeat;
     background-position: center left;
     color: #333;
@@ -21,8 +25,8 @@ a.sorter {
 }
 
 a.sorter.headerSortUp {
-    background-image: url(/img/asc.gif);
+    background-image: url('/img/asc.gif');
 }
 a.sorter.headerSortDown {
-    background-image: url(/img/desc.gif);
+    background-image: url('/img/desc.gif');
 }

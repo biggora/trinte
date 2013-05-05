@@ -34,14 +34,7 @@
 
 <div class="well">
     <a class="btn" href="<%- pathTo.edit_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>"><i class="icon-edit"></i> Edit</a>
-    <a class="btn btn-danger" href="<%- pathTo.destroy_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>" data-remote="true" data-method="delete" data-jsonp="(function (u) {location.href = u;})"><i class="icon-remove icon-white"></i> Delete</a>
+    <a class="btn btn-danger" href="<%- pathTo.destroy_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>" data-confirm="true" data-remote="true" data-method="delete" data-jsonp="(function (u) {location.href = u;})"><i class="icon-remove icon-white"></i> Delete</a>
     <a class="btn" href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>" title="List <?= controllerName ?>"><i class="icon-tasks"></i> List <?= controllerName ?></a>
-</div>
-
-<!-- confirm modal dialog -->
-<div id="dialog-confirm" style="display: none;" title="Delete <?= modelVariable ?>?">
-    <p>
-        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This will be permanently deleted and cannot be recovered. Are you sure?
-    </p>
 </div>
 <!-- end show page -->

@@ -36,14 +36,17 @@ module.exports = {
      **/
     'index': function(req, res, next) {
         var title = "<?= controllerName ?>";
+        var format = req.params.format || '';
         var sort = req.query.sort;
+        var search = req.query.search;
         var from = req.params.from ? parseInt(req.params.from) - 1 : 0;
         var to = req.params.to ? parseInt(req.params.to) : 20;
         var total = 0;
-        var where = {
+        var opts = {
             skip : from,
             limit : to,
-            order : 'id DESC'
+            order : 'id DESC',
+            where : {}
         };
 
         if(sort && sort !== '') {
@@ -52,18 +55,26 @@ module.exports = {
                 direction = 'DESC';
                 sort = sort.substr(1,sort.length);
             }
-            where.order = sort + " " + direction;
+            opts.order = sort + " " + direction;
         }
-
-        <?= modelName ?>.count({}, function (err, count) {
+        <? fields.forEach(function(field){ ?>
+        <? if(field.param_val == 'name' || field.param_val == 'title'){ ?>
+        if(search && search != "") {
+            search = search.toString().replace(/^\s|\s$/,"");
+            opts.where.<?= field.param_val ?> = {
+                    regex : search
+            };
+        }
+        <? }}) ?>
+        <?= modelName ?>.count(opts.where, function (err, count) {
         total = count;
         var pagerHtml = pager.render(from, to, total, pathTo.<?= nsPath ?><?= basePathPlural ?>());
 
-        <?= modelName ?>.all(where, function (err, <?= basePathPlural ?>) {
+        <?= modelName ?>.all(opts, function (err, <?= basePathPlural ?>) {
 
                 if(err) return next(err);
 
-                switch (req.params.format) {
+                switch (format.toString()) {
                     case 'json':
                         res.send(<?= basePathPlural ?>.map(function(u) {
                             return u.toObject();
@@ -87,11 +98,12 @@ module.exports = {
      **/
     'show': function(req, res, next) {
             var title = "Show <?= modelName ?>";
+            var format = req.params.format || '';
             <?= modelName ?>.find(req.params.id, function(err, <?= modelVariable ?>) {
 
             if(err) return next(err);
 
-            switch (req.params.format) {
+            switch (format.toString()) {
                 case 'json':
                     res.send(<?= modelVariable ?>.toObject());
                     break;
@@ -141,6 +153,7 @@ module.exports = {
      * @param {Function} next
      **/
     'update': function(req, res, next) {
+        var format = req.params.format || '';
         <?= modelName ?>.find(req.params.id, function(err, <?= modelVariable ?>) {
             <?= modelVariable ?>.updateAttributes(req.body.<?= modelVariable ?>, function(err) {
 
@@ -151,7 +164,7 @@ module.exports = {
                     return;
                 }
 
-                switch (req.params.format) {
+                switch (format.toString()) {
                     case 'json':
                         res.send(<?= modelVariable ?>.toObject());
                         break;
@@ -172,7 +185,7 @@ module.exports = {
      * @param {Function} next
      **/
     'create': function(req, res, next){
-
+        var format = req.params.format || '';
         var <?= modelVariable ?> = new <?= modelName ?>(req.body.<?= modelVariable ?>);
 
             <?= modelVariable ?>.save(function(err) {
@@ -183,7 +196,7 @@ module.exports = {
                 return;
             }
 
-            switch (req.params.format) {
+            switch (format.toString()) {
                 case 'json':
                     res.send(<?= modelVariable ?>.toObject());
                     break;

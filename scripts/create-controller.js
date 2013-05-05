@@ -1,9 +1,9 @@
 var ejs = require('ejs'),
-    fs = require('fs'),
-    wrench = require('wrench'),
-    path = require('path'),
-    inflection = require('../lib/inflection'),
-    helper = require('./helper');
+fs = require('fs'),
+wrench = require('wrench'),
+path = require('path'),
+inflection = require('../lib/inflection'),
+helper = require('./helper');
 
 /**
  * Script to create a default controller, requires the model to exist
@@ -125,6 +125,7 @@ exports.execute = function (params, appPath, options) {
                 var cf = action.replace(/CACTION/gi, wf[0]);
                 cf = cf.replace(/CONTROLLER/gi, controllerName);
                 actions.push(cf);
+
                 // Render the view
                 var vret = ejs.render(tmpEmptyView, {
                     locals:{
@@ -146,7 +147,23 @@ exports.execute = function (params, appPath, options) {
             }
         });
     }
+    var fields = [];
+    params.forEach(function (param) {
+        var wg = param.split(':');
+        if (wg[0] !== 'force' && wg[0] !== modelName) {
+            fields.push({
+                param_name:wg[0].capitalize(),
+                param_val:wg[0]
+            });
+        }
+    });
 
+    if (!fields.length) {
+        fields.push({
+            param_name:"Name",
+            param_val:"name"
+        });
+    }
     // Read the template
     var str = fs.readFileSync(controllerTemplate, 'utf8');
 
@@ -161,7 +178,8 @@ exports.execute = function (params, appPath, options) {
             controllerName:controllerName,
             modelName:modelName,
             namespace:options.namespace,
-            controllerActions:actions.join(",\n")
+            controllerActions:actions.join(",\n"),
+            fields:fields
         },
         open:"<?",
         close:"?>"

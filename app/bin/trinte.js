@@ -70,7 +70,9 @@ exports.init = function init(app, root) {
     trinte.on('models_loaded', function() {
         require('../app/helpers/ModelsHelper');
         var ApplicationHelper = require('../app/helpers/ApplicationHelper');
-        app.locals(ApplicationHelper);
+        for(var key in ApplicationHelper) {
+            global[key] = ApplicationHelper[key];
+        }
         var ViewsHelper = require('../app/helpers/ViewsHelper');
         app.locals(ViewsHelper);
         trinte.emit('helpers_loaded');

@@ -4,6 +4,22 @@ var basePath = modelName.toLowerCase();
 var basePathPlural = controllerName.toLowerCase();
 var addIncl = namespace ? "../" : "" ;
 var nsPath = namespace ? namespace + "_" : "" ;
+var ths = [];
+var tds = [];
+var fld = 2;
+var dfield = 'id';
+
+fields.forEach(function(field){
+if(field.param_val == 'active'){
+fld = fld + 1;
+ths.push('<th class="span1">' + field.param_name + '</th>');
+tds.push('<td><%- formVal(' + modelVariable + '.' + field.param_val + ') %></td>');
+}
+if(field.param_val == 'name' || field.param_val == 'title'){
+fld = fld + 1; dfield = field.param_val;
+ths.push("<th><%- sortFor('" + field.param_val + "','" + field.param_name + "', 'Sorting column') %></th>");
+tds.push('<td><a href="<%- pathTo.show_' + nsPath + modelVariable + '(' + modelVariable + '.id) %>"><%- formVal(' + modelVariable + '.' + field.param_val + ') %></a></td>');
+}})
 ?>
 <% layout('../default_layout') -%>
 <!-- index page -->
@@ -19,51 +35,53 @@ var nsPath = namespace ? namespace + "_" : "" ;
 </div>
 
 <!-- page submenu -->
-<div class="row">
-    <div class="span12">
-        <p>
-            <a href="<%- pathTo.new_<?= nsPath ?><?= modelVariable ?>() %>" class="btn btn-primary">
-                <i class="icon-plus icon-white"></i> New <?= modelName ?>
-            </a>
-        </p>
+<div class="row-fluid">
+    <div class="span6">
+        <a href="<%- pathTo.new_<?= nsPath ?><?= modelVariable ?>() %>" class="btn btn-primary">
+            <i class="icon-plus icon-white"></i> New <?= modelName ?>
+        </a>
     </div>
+    <div class="span6">
+        <form class="admin-searchbox pull-right">
+            <input data-provide="typeahead" data-field="<?= dfield ?>" data-url="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>" data-singular="<?= modelVariable ?>" class="input-large" type="text" placeholder="Search <?= basePathPlural ?>" />
+        </form>
+    </div>
+    <span class="clearfix"></span>
 </div>
-<!-- items list -->
-<% if (<?= basePathPlural ?>.length > 0) { %>
-<table class="table table-striped table-hover">
-    <tr>
-        <th><%- sortFor('_id' /* field name */,'ID' /* column title */, "Sorting column" /* tooltip message */) %></th>
-        <th class="span3" style="text-align:center">Action</th>
-    </tr>
-    <% <?= basePathPlural ?>.forEach(function(<?= modelVariable ?>){ %>
-    <!--item id <%= <?= modelVariable ?>.id %> -->
-    <tr>
-        <td><a href="<%- pathTo.show_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>"><%- formVal(<?= modelVariable ?>.id) %></a>
-        </td>
-        <td style="text-align:right">
-            <a class="btn btn-mini" href="<%- pathTo.show_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>"><i class="icon-list-alt"></i> Detail</a>
-            <a class="btn btn-mini" href="<%- pathTo.edit_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>"><i class="icon-edit"></i> Edit</a>
-            <a class="btn btn-mini btn-danger" href="<%- pathTo.destroy_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>" data-remote="true" data-method="delete" data-jsonp="(function (u) {location.href = u;})"><i class="icon-remove icon-white"></i> Delete</a>
-        </td>
-    </tr>
-    <% }) %>
-    <tfoot>
-    <tr>
-        <td colspan='2'><%- pagerHtml %></td>
-    </tr>
-    </tfoot>
-</table>
-<% } else { %>
-<!--no items list-->
-<p class="alert alert-block alert-info">
-    <strong>No <?= basePathPlural ?> were found.</strong>
-</p>
-<% } %>
 
-<!-- confirm modal dialog -->
-<div id="dialog-confirm" style="display: none;" title="Delete <?= modelVariable ?>?">
-    <p>
-        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This will be permanently deleted and cannot be recovered. Are you sure?
+<!-- items list -->
+<div class="row-fluid">
+    <% if (<?= basePathPlural ?>.length > 0) { %>
+    <table class="table table-striped table-hover">
+        <tr>
+            <th class="span1"><%- sortFor('_id' /* field name */,'ID' /* column title */, "Sorting column" /* tooltip message */) %></th>
+            <?- ths.join("\n            ") ?>
+            <th class="span3" style="text-align:center">Action</th>
+        </tr>
+        <% <?= basePathPlural ?>.forEach(function(<?= modelVariable ?>){ %>
+        <!--item id <%= <?= modelVariable ?>.id %> -->
+        <tr>
+            <td>
+                <a href="<%- pathTo.show_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>"><%- formVal(<?= modelVariable ?>.id) %></a>
+            </td>
+            <?- tds.join("\n            ") ?>
+            <td style="text-align:right">
+                <a class="btn btn-mini" href="<%- pathTo.show_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>"><i class="icon-list-alt"></i> Detail</a>
+                <a class="btn btn-mini" href="<%- pathTo.edit_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>"><i class="icon-edit"></i> Edit</a>
+                <a class="btn btn-mini btn-danger" href="<%- pathTo.destroy_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>" data-confirm="true" data-remote="true" data-method="delete" data-jsonp="(function (u) {location.href = u;})"><i class="icon-remove icon-white"></i> Delete</a>
+            </td>
+        </tr>
+        <% }) %>
+        <tfoot>
+            <tr>
+                <td colspan='<?= fld ?>'><%- pagerHtml %></td>
+            </tr>
+        </tfoot>
+    </table>
+    <% } else { %>
+    <!--no items list-->
+    <p class="alert alert-block alert-info">
+        <strong>No <?= basePathPlural ?> were found.</strong>
     </p>
+    <% } %>
 </div>
-<!-- end index page -->
