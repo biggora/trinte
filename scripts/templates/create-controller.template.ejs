@@ -99,7 +99,7 @@ module.exports = {
     'show': function(req, res, next) {
             var title = "Show <?= modelName ?>";
             var format = req.params.format || '';
-            <?= modelName ?>.find(req.params.id, function(err, <?= modelVariable ?>) {
+            <?= modelName ?>.findById(req.params.id, function(err, <?= modelVariable ?>) {
 
             if(err) return next(err);
 
@@ -138,7 +138,7 @@ module.exports = {
      **/
     'edit': function(req, res, next) {
             var title = "Edit <?= modelName ?>";
-            <?= modelName ?>.find(req.params.id, function(err, <?= modelVariable ?>) {
+            <?= modelName ?>.findById(req.params.id, function(err, <?= modelVariable ?>) {
             if(err) return next(err);
             res.render(ViewTemplatePath + "/edit",{<?= modelVariable ?>:<?= modelVariable ?>,title:title});
         });
@@ -154,7 +154,7 @@ module.exports = {
      **/
     'update': function(req, res, next) {
         var format = req.params.format || '';
-        <?= modelName ?>.find(req.params.id, function(err, <?= modelVariable ?>) {
+        <?= modelName ?>.findById(req.params.id, function(err, <?= modelVariable ?>) {
             <?= modelVariable ?>.updateAttributes(req.body.<?= modelVariable ?>, function(err) {
 
                 if (err) {
@@ -217,7 +217,7 @@ module.exports = {
      **/
     'destroy': function(req, res, next){
 
-            <?= modelName ?>.find(req.params.id, function(err, <?= modelVariable ?>) {
+            <?= modelName ?>.findById(req.params.id, function(err, <?= modelVariable ?>) {
 
             if (!<?= modelVariable ?>) {
                 req.flash('error','Unable to locate the <?= modelVariable ?> to delete!');
