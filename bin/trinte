@@ -274,11 +274,6 @@ function createApplicationAt(path, appname, author) {
     if(author != "") {
          author = author.replace(/^\s+|\s+$/g, '');
     }
-    wrench.mkdirSyncRecursive(appdir + '/app/models',755);
-    wrench.mkdirSyncRecursive(appdir + '/app/controllers',755);
-    wrench.mkdirSyncRecursive(appdir + '/app/views',755);
-    wrench.mkdirSyncRecursive(appdir + '/app/helpers',755);
-    wrench.mkdirSyncRecursive(appdir + '/app/lib',755);
 
     wrench.copyDirSyncRecursive(bootstrapPath + '/app', appdir);
     console.log('   \x1b[36mCopied\x1b[0m : ' + bootstrapPath + '/app to ' + appdir + '/');
