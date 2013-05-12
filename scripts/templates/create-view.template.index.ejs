@@ -43,7 +43,7 @@ tds.push('<td><a href="<%- pathTo.show_' + nsPath + modelVariable + '(' + modelV
     </div>
     <div class="span6">
         <form class="admin-searchbox pull-right">
-            <input data-provide="typeahead" data-field="<?= dfield ?>" data-url="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>" data-singular="<?= modelVariable ?>" class="input-large" type="text" placeholder="Search <?= basePathPlural ?>" />
+            <input data-provide="typeahead" data-field="<?= dfield ?>" data-url="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>" data-singular="<?= modelVariable ?>" class="input-large" type="text" placeholder="Search <?= basePathPlural ?> by <?= dfield ?>" />
         </form>
     </div>
     <span class="clearfix"></span>

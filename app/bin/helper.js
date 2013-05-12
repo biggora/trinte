@@ -5,7 +5,7 @@
 exports.init = function() {
     return function(req, res, next) {
         var session = req.session;
-        res.locals = {
+        res.locals({
             controllers: [],
             session: session,
             request: req,
@@ -34,8 +34,7 @@ exports.init = function() {
                 dt = tooltip ? 'rel="tooltip" data-title="' + tooltip + '"' : "";
                 return '<a ' + dt + ' class="sorter ' + icon + '" data-field="' + field + '" data-direction="' + dd + '" href="?' + uri.join('&') + '">' + title + '</a>';
             }
-        };
-
+        });
         next();
     };
 };

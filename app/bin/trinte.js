@@ -8,6 +8,8 @@ var params = require('./params');
 var envConf = require('../config/environment');
 var config = require('../config/configuration');
 var database = require('../config/database');
+var middleware = require('../config/middleware');
+var sessions = require('../config/session');
 var Resource = require('./router').Resource;
 var util = require('util');
 var utils = require('./utils');
@@ -25,11 +27,9 @@ function TrinteJS(app, root) {
     this.app = app;
     this.root = app.root = root;
     this.utils = utils;
-
     this.helpers = {};
     this.models = {};
-    // this.controllerExtensions = {};
-    // this.middleware = middleware;
+    this.middleware = [];
 
     this.server = http.createServer(app);
 
@@ -112,14 +112,10 @@ exports.createServer = function(options) {
     }
     var root = options.root || process.cwd();
     delete options.root;
-
     var app = express(options);
-
     exports.init(app, root);
-
     app.express2 = !!express.version.match(/^2/);
     app.express3 = !!express.version.match(/^3/);
-
     return app;
 };
 
@@ -177,12 +173,12 @@ function configureApp(trinte) {
         }));
         app.use(express.methodOverride());
         app.use(express.cookieParser(config.session.secret));
-        require('../config/session')(app, express);
+        sessions(app, express);
 
         // Before router to enable dynamic routing
         app.use(express['static'](root + '/public'));
         app.use(function(req, res, next) {
-            res.setHeader('X-Powered-By', 'TrinteJS');
+            res.setHeader('X-Powered-By', 'TrinteJS MVC');
             next();
         });
         // Setup ejs views as default, with .ejs as the extension
@@ -193,12 +189,10 @@ function configureApp(trinte) {
         app.set('view options', {
             complexNames: true
         });
-
-        require('../config/middleware')(app, express);
         app.use(flash());
         app.use(express.csrf());
         app.use(helper.init());
-
+        middleware(app, express);
         app.use(app.router);
 
         // Example 500 page
