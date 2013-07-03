@@ -1,5 +1,5 @@
 {
-  "name": "trinte",
+  "name" : "trinte",
   "description": "TrinteJS - MVC framework for NodeJS",
   "version": "0.0.11",
   "keywords": [
