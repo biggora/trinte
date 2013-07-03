@@ -114,8 +114,13 @@ exports.createServer = function(options) {
     delete options.root;
     var app = express(options);
     exports.init(app, root);
-    app.express2 = !!express.version.match(/^2/);
-    app.express3 = !!express.version.match(/^3/);
+    if (typeof express.version === "undefined") {
+        app.express2 = false;
+        app.express3 = true;
+    } else {
+        app.express2 = !!express.version.match(/^2/);
+        app.express3 = !!express.version.match(/^3/);
+    }
     return app;
 };
 
@@ -212,7 +217,7 @@ function configureApp(trinte) {
                 });
             } else {
                 res.render('errors/500', {
-                    error: err,
+                    error   : err,
                     request : req,
                     session : req.session
                 });

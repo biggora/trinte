@@ -30,11 +30,22 @@ exports.execute = function (params, appPath, options) {
         nvwPath += namespace;
 
         if (!fs.existsSync(nvwPath)) {
-            wrench.mkdirSyncRecursive(nvwPath, 755);
+            wrench.mkdirSyncRecursive(nvwPath);
         }
-        if (!fs.existsSync(nvwPath + "/default_layout.html")) {
-            wrench.copyDirSyncRecursive(options.bootstrapPath + '/app/app/views', nvwPath);
-            wrench.rmdirSyncRecursive(nvwPath + '/app');
+        if (!fs.existsSync(nvwPath + "/default_layout.ejs")) {
+            var coreView = options.bootstrapPath + '/app/app/views';
+
+            fs.createReadStream(coreView + '/default_layout.ejs').pipe(fs.createWriteStream(nvwPath + '/default_layout.ejs'));
+            fs.createReadStream(coreView + '/errors_layout.ejs').pipe(fs.createWriteStream(nvwPath + '/errors_layout.ejs'));
+            fs.createReadStream(coreView + '/messages.ejs').pipe(fs.createWriteStream(nvwPath + '/messages.ejs'));
+            fs.createReadStream(coreView + '/login.ejs').pipe(fs.createWriteStream(nvwPath + '/login.ejs'));
+            wrench.copyDirSyncRecursive(coreView + '/errors', nvwPath + '/errors');
+
+            try {
+                wrench.rmdirSyncRecursive(nvwPath + '/app');
+            } catch(err) {
+
+            }
         }
     }
 

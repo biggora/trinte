@@ -10,3 +10,15 @@
     <%- flash %>
 </div>
 <% }; %>
+<% flash = request.flash('warning').pop(); if (flash) { %>
+<div class="alert alert-warning">
+    <a class="close" data-dismiss="alert">×</a>
+    <%- flash %>
+</div>
+<% }; %>
+<% flash = request.flash('success').pop(); if (flash) { %>
+<div class="alert alert-success">
+    <a class="close" data-dismiss="alert">×</a>
+    <%- flash %>
+</div>
+<% }; %>

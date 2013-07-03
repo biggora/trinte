@@ -18,7 +18,6 @@ function Resource(app) {
     this.bridge = TrinteBridge;
     this.paths = [];
     this.ns = '';
-    // wtf???
     this.globPath = '/';
     this.pathTo = {};
     this.dump = [];
@@ -34,9 +33,16 @@ function Resource(app) {
  * @param {String} action
  * @return {Function} responseHandler
  */
+
 function TrinteBridge(namespace, controller, action) {
     var responseHandler;
     try {
+        if(/\//.test(controller)) {
+            var cnts = controller.split('/');
+            namespace = cnts[0] + '/';
+            controller = cnts[1];
+        }
+        namespace = typeof namespace === 'string' ? namespace.toString().toLowerCase() : '';
         controller = controller.pluralize().capitalize();
         var ctlFileA = './../app/controllers/' + namespace + controller + 'Controller';
         var ctlFileB = './../app/controllers/' + namespace + controller + 'esController';
@@ -50,8 +56,8 @@ function TrinteBridge(namespace, controller, action) {
             responseHandler =  require(ctlFileC)[action];
         }
     } catch(e) {
-        console.log('Route Action: ' + action);
-        console.log(e);
+         console.log('Route Action: ' + action);
+         console.log(e);
     }
 
     return responseHandler || function (req, res) {
