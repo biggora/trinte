@@ -296,8 +296,8 @@ Will generate the following routes:
 
 Singleton resources can also have nested resources. For example:
 
-    map.resource('users', function(user) {
-      user.resources('posts');
+    map.resource('users', function(users) {
+      users.resources('posts');
     });
 
 Will generate the following routes:
