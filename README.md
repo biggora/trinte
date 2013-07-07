@@ -212,6 +212,7 @@ On initialization directories tree generated, like that:
     .
     |-- config
     |   |-- configuration.js
+    |   |-- database.js
     |   |-- development.js
     |   |-- production.js
     |   `-- test.js
@@ -258,21 +259,60 @@ On initialization directories tree generated, like that:
 ### Routing
 /config/routes.js
 
-    // Plural
-    app.get("/:controller?", router);                           // Index
-    app.get("/:controller.:format?", router);                   // Index
-    app.get("/:controller/:from-:to.:format?", router);         // Index
+#### Features
 
-    // Plural Create & Delete
-    app.post("/:controller", router);                           // Create
-    app.del("/:controller", router);                            // Delete all
+- resourceful routes
+- generic routes
+- url helpers
+- namespaces
+- custom helper names / paths for resources
+- named parameters in url helpers
 
-    // Singular - different variable to clarify routing
-    app.get("/:controller/:action", router);                    // Add (New) and custom actions
-    app.get("/:controller/:id.:format?", router);               // To support controller/index
-    app.get("/:controller/:id/:action", router);                // Show edit
-    app.put("/:controller/:id", router);                        // Update
-    app.del("/:controller/:id", router);                        // Delete
+#### Named route params
+
+Example:
+
+    map.get('/test/:param1/:param2', 'controller#action');
+    map.pathTo.test({param1: 'foo', param2: 'bar'}); // '/test/foo/bar'
+
+#### Singleton resources
+
+Example:
+
+    map.resource('post');
+
+Will generate the following routes:
+
+    method    route            controller#view     helper method
+    --------------------------------------------------------------------------
+    GET       /posts           posts#index         pathTo.posts()
+    GET       /post/:id        posts#show          pathTo.show_post(id)
+    POST      /post            posts#create        pathTo.create_posts()
+    GET       /post/new        posts#new           pathTo.new_post()
+    GET       /post/edit/:id   posts#edit          pathTo.edit_post(id)
+    DELETE    /post/:id        posts#destroy       pathTo.destroy_post(id)
+    PUT       /post/:id        posts#update        pathTo.update_post(id)
+    DELETE    /posts           posts#destroyall    pathTo.destroy_posts()
+
+Singleton resources can also have nested resources. For example:
+
+    map.resource('users', function(user) {
+      user.resources('posts');
+    });
+
+Will generate the following routes:
+
+    method   route                          controller#view    helper method
+    --------------------------------------------------------------------------
+    GET     /users/:user_id/posts           posts#index        pathTo.users_posts(user_id)
+    GET     /users/:user_id/post/:id        posts#show         pathTo.show_users_post(user_id, id)
+    POST    /users/:user_id/post            posts#create       pathTo.create_users_posts(user_id)
+    GET     /users/:user_id/post/new        posts#new          pathTo.new_users_post(user_id)
+    GET     /users/:user_id/post/edit/:id   posts#edit         pathTo.edit_users_post(user_id, id)
+    DELETE  /users/:user_id/post/:id        posts#destroy      pathTo.destroy_users_post(user_id, id)
+    PUT     /users/:user_id/post/:id        posts#update       pathTo.update_users_post(user_id, id)
+    DELETE  /users/:user_id/posts           posts#destroyall   pathTo.destroy_users_posts(user_id)
+
 
 ### Params
 
