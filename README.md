@@ -283,7 +283,7 @@ Example:
 
 Will generate the following routes:
 
-    method    route            controller#view     helper method
+    method    route            controller#action   helper method
     --------------------------------------------------------------------------
     GET       /posts           posts#index         pathTo.posts()
     GET       /post/:id        posts#show          pathTo.show_post(id)
@@ -302,7 +302,7 @@ Singleton resources can also have nested resources. For example:
 
 Will generate the following routes:
 
-    method   route                          controller#view    helper method
+    method   route                         controller#action   helper method
     --------------------------------------------------------------------------
     GET     /users/:user_id/posts           posts#index        pathTo.users_posts(user_id)
     GET     /users/:user_id/post/:id        posts#show         pathTo.show_users_post(user_id, id)
