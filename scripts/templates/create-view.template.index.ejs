@@ -18,14 +18,14 @@ tds.push('<td><%- formVal(' + modelVariable + '.' + field.param_val + ') %></td>
 if(field.param_val == 'name' || field.param_val == 'title'){
 fld = fld + 1; dfield = field.param_val;
 ths.push("<th><%- sortFor('" + field.param_val + "','" + field.param_name + "', 'Sorting column') %></th>");
-tds.push('<td><a href="<%- pathTo.show_' + nsPath + modelVariable + '(' + modelVariable + '.id) %>"><%- formVal(' + modelVariable + '.' + field.param_val + ') %></a></td>');
+tds.push('<td><a href="<%- pathTo.show_' + nsPath + modelVariable + '(' + modelVariable + ') %>"><%- formVal(' + modelVariable + '.' + field.param_val + ') %></a></td>');
 }})
 ?>
 <% layout('../default_layout') -%>
 <!-- index page -->
 <!-- page breadcrumb -->
 <ul class="breadcrumb">
-    <li><a href="/">Home</a> <span class="divider">/</span></li>
+    <li><a href="/<?= nsPath ?>">Home</a> <span class="divider">/</span></li>
     <li class="active"><a href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>"><%- title %></a></li>
 </ul>
 <%- partial('../messages') %>
@@ -62,13 +62,13 @@ tds.push('<td><a href="<%- pathTo.show_' + nsPath + modelVariable + '(' + modelV
         <!--item id <%= <?= modelVariable ?>.id %> -->
         <tr>
             <td>
-                <a href="<%- pathTo.show_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>"><%- formVal(<?= modelVariable ?>.id) %></a>
+                <a href="<%- pathTo.show_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>) %>"><%- formVal(<?= modelVariable ?>.id) %></a>
             </td>
             <?- tds.join("\n            ") ?>
             <td style="text-align:right">
-                <a class="btn btn-mini" href="<%- pathTo.show_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>"><i class="icon-list-alt"></i> Detail</a>
-                <a class="btn btn-mini" href="<%- pathTo.edit_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>"><i class="icon-edit"></i> Edit</a>
-                <a class="btn btn-mini btn-danger" href="<%- pathTo.destroy_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>" data-confirm="true" data-remote="true" data-method="delete" data-jsonp="(function (u) {location.href = u;})"><i class="icon-remove icon-white"></i> Delete</a>
+                <a class="btn btn-mini" href="<%- pathTo.show_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>) %>"><i class="icon-list-alt"></i> Detail</a>
+                <a class="btn btn-mini" href="<%- pathTo.edit_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>) %>"><i class="icon-edit"></i> Edit</a>
+                <a class="btn btn-mini btn-danger" href="<%- pathTo.destroy_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>) %>" data-confirm="true" data-remote="true" data-method="delete" data-jsonp="(function (u) {location.href = u;})"><i class="icon-remove icon-white"></i> Delete</a>
             </td>
         </tr>
         <% }) %>

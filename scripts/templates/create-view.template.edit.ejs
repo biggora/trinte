@@ -10,7 +10,7 @@
 <!-- edit page -->
 <!-- page breadcrumb -->
 <ul class="breadcrumb">
-    <li><a href="/">Home</a> <span class="divider">/</span></li>
+    <li><a href="/<?= nsPath ?>">Home</a> <span class="divider">/</span></li>
     <li><a href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>"><?= controllerName ?></a> <span class="divider">/</span></li>
     <li class="active"><a href="#"><%- title %></a></li>
 </ul>
@@ -21,7 +21,7 @@
 </div>
 
 <!-- form -->
-<form method="post" action="<%- pathTo.update_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>" class="form-horizontal">
+<form method="post" action="<%- pathTo.update_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>) %>" class="form-horizontal">
     <input type="hidden" name="_method" value="put"/>
     <input type="hidden" name="_csrf" value="<%= session._csrf %>" />
     <%- partial('form',{ locals : { <?= modelVariable ?> : <?= modelVariable ?> } }) %>

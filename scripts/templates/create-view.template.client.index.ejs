@@ -9,7 +9,7 @@ var nsPath = namespace ? namespace + "_" : "" ;
 <!-- index page -->
 <!-- page breadcrumb -->
 <ul class="breadcrumb">
-    <li><a href="/">Home</a> <span class="divider">/</span></li>
+    <li><a href="/<?= nsPath ?>">Home</a> <span class="divider">/</span></li>
     <li class="active"><a href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>"><%- title %></a></li>
 </ul>
 <%- partial('../messages') %>
@@ -38,12 +38,12 @@ var nsPath = namespace ? namespace + "_" : "" ;
     <% <?= basePathPlural ?>.forEach(function(<?= modelVariable ?>){ %>
     <!--item id <%= <?= modelVariable ?>.id %> -->
     <tr>
-        <td><a href="<%- pathTo.show_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>"><%- formVal(<?= modelVariable ?>.id) %></a>
+        <td><a href="<%- pathTo.show_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>) %>"><%- formVal(<?= modelVariable ?>.id) %></a>
         </td>
         <td style="text-align:right">
-            <a class="btn btn-mini" href="<%- pathTo.show_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>"><i class="icon-list-alt"></i> Detail</a>
-            <a class="btn btn-mini" href="<%- pathTo.edit_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>"><i class="icon-edit"></i> Edit</a>
-            <a class="btn btn-mini btn-danger" href="<%- pathTo.destroy_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>" data-remote="true" data-method="delete" data-jsonp="(function (u) {location.href = u;})"><i class="icon-remove icon-white"></i> Delete</a>
+            <a class="btn btn-mini" href="<%- pathTo.show_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>) %>"><i class="icon-list-alt"></i> Detail</a>
+            <a class="btn btn-mini" href="<%- pathTo.edit_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>) %>"><i class="icon-edit"></i> Edit</a>
+            <a class="btn btn-mini btn-danger" href="<%- pathTo.destroy_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>) %>" data-remote="true" data-method="delete" data-jsonp="(function (u) {location.href = u;})"><i class="icon-remove icon-white"></i> Delete</a>
         </td>
     </tr>
     <% }) %>

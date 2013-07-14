@@ -91,7 +91,7 @@ module.exports = {
      * Show action, returns shows a single item via <?= addView ?>views/<?= basePathPlural ?>/show.ejs view or via json
      * Default mapping to GET '<?= namespace ?>/<?= basePath ?>/:id'
      * For JSON use '<?= namespace ?>/<?= basePath ?>/:id.json'
-     * View Helper method pathTo.show_<?= nsPath ?><?= modelVariable ?>(id)
+     * View Helper method pathTo.show_<?= nsPath ?><?= modelVariable ?>(instance)
      * @param {Object} req
      * @param {Object} res
      * @param {Function} next
@@ -131,7 +131,7 @@ module.exports = {
     /**
      * Edit action, returns a form via <?= addView ?>views/<?= basePathPlural ?>/edit.ejs view no JSON view.
      * Default mapping to GET '<?= namespace ?>/<?= basePath ?>/:id/edit'
-     * View Helper method pathTo.edit_<?= nsPath ?><?= modelVariable ?>(id)
+     * View Helper method pathTo.edit_<?= nsPath ?><?= modelVariable ?>(instance)
      * @param {Object} req
      * @param {Object} res
      * @param {Function} next
@@ -160,7 +160,7 @@ module.exports = {
                 if (err) {
                     console.log(err);
                     req.flash('error','Could not update <?= modelVariable ?>: ' + err);
-                    res.redirect(pathTo.edit_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id));
+                    res.redirect(pathTo.edit_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>));
                     return;
                 }
 
@@ -170,7 +170,7 @@ module.exports = {
                         break;
                     default:
                         req.flash('info', '<?= modelName ?> updated');
-                        res.redirect(pathTo.show_<?= nsPath ?><?= modelVariable ?>(req.params.id));
+                        res.redirect(pathTo.show_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>));
                 }
             });
         });
@@ -202,7 +202,7 @@ module.exports = {
                     break;
                 default:
                     req.flash('info','<?= modelName ?> created');
-                    res.redirect(pathTo.show_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id));
+                    res.redirect(pathTo.show_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>));
             }
         });
     },
@@ -210,7 +210,7 @@ module.exports = {
     /**
      * Delete action, deletes a single item and redirects to index
      * Default mapping to DEL '<?= namespace ?>/<?= basePath ?>/:id', no GET mapping
-     * View Helper method pathTo.destroy_<?= nsPath ?><?= modelVariable ?>(id)
+     * View Helper method pathTo.destroy_<?= nsPath ?><?= modelVariable ?>(instance)
      * @param {Object} req
      * @param {Object} res
      * @param {Function} next

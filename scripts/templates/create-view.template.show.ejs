@@ -10,7 +10,7 @@
 <!-- show page -->
 <!-- page breadcrumb -->
 <ul class="breadcrumb">
-    <li><a href="/">Home</a> <span class="divider">/</span></li>
+    <li><a href="/<?= nsPath ?>">Home</a> <span class="divider">/</span></li>
     <li><a href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>"><?= controllerName ?></a> <span class="divider">/</span></li>
     <li class="active"><a href="#"><%- title %></a></li>
 </ul>
@@ -33,8 +33,8 @@
 </table>
 
 <div class="well">
-    <a class="btn" href="<%- pathTo.edit_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>"><i class="icon-edit"></i> Edit</a>
-    <a class="btn btn-danger" href="<%- pathTo.destroy_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>.id) %>" data-confirm="true" data-remote="true" data-method="delete" data-jsonp="(function (u) {location.href = u;})"><i class="icon-remove icon-white"></i> Delete</a>
+    <a class="btn" href="<%- pathTo.edit_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>) %>"><i class="icon-edit"></i> Edit</a>
+    <a class="btn btn-danger" href="<%- pathTo.destroy_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>) %>" data-confirm="true" data-remote="true" data-method="delete" data-jsonp="(function (u) {location.href = u;})"><i class="icon-remove icon-white"></i> Delete</a>
     <a class="btn" href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>" title="List <?= controllerName ?>"><i class="icon-tasks"></i> List <?= controllerName ?></a>
 </div>
 <!-- end show page -->

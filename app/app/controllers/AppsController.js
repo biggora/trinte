@@ -13,7 +13,6 @@ module.exports = {
         /**
          * If you want to redirect to another controller, uncomment
          */
-        // res.redirect('/controllerName');
 
         var controllers = [];
 

@@ -142,6 +142,12 @@ function bootModels(trinte) {
                files.forEach(function(file) {
                   bootModel(trinte, schema, file);
                   if (--count === 0) {
+                        if ('function' === typeof schema.autoupdate) {
+                            schema.autoupdate(function(err) {
+                                console.log('Run Caminte Autoupdate DataBase!');
+                                if(err) console.log(err);
+                            });
+                        }
                       trinte.emit('models_loaded');
                   }
                });

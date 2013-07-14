@@ -7,8 +7,10 @@ var app;
 
 /**
  * Initial bootstrapping
+ * @param {Number} port
+ * @param {Mixed} path
  */
-exports.boot = function(port,path){
+exports.boot = function(port, path){
 
     //Create our express instance
     app = require('./app').boot();
@@ -23,7 +25,7 @@ exports.boot = function(port,path){
             console.log('worker ' + worker.pid + ' died');
         });
     } else {
-        console.log("worker: %s", process.env.NODE_WORKER_ID);
+        console.log("worker: %s", process.env.NODE_WORKER_ID || "");
         app.listen(parseInt(port));
     }
 };
