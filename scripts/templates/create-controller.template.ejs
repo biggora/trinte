@@ -71,9 +71,7 @@ module.exports = {
         var pagerHtml = pager.render(from, to, total, pathTo.<?= nsPath ?><?= basePathPlural ?>());
 
         <?= modelName ?>.all(opts, function (err, <?= basePathPlural ?>) {
-
                 if(err) return next(err);
-
                 switch (format.toString()) {
                     case 'json':
                         res.send(<?= basePathPlural ?>.map(function(u) {
@@ -246,7 +244,7 @@ module.exports = {
      * @param {Function} next
      **/
     'destroyall': function(req, res, next){
-        <?= modelVariable ?>.destroyAll(function(err) {
+        <?= modelName ?>.destroyAll(function(err) {
             if(err) {
                 req.flash('error','There was an error deleting the <?= basePathPlural ?>!');
                 res.send('"' + pathTo.<?= nsPath ?><?= basePathPlural ?>() + '"');
