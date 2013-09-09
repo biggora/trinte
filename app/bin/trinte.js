@@ -4,6 +4,7 @@
 var fs = require('fs');
 var express = require('express');
 var events = require('events');
+var path = require('path');
 var params = require('./params');
 var envConf = require('../config/environment');
 var config = require('../config/configuration');
@@ -124,43 +125,49 @@ exports.createServer = function(options) {
     return app;
 };
 
-
 // Bootstrap models
 function bootModels(trinte) {
     var Schema = require('caminte').Schema,
-    schema = new Schema(database.db.driver, database.db);
-
-    fs.readdir('./app/models', function(err, files) {
-        if (err) {
-            console.log(err);
-        }
-        if (!files) {
-            trinte.emit('models_loaded');
-        } else {
-            var count = files.length;
-            if (count > 0) {
-               files.forEach(function(file) {
-                  bootModel(trinte, schema, file);
-                  if (--count === 0) {
-                        if ('function' === typeof schema.autoupdate) {
-                            schema.autoupdate(function(err) {
-                                console.log('Run Caminte Autoupdate DataBase!');
-                                if(err) console.log(err);
-                            });
-                        }
-                      trinte.emit('models_loaded');
-                  }
-               });
+            schema = new Schema(database.db.driver, database.db);
+    var modelsDir = path.resolve(__dirname, '../app/models');
+    try {
+        fs.readdir(modelsDir, function(err, files) {
+            if (err) {
+                console.log(err);
             }
-        }
-   });
+            if (!files) {
+                trinte.emit('models_loaded');
+            } else {
+                var count = files.length;
+                if (count > 0) {
+                    files.forEach(function(file) {
+                        bootModel(trinte, schema, file);
+                        if (--count === 0) {
+                            if ('function' === typeof schema.autoupdate) {
+                                schema.autoupdate(function(err) {
+                                    console.log('Run Caminte Autoupdate!');
+                                    if (err)
+                                        console.log(err);
+                                });
+                            }
+                            trinte.emit('models_loaded');
+                        }
+                    });
+                }
+            }
+        });
+    } catch (err) {
+        console.log("Error: Models dir does not found");
+        process.exit(1);
+    }
 }
 
 // simplistic model support
 function bootModel(trinte, schema, file) {
     if(/\.js$/i.test(file)) {
        var name = file.replace(/\.js$/i, '');
-       trinte.models[name] = require('../app/models/' + name)(schema);// Include the mongoose file
+       var modelDir = path.resolve(__dirname, '../app/models');
+       trinte.models[name] = require(modelDir + '/' + name)(schema);// Include the mongoose file
        global[name] = trinte.models[name];
     }
 }
@@ -237,8 +244,7 @@ function configureApp(trinte) {
                 session : req.session
             });
         });
-
         // Initialize users params
-        require('../config/params')(app);
+        require(root + '/config/params')(app);
     });
 }
