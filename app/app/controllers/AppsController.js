@@ -34,5 +34,16 @@ module.exports = {
             });
 
         });
+    },
+    /**
+     * Default Application login page.
+     * @param req
+     * @param res
+     * @param next
+     */
+    'login': function(req, res, next) {
+            res.render('login', {
+                controllers: []
+            });
     }
 };

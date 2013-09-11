@@ -7,6 +7,8 @@
  **/
 
 module.exports = {
+    debug: false,
+    language: "en",
     port : 3000,
     session: {
         maxAge : 8640000,

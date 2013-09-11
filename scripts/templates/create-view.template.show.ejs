@@ -1,40 +1,45 @@
-<?
-	var modelVariable = modelName.toLowerCase();
-	var basePath = modelName.toLowerCase();
-	var basePathPlural = controllerName.toLowerCase();
-  var addIncl = namespace ? "../" : "" ;
-  var addView = namespace ? namespace + "/" : "" ;
-  var nsPath = namespace ? namespace + "_" : "" ;
-?>
 <% layout('../default_layout') -%>
+<?
+var modelVariable = modelName.toLowerCase();
+var basePath = modelName.toLowerCase();
+var basePathPlural = controllerName.toLowerCase();
+var addIncl = namespace && namespace !== "" ? "../" : "" ;
+var addView = namespace && namespace !== "" ? namespace + "/" : "" ;
+var nsPath = namespace && namespace !== "" ? namespace + "_" : "" ;
+?>
 <!-- show page -->
-<!-- page breadcrumb -->
-<ul class="breadcrumb">
-    <li><a href="/<?= nsPath ?>">Home</a> <span class="divider">/</span></li>
-    <li><a href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>"><?= controllerName ?></a> <span class="divider">/</span></li>
-    <li class="active"><a href="#"><%- title %></a></li>
-</ul>
-<%- partial('../messages') %>
-<!-- page title -->
-<div class="page-header">
-    <h1><%- title %></h1>
-</div>
-
-<!-- item details -->
-<table class="table table-bordered">
-    <tbody>
-    <? fields.forEach(function (field) { ?>
-    <tr>
-        <th class="span4"><?= field.param_name ?></th>
-        <td><%- formVal(<?= modelVariable ?>.<?= field.param_val ?>) %></td>
-    </tr>
-    <? }) ?>
-    </tbody>
-</table>
-
-<div class="well">
-    <a class="btn" href="<%- pathTo.edit_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>) %>"><i class="icon-edit"></i> Edit</a>
-    <a class="btn btn-danger" href="<%- pathTo.destroy_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>) %>" data-confirm="true" data-remote="true" data-method="delete" data-jsonp="(function (u) {location.href = u;})"><i class="icon-remove icon-white"></i> Delete</a>
-    <a class="btn" href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>" title="List <?= controllerName ?>"><i class="icon-tasks"></i> List <?= controllerName ?></a>
+<div id="content" class="container">
+    <!-- page breadcrumb -->
+    <ul class="breadcrumb">
+        <li><a href="/<?= nsPath ?>"><i class="icon-home"></i> Home</a></li>
+        <li><a href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>"><?= controllerName ?></a></li>
+        <li class="active"><a href="#"><%- title %></a></li>
+    </ul>
+    <!-- page title -->
+    <div class="page-header">
+        <h1><%- title %></h1>
+    </div>
+    <!-- item details -->
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <tbody>
+                    <? fields.forEach(function (field) { ?>
+                    <tr>
+                        <th class="span4"><?= field.param_name ?></th>
+                        <td><%- formVal(<?= modelVariable ?>.<?= field.param_val ?>) %></td>
+                    </tr>
+                    <? }) ?>
+                </tbody>
+            </table>
+            <div class="well">
+                <a class="btn btn-default" href="<%- pathTo.edit_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>) %>"><i class="icon-edit"></i> Edit</a>
+                <a class="btn btn-danger" href="<%- pathTo.destroy_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>) %>" data-confirm="true" data-remote="true" data-method="delete" data-jsonp="(function (u) {location.href = u;})"><i class="icon-remove icon-white"></i> Delete</a>
+                <a class="btn btn-default" href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>" title="List <?= controllerName ?>"><i class="icon-tasks"></i> List <?= controllerName ?></a>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
 </div>
 <!-- end show page -->

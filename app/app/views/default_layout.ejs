@@ -5,9 +5,9 @@
         <meta http-equiv="X-UA-Compatible" content="chrome=1">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="generator" content="TrinteJS! - Javascript MVC Framework">
-        <meta name="author" content="Project Author">
-        <title>TrinteJS Sample MVC Application</title>
-        <link type="text/css" href="/css/bootstrap-combined.no-icons.min.css" rel="stylesheet"/>
+        <meta name="author" content="APPNAME">
+        <title>APPNAME</title>
+        <link type="text/css" href="/css/bootstrap.min.css" rel="stylesheet"/>
         <link type="text/css" href="/css/font-awesome.min.css" rel="stylesheet"/>
         <link type="text/css" href="/css/style.css" rel="stylesheet"/>
         <script type="text/javascript" charset="utf-8" src="/js/jquery.min.js"></script>
@@ -15,81 +15,54 @@
         <meta name="csrf-param" content="_csrf">
         <meta name="csrf-token" content="<%= session._csrf %>">
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
         <!--[if IE 7]>
           <link rel="stylesheet" href="/css/font-awesome-ie7.min.css">
         <![endif]-->
+        <!--[if lt IE 9]>
+          <script src="/js/html5.js"></script>
+        <![endif]-->
     </head>
     <body>
-        <div id="page" class="container">
-            <nav class="row">
-                <section id="menu">
-                    <!--menu content-->
-                    <div class="navbar">
-                        <div class="navbar-inner">
-                            <div class="container">
-                                <img id="logo" src="/img/logo.png"/>
-                                <a class="brand" href="/">
-                                    APPNAME
-                                </a>
-                                <ul class="nav">
-                                    <li><a href="/">Home</a></li>
-                                    <li><a href="https://github.com/biggora/trinte#usage" target="_blank">Usage overview</a></li>
-                                    <% if (controllers.length) { %>
-                                    <% controllers.forEach(function(controller){ %>
-                                    <li><a href="/<%= controller %>"><%= controller %></a></li>
-                                    <% }) %>
-                                    <% } %>
-                                </ul>
-                                <p class="navbar-text pull-right">
-                                    Logged in as <a href="#" class="navbar-link">Username</a>
-                                </p>
-                            </div>
-                        </div>
+        <!-- header -->
+        <%- partial('header') %>
+        <!-- messages -->
+        <%- partial('messages') %>
+        <!-- content -->
+        <%- body %>
+        <!-- footer -->
+        <%- partial('footer') %>
+        <!-- confirm modal dialog -->
+        <div id="dialog-confirm" class="modal fade" title="" tabindex="-1" role="dialog" aria-labelledby="dialog-confirm-header" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 id="dialog-confirm-header"></h3>
+                        <div class="clearfix"></div>
                     </div>
-                </section>
-            </nav>
-            <div id="content" class="row">
-                <!--page content-->
-                <%- body %>
-            </div>
-            <hr/>
-            <footer id="footer" class="row">
-                <p style="text-align: center">
-                    Based on Powerful MVC framework <a href="http://www.trintejs.com/" target="_new">TrinteJS</a> & Cross-db ORM <a href="http://www.camintejs.com/" target="_new">CaminteJS</a>
-                </p>
-            </footer>
-            <!-- end index page -->
-            <!-- confirm modal dialog -->
-            <div id="dialog-confirm" class="modal hide fade" title=""  tabindex="-1" role="dialog" aria-labelledby="dialog-confirm-header" aria-hidden="true">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h3 id="dialog-confirm-header"></h3>
-                </div>
-                <div class="modal-body"></div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
-                    <button class="btn btn-danger btn-confirm-ok">Delete</button>
+                    <div class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+                        <button class="btn btn-danger btn-confirm-ok">Delete</button>
+                    </div>
                 </div>
             </div>
-            <!-- modal templates -->
-            <div id="modal-templates" style="visibility: hidden;">
-                <div class="modal-delete">
-                    <div class="header-text">Delete %s?</div>
-                    <div class="body-text">
-                        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;">
-                            <img src="/img/glyphicons/glyphicons_196_circle_exclamation_mark.png"/>
-                        </span>Delete %s id %d!<br> This will be permanently deleted and cannot be recovered. Are you sure?
-                    </div>
-                    <div class="btn-text">Delete %s</div>
+        </div>
+        <!-- modal templates -->
+        <div id="modal-templates" style="visibility: hidden;">
+            <div class="modal-delete">
+                <div class="header-text">Delete %s?</div>
+                <div class="body-text">
+                    <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;">
+                        <i class="icon-warning-sign icon-3x"></i>
+                    </span>Delete %s id %d!<br> This will be permanently deleted and cannot be recovered. Are you sure?
                 </div>
-                <div class="modal-save">
-                    <div class="header-text">Save %s?</div>
-                    <div class="body-text"></div>
-                    <div class="btn-text">Save Changes</div>
-                </div>
+                <div class="btn-text">Delete %s</div>
+            </div>
+            <div class="modal-save">
+                <div class="header-text">Save %s?</div>
+                <div class="body-text"></div>
+                <div class="btn-text">Save Changes</div>
             </div>
         </div>
         <script type="text/javascript" charset="utf-8" src="/js/app.js"></script>

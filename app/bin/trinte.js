@@ -12,6 +12,7 @@ var database = require('../config/database');
 var middleware = require('../config/middleware');
 var sessions = require('../config/session');
 var Resource = require('./router').Resource;
+var locales = require('./locales');
 var util = require('util');
 var utils = require('./utils');
 var http = require('http');
@@ -71,17 +72,38 @@ exports.init = function init(app, root) {
     trinte.on('models_loaded', function() {
         require('../app/helpers/ModelsHelper');
         var ApplicationHelper = require('../app/helpers/ApplicationHelper');
-        for(var key in ApplicationHelper) {
+        for (var key in ApplicationHelper) {
             global[key] = ApplicationHelper[key];
         }
         var ViewsHelper = require('../app/helpers/ViewsHelper');
         app.locals(ViewsHelper);
         trinte.emit('helpers_loaded');
+        if (config.debug)
+            console.log('helpers_loaded');
     });
 
     trinte.on('helpers_loaded', function() {
+        try {
+            var locales = require('./locales');
+            global['__ln'] = config.language;
+        } catch (err) {
+            console.log("Yaml Error 0: ", err);
+        }
+        global['__lc'] = locales.load();
+        global['t'] = locales.t;
+        app.locals({
+            t: locales.t
+        });
+        trinte.emit('locales_loaded');
+        if (config.debug)
+            console.log('locales_loaded');
+    });
+
+    trinte.on('locales_loaded', function() {
         require('../config/routes')(map);
         trinte.emit('routes_loaded');
+        if (config.debug)
+            console.log('routes_loaded');
     });
 
     trinte.on('routes_loaded', function() {
@@ -136,6 +158,8 @@ function bootModels(trinte) {
                 console.log(err);
             }
             if (!files) {
+                if (config.debug)
+                    console.log('models_loaded');
                 trinte.emit('models_loaded');
             } else {
                 var count = files.length;
@@ -151,6 +175,8 @@ function bootModels(trinte) {
                                 });
                             }
                             trinte.emit('models_loaded');
+                            if (config.debug)
+                                console.log('models_loaded');
                         }
                     });
                 }
@@ -164,11 +190,11 @@ function bootModels(trinte) {
 
 // simplistic model support
 function bootModel(trinte, schema, file) {
-    if(/\.js$/i.test(file)) {
-       var name = file.replace(/\.js$/i, '');
-       var modelDir = path.resolve(__dirname, '../app/models');
-       trinte.models[name] = require(modelDir + '/' + name)(schema);// Include the mongoose file
-       global[name] = trinte.models[name];
+    if (/\.js$/i.test(file)) {
+        var name = file.replace(/\.js$/i, '');
+        var modelDir = path.resolve(__dirname, '../app/models');
+        trinte.models[name] = require(modelDir + '/' + name)(schema);// Include the mongoose file
+        global[name] = trinte.models[name];
     }
 }
 
@@ -181,70 +207,75 @@ function configureApp(trinte) {
     var app = trinte.app;
     var root = trinte.root;
 
-    app.configure(function() {
-        params.extend(app);
-        envConf(app, express);
-        app.use(express.bodyParser({
-            uploadDir: root + '/uploads',
-            keepExtensions: true,
-            encoding: config.parser.encoding
-        }));
-        app.use(express.methodOverride());
-        app.use(express.cookieParser(config.session.secret));
-        sessions(app, express);
+    params.extend(app);
+    envConf(app, express);
+    app.use(express.bodyParser({
+        uploadDir: root + '/uploads',
+        keepExtensions: true,
+        encoding: config.parser.encoding
+    }));
+    app.use(express.methodOverride());
+    app.use(express.cookieParser(config.session.secret));
+    sessions(app, express);
 
-        // Before router to enable dynamic routing
-        app.use(express['static'](root + '/public'));
-        app.use(function(req, res, next) {
-            res.setHeader('X-Powered-By', 'TrinteJS MVC');
-            next();
-        });
-        // Setup ejs views as default, with .ejs as the extension
-        app.set('port', process.env.PORT || config.port);
-        app.set('views', root + '/app/views');
-        app.engine('ejs', engine);
-        app.set('view engine', 'ejs');
-        app.set('view options', {
-            complexNames: true
-        });
-        app.use(flash());
-        app.use(express.csrf());
-        app.use(helper.init());
-        middleware(app, express);
-        app.use(app.router);
-
-        // Example 500 page
-        app.use(function(err, req, res, next) {
-            console.log('Internal Server Error: ' + err.message);
-            res.status(err.status || 500);
-
-            if(parseInt(err.status) === 403) {
-                res.render('errors/403', {
-                    request : req,
-                    session : req.session
-                });
-            } else if (parseInt(err.status) === 401) {
-                res.render('errors/401', {
-                    request : req,
-                    session : req.session
-                });
-            } else {
-                res.render('errors/500', {
-                    error   : err,
-                    request : req,
-                    session : req.session
-                });
-            }
-        });
-
-        // Example 404 page via simple Connect middleware
-        app.use(function(req, res) {
-            res.render('errors/404', {
-                request : req,
-                session : req.session
-            });
-        });
-        // Initialize users params
-        require(root + '/config/params')(app);
+    // Before router to enable dynamic routing
+    app.use(express['static'](root + '/public'));
+    app.use(function(req, res, next) {
+        res.setHeader('X-Powered-By', 'TrinteJS MVC');
+        next();
     });
+    // Setup ejs views as default, with .ejs as the extension
+    app.set('port', process.env.PORT || config.port);
+    app.set('views', root + '/app/views');
+    app.engine('ejs', engine);
+    app.set('view engine', 'ejs');
+    app.set('view options', {
+        complexNames: true
+    });
+    app.use(flash());
+    app.use(express.csrf());
+    app.use(function(req, res, next) {
+        if (typeof req.csrfToken === "function" && req.session) {
+            req.session._csrf = req.csrfToken();
+            next();
+        } else {
+            next();
+        }
+    });
+    app.use(helper.init());
+    middleware(app, express);
+    app.use(app.router);
+
+    // Example 500 page
+    app.use(function(err, req, res, next) {
+        console.log('Internal Server Error: ' + err.message);
+        res.status(err.status || 500);
+        if (parseInt(err.status) === 403) {
+            res.render('errors/403', {
+                request: req,
+                session: req.session
+            });
+        } else if (parseInt(err.status) === 401) {
+            res.render('errors/401', {
+                request: req,
+                session: req.session
+            });
+        } else {
+            res.render('errors/500', {
+                error: err,
+                request: req,
+                session: req.session
+            });
+        }
+    });
+
+    // Example 404 page via simple Connect middleware
+    app.use(function(req, res) {
+        res.render('errors/404', {
+            request: req,
+            session: req.session
+        });
+    });
+    // Initialize routes params
+    require(root + '/config/params')(app);
 }

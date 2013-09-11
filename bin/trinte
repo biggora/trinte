@@ -289,6 +289,24 @@ function createApplicationAt(path, appname, author) {
     var layout = fs.readFileSync(bootstrapPath + '/app/app/views/default_layout.ejs', 'utf-8');
     write(appdir + '/app/views/default_layout.ejs', layout.toString().replace(/APPNAME/gi, appname));
 
+    var llayout = fs.readFileSync(bootstrapPath + '/app/app/views/login_layout.ejs', 'utf-8');
+    write(appdir + '/app/views/login_layout.ejs', llayout.toString().replace(/APPNAME/gi, appname));
+
+    var elayout = fs.readFileSync(bootstrapPath + '/app/app/views/errors_layout.ejs', 'utf-8');
+    write(appdir + '/app/views/errors_layout.ejs', elayout.toString().replace(/APPNAME/gi, appname));
+
+    var header = fs.readFileSync(bootstrapPath + '/app/app/views/header.ejs', 'utf-8');
+    write(appdir + '/app/views/header.ejs', header.toString().replace(/APPNAME/gi, appname));
+
+    var footer = fs.readFileSync(bootstrapPath + '/app/app/views/footer.ejs', 'utf-8');
+    write(appdir + '/app/views/footer.ejs', footer.toString().replace(/APPNAME/gi, appname));
+
+    var readme = fs.readFileSync(bootstrapPath + '/app/README.md', 'utf-8');
+    write(appdir + '/README.md', readme.toString().replace(/APPNAME/gi, appname));
+
+    var flogin = fs.readFileSync(bootstrapPath + '/app/app/views/login.ejs', 'utf-8');
+    write(appdir + '/app/views/login.ejs', flogin.toString().replace(/APPNAME/gi, appname));
+
     var jpackage = fs.readFileSync(bootstrapPath + '/app.json', 'utf-8');
     jpackage = jpackage.toString().replace(/APPNAME/gi, appname).replace(/DEVELOPER/gi, author);
     write(appdir + '/package.json', jpackage);

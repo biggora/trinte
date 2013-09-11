@@ -1,14 +1,20 @@
 <?
-	var modelVariable = modelName.toLowerCase();
-	var basePath = modelName.toLowerCase();
-	var basePathPlural = controllerName.toLowerCase();
+var modelVariable = modelName.toLowerCase();
+var basePath = modelName.toLowerCase();
+var basePathPlural = controllerName.toLowerCase();
 ?>
-<!--fields list-->
-<? fields.forEach(function (field) { ?>
-<div class="control-group">
-    <label for="<?= modelVariable ?>_<?= field.param_val ?>" class="control-label"><?= field.param_name ?>:</label>
-    <div class="controls">
-        <input type="text" name="<?= modelVariable ?>[<?= field.param_val ?>]" id="<?= modelVariable ?>_<?= field.param_val ?>" value="<%- formVal(<?= modelVariable ?>.<?= field.param_val ?>) %>"/>
+<div class="col-lg-6">
+    <!--fields list-->
+    <? fields.forEach(function (field) { ?>
+    <div class="form-group">
+        <label for="<?= modelVariable ?>_<?= field.param_val ?>" class="col-lg-3 control-label"><?= field.param_name ?>:</label>
+        <div class="col-lg-9">
+            <input class="form-control" type="text" name="<?= modelVariable ?>[<?= field.param_val ?>]" id="<?= modelVariable ?>_<?= field.param_val ?>" value="<%- formVal(<?= modelVariable ?>.<?= field.param_val ?>) %>"/>
+        </div>
     </div>
+    <? }) ?>
 </div>
-<? }) ?>
+<div class="col-lg-6">
+
+</div>
+<div class="clearfix"></div>

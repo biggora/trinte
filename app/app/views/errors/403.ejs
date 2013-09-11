@@ -1,13 +1,12 @@
 <% layout('../errors_layout') -%>
 <div class="row">
-    <div class="offset3 span6 well" style="margin-top:100px">
-            <h1 style="text-align:center;margin-top:50px"><span style="font-size:84px;">403</span></h1>
-            <h3 style="text-align:center;color:#666">OOPS! ACCESS FORBIDDEN!</h3>
-            <p style="text-align:center;margin-bottom:50px">
+    <div class="col-md-offset-3 col-md-6 well tr-hero" style="margin-top:100px">
+        <h1 style="text-align:center;margin-top:50px"><span style="font-size:84px;">403</span></h1>
+        <h3 style="text-align:center;">OOPS! ACCESS FORBIDDEN!</h3>
+        <p style="text-align:center;margin-bottom:50px">
             <a href="<%= request.url %>"><%= request.url %></a><br />
             Read, Execute and Write access forbidden.
             <br /><br />navigate back to <a href="/">Home</a>
-            </p>
-        </div>
+        </p>
     </div>
 </div>

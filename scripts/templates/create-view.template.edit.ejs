@@ -1,39 +1,42 @@
-<?
-  var modelVariable = modelName.toLowerCase();
-  var basePath = modelName.toLowerCase();
-  var basePathPlural = controllerName.toLowerCase();
-  var addIncl = namespace ? "../" : "" ;
-  var addView = namespace ? namespace + "/" : "" ;
-  var nsPath = namespace ? namespace + "_" : "" ;
-?>
 <% layout('../default_layout') -%>
+<?
+var modelVariable = modelName.toLowerCase();
+var basePath = modelName.toLowerCase();
+var basePathPlural = controllerName.toLowerCase();
+var addIncl = namespace && namespace !== "" ? "../" : "" ;
+var addView = namespace && namespace !== "" ? namespace + "/" : "" ;
+var nsPath = namespace && namespace !== "" ? namespace + "_" : "" ;
+?>
 <!-- edit page -->
-<!-- page breadcrumb -->
-<ul class="breadcrumb">
-    <li><a href="/<?= nsPath ?>">Home</a> <span class="divider">/</span></li>
-    <li><a href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>"><?= controllerName ?></a> <span class="divider">/</span></li>
-    <li class="active"><a href="#"><%- title %></a></li>
-</ul>
-<%- partial('../messages') %>
-<!-- page title -->
-<div class="page-header">
-    <h1><%- title %></h1>
-</div>
-
-<!-- form -->
-<form method="post" action="<%- pathTo.update_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>) %>" class="form-horizontal">
-    <input type="hidden" name="_method" value="put"/>
-    <input type="hidden" name="_csrf" value="<%= session._csrf %>" />
-    <%- partial('form',{ locals : { <?= modelVariable ?> : <?= modelVariable ?> } }) %>
-    <div class="form-actions">
-        <button class="btn btn-primary" type="submit" value="Update">
-            <i class="icon-ok icon-white"></i>
-            Save
-        </button>
-        <a class="btn" href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>">
-            <i class="icon-list-alt"></i>
-            Cancel
-        </a>
+<div id="content" class="container">
+    <!-- page breadcrumb -->
+    <ul class="breadcrumb">
+        <li><a href="/<?= nsPath ?>"><i class="icon-home"></i> Home</a></li>
+        <li><a href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>"><?= controllerName ?></a></li>
+        <li class="active"><a href="#"><%- title %></a></li>
+    </ul>
+    <!-- page title -->
+    <div class="page-header">
+        <h1><%- title %></h1>
     </div>
-</form>
+    <!-- form -->
+    <form method="post" action="<%- pathTo.update_<?= nsPath ?><?= modelVariable ?>(<?= modelVariable ?>) %>" class="form-horizontal" role="form">
+        <input type="hidden" name="_method" value="put"/>
+        <input type="hidden" name="_csrf" value="<%= session._csrf %>" />
+        <%- partial('form',{ locals : { <?= modelVariable ?> : <?= modelVariable ?> } }) %>
+        <div class="well">
+            <div  class="col-lg-12">
+                <button class="btn btn-primary" type="submit" value="Update">
+                    <i class="icon-ok icon-white"></i>
+                    Save
+                </button>
+                <a class="btn btn-default" href="<%- pathTo.<?= nsPath ?><?= basePathPlural ?>() %>">
+                    <i class="icon-tasks"></i>
+                    Cancel
+                </a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </form>
+</div>
 <!-- end edit page -->

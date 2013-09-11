@@ -9,4 +9,5 @@
 
 module.exports = function routes(map) {
        map.root("apps#index");
+       map.all("/login","apps#login");
 };

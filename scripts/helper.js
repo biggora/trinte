@@ -36,7 +36,6 @@ module.exports.writeRoute = function writeRoute(options, appPath) {
         if(acrtf.length) {
             acrtf.forEach(function(acrt){
                 if(/routes\(map\)/gim.test(acrt)) {
-                    console.log(acrt);
                     nacrtf.push(acrt);
                     tpl.forEach(function(tp){
                         nacrtf.push(tp);

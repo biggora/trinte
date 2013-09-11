@@ -43,7 +43,7 @@ exports.render = function(skip,limit,total,path){
     result += "</ul>";
     result += "<span class='pull-right' style='font-size:14px;margin-top:5px'>" + (skip + 1) + " to " + (skip + limit) + " of " + (total) + "</span>";
 
-    return "<div class='pagination'><ul>" + result + "</div>";
+    return "<div><ul class='pagination'>" + result + "</div>";
 
 };
 

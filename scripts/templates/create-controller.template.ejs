@@ -15,9 +15,9 @@
   var modelVariable = modelName.toLowerCase();
   var basePath = modelName.toLowerCase();
   var basePathPlural = controllerName.toLowerCase();
-  var addIncl = namespace ? "../" : "" ;
-  var addView = namespace ? namespace + "/" : "" ;
-  var nsPath = namespace ? namespace + "_" : "" ;
+  var addIncl = namespace && namespace !== "" ? "../" : "" ;
+  var addView = namespace && namespace !== "" ? namespace + "/" : "" ;
+  var nsPath = namespace && namespace !== "" ? namespace + "_" : "" ;
 ?>
 var pager = require('<?= addIncl ?>../lib/pager.js'),
 ViewTemplatePath = '<?= addView ?><?= basePathPlural ?>';
@@ -99,7 +99,7 @@ module.exports = {
             var format = req.params.format || '';
             <?= modelName ?>.findById(req.params.id, function(err, <?= modelVariable ?>) {
 
-            if(err) return next(err);
+            if(err) { return next(err); }
 
             switch (format.toString()) {
                 case 'json':
@@ -123,7 +123,10 @@ module.exports = {
     'new': function(req, res, next) {
         var title = "New <?= modelName ?>";
         var <?= modelVariable ?> = new <?= modelName ?>();
-        res.render(ViewTemplatePath + "/new",{<?= modelVariable ?>:<?= modelVariable ?>,title:title});
+        res.render(ViewTemplatePath + "/new",{
+              <?= modelVariable ?>:<?= modelVariable ?>,
+              title:title
+        });
     },
 
     /**
@@ -138,7 +141,10 @@ module.exports = {
             var title = "Edit <?= modelName ?>";
             <?= modelName ?>.findById(req.params.id, function(err, <?= modelVariable ?>) {
             if(err) return next(err);
-            res.render(ViewTemplatePath + "/edit",{<?= modelVariable ?>:<?= modelVariable ?>,title:title});
+            res.render(ViewTemplatePath + "/edit",{
+                 <?= modelVariable ?>:<?= modelVariable ?>,
+                 title:title
+            });
         });
     },
 

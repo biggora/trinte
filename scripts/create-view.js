@@ -39,6 +39,8 @@ exports.execute = function (params, appPath, options) {
             fs.createReadStream(coreView + '/errors_layout.ejs').pipe(fs.createWriteStream(nvwPath + '/errors_layout.ejs'));
             fs.createReadStream(coreView + '/messages.ejs').pipe(fs.createWriteStream(nvwPath + '/messages.ejs'));
             fs.createReadStream(coreView + '/login.ejs').pipe(fs.createWriteStream(nvwPath + '/login.ejs'));
+            fs.createReadStream(coreView + '/footer.ejs').pipe(fs.createWriteStream(nvwPath + '/footer.ejs'));
+            fs.createReadStream(coreView + '/header.ejs').pipe(fs.createWriteStream(nvwPath + '/header.ejs'));
             wrench.copyDirSyncRecursive(coreView + '/errors', nvwPath + '/errors');
 
             try {

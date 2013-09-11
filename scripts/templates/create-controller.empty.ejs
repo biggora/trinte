@@ -15,9 +15,9 @@
   var modelVariable = modelName.toLowerCase();
   var basePath = modelName.toLowerCase();
   var basePathPlural = controllerName.toLowerCase();
-  var addIncl = namespace ? "../" : "" ;
-  var addView = namespace ? namespace + "/" : "" ;
-  var nsPath = namespace ? namespace + "_" : "" ;
+  var addIncl = namespace && namespace !== "" ? "../" : "" ;
+  var addView = namespace && namespace !== "" ? namespace + "/" : "" ;
+  var nsPath = namespace && namespace !== "" ? namespace + "_" : "" ;
 ?>
 var ViewTemplatePath = '<?= addView ?><?= basePathPlural ?>';
 

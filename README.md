@@ -1,12 +1,17 @@
 [![Build Status](https://travis-ci.org/biggora/trinte.png?branch=master)](https://travis-ci.org/biggora/trinte)
 # TrinteJS Javascript MVC Framework for NodeJS
 
-A [MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) boilerplate for [ExpressJS](http://expressjs.com/) backed by [CaminteJS](http://camintejs.com/) and [Bootstrap](http://twitter.github.com/bootstrap/index.html),
-based on [Express MVC Bootstrap](https://github.com/cliftonc/express-mvc-bootstrap).
+A [MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) boilerplate for [ExpressJS](http://expressjs.com/) backed by [CaminteJS](http://camintejs.com/) and [Bootstrap](http://twitter.github.com/bootstrap/index.html).
 
 ## Description
 
-This application help to create a Webapp [MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) `style` in few minutes.
+This application help to create a Webapp [MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) `style` in few minutes. TrinteJS tuned for ExpressJS 3.x, jQuery 2.x and Twitter Bootstrap 3.x.
+
+## Dependencies
+
+- [Express 3.x](http://expressjs.com/).
+- [jQuery 2.x](http://jquery.com/).
+- [Twitter Bootstrap 3.x](http://getbootstrap.com/).
 
 ## Installation
 Installation is done using the NodeJS Package Manager (npm). If you don't have npm installed on your system you can download it from [npmjs.org](http://npmjs.org/)

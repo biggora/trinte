@@ -1,27 +1,28 @@
-<?
-  var modelVariable = modelName.toLowerCase();
-  var basePath = modelName.toLowerCase();
-  var basePathPlural = controllerName.toLowerCase();
-  var addIncl = namespace ? "../" : "" ;
-  var addView = namespace ? namespace + "/" : "" ;
-  var nsPath = namespace ? namespace + "_" : "" ;
-?>
 <% layout('../default_layout') -%>
-<!-- page breadcrumb -->
-<ul class="breadcrumb">
-    <li><a href="/<?= nsPath ?>">Home</a> <span class="divider">/</span></li>
-    <li class="active"><a href="#"><%- title %></a></li>
-</ul>
-<%- partial('../messages') %>
-<!-- page title -->
-<div class="page-header">
-    <h1><%- title %></h1>
-</div>
-
-<!-- page content here -->
-<div class="row">
-    <div class="span12">
-        <?= basePathPlural ?>#<?= controllerAction ?>
+<?
+var modelVariable = modelName.toLowerCase();
+var basePath = modelName.toLowerCase();
+var basePathPlural = controllerName.toLowerCase();
+var addIncl = namespace && namespace !== "" ? "../" : "" ;
+var addView = namespace && namespace !== "" ? namespace + "/" : "" ;
+var nsPath = namespace && namespace !== "" ? namespace + "_" : "" ;
+?>
+<!-- action page -->
+<div id="content" class="container">
+    <!-- page breadcrumb -->
+    <ul class="breadcrumb">
+        <li><a href="/<?= nsPath ?>"><i class="icon-home"></i> Home</a></li>
+        <li class="active"><a href="#"><%- title %></a></li>
+    </ul>
+    <!-- page title -->
+    <div class="page-header">
+        <h1><%- title %></h1>
+    </div>
+    <!-- page content here -->
+    <div class="row">
+        <div class="col-lg-12">
+            <?= basePathPlural ?>#<?= controllerAction ?>
+        </div>
     </div>
 </div>
-<!-- end default page -->
+<!-- end action page -->
