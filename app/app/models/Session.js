@@ -18,13 +18,13 @@
  **/
 module.exports = function(schema) {
     var Session = schema.define('session', {
-        data: {type: schema.JSON},
+        sid: {type: String, index: true, unique: true},
+        session_data: { type: schema.JSON },
         expires: {type: Date, index: true},
         expireAfterSeconds: {type: Number, index: true},
-        ip: {type: String},
+        ip: {type: String, 'default': 'localhost'},
         loggedIn: {type: Number, index: true, 'default': 0},
-        sid: {type: String, index: true, unique: true},
-        user: {type: String, index: true, 'default': 'Gueast'}
+        user: {type: String, index: true, 'default': 'Guest'}
     });
     return Session;
 };

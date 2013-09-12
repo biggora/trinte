@@ -88,18 +88,24 @@ module.exports = function(connect) {
      * @api public
      */
     CaminteStore.prototype.set = function(sid, session, callback) {
-        var self = this;
+        var self = this, today = new Date();
         try {
-            var new_session = {sid: sid, session_data: session};
+            // expireAfterSeconds
+            var new_session = {
+                sid: sid,
+                session_data: session
+            };
             if (session && session.cookie) {
                 if (session.cookie._expires) {
                     new_session.expires = new Date(session.cookie._expires);
                 } else {
-                    var today = new Date(),
-                            sessLifeTime = self.options.maxAge || (1000 * 60 * 60 * 24 * 14);
+                    var sessLifeTime = self.options.maxAge || (1000 * 60 * 60 * 24 * 14);
                     new_session.expires = new Date(today.getTime() + sessLifeTime);
                 }
             }
+            var eXseconds = new Date(new_session.expires).getTime();
+            var cXseconds = today.getTime();
+            new_session.expireAfterSeconds = Math.round((eXseconds - cXseconds) / 1000);
 
             Session.updateOrCreate({
                 sid: sid
