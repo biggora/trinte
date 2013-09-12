@@ -10,7 +10,7 @@ var envConf = require('../config/environment');
 var config = require('../config/configuration');
 var database = require('../config/database');
 var middleware = require('../config/middleware');
-var sessions = require('../config/session');
+var session = require('../config/session');
 var Resource = require('./router').Resource;
 var locales = require('./locales');
 var util = require('util');
@@ -66,20 +66,22 @@ exports.init = function init(app, root) {
     var trinte = new TrinteJS(app, root || process.cwd());
     var map = new Resource(app);
 
-    configureApp(trinte);
     bootModels(trinte);
 
     trinte.on('models_loaded', function() {
-        require('../app/helpers/ModelsHelper');
-        var ApplicationHelper = require('../app/helpers/ApplicationHelper');
-        for (var key in ApplicationHelper) {
-            global[key] = ApplicationHelper[key];
-        }
-        var ViewsHelper = require('../app/helpers/ViewsHelper');
-        app.locals(ViewsHelper);
-        trinte.emit('helpers_loaded');
-        if (config.debug)
-            console.log('helpers_loaded');
+        configureApp(trinte, function() {
+            require('../app/helpers/ModelsHelper');
+            var ApplicationHelper = require('../app/helpers/ApplicationHelper');
+            for (var key in ApplicationHelper) {
+                global[key] = ApplicationHelper[key];
+            }
+            var ViewsHelper = require('../app/helpers/ViewsHelper');
+            app.locals(ViewsHelper);
+            trinte.emit('helpers_loaded');
+            if (config.debug) {
+                console.log('helpers_loaded');
+            }
+        });
     });
 
     trinte.on('helpers_loaded', function() {
@@ -202,8 +204,9 @@ function bootModel(trinte, schema, file) {
  * Run app configutators in `conf/` and `conf/env`.
  * Also try to monkey patch ejs and jade. **weird**
  * @param {TrinteJS} trinte - trinte app descriptor.
+ * @param {Function} callback
  */
-function configureApp(trinte) {
+function configureApp(trinte, callback) {
     var app = trinte.app;
     var root = trinte.root;
 
@@ -216,7 +219,7 @@ function configureApp(trinte) {
     }));
     app.use(express.methodOverride());
     app.use(express.cookieParser(config.session.secret));
-    sessions(app, express);
+    session(app, express);
 
     // Before router to enable dynamic routing
     app.use(express['static'](root + '/public'));
@@ -278,4 +281,5 @@ function configureApp(trinte) {
     });
     // Initialize routes params
     require(root + '/config/params')(app);
+    callback(app);
 }
