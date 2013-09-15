@@ -37,7 +37,7 @@ module.exports = function(connect) {
         if (options.clear_interval > 0) {
             self.clear_interval = setInterval(function() {
                 Session.remove({
-                    Where: {
+                    where: {
                         expires: {
                             lt: new Date()
                         }
@@ -106,6 +106,8 @@ module.exports = function(connect) {
             var eXseconds = new Date(new_session.expires).getTime();
             var cXseconds = today.getTime();
             new_session.expireAfterSeconds = Math.round((eXseconds - cXseconds) / 1000);
+            new_session.logedIn = session.logedIn || (session.user || {}).logedIn || 0;
+            new_session.user = (session.user && (session.user || {}).username)?session.user.username:"Guest";
 
             Session.updateOrCreate({
                 sid: sid

@@ -23,7 +23,7 @@ module.exports = function(schema) {
         expires: {type: Date, index: true},
         expireAfterSeconds: {type: Number, index: true},
         ip: {type: String, 'default': 'localhost'},
-        loggedIn: {type: Number, index: true, 'default': 0},
+        logedIn: {type: Number, index: true, 'default': 0},
         user: {type: String, index: true, 'default': 'Guest'}
     });
     return Session;
