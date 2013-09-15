@@ -14,5 +14,5 @@ exports.boot = function () {
 // allow normal node loading if appropriate
 if (!module.parent) {
     exports.boot().listen(process.env.PORT);
-    console.log("Express server %s listening on port %d", express.version || '3', process.env.PORT);
+    console.log("TrinteJS server listening on port %d!", process.env.PORT);
 }

@@ -96,10 +96,11 @@ function runLauncher(appLauncher) {
         case 'create-app':
         case 'init':
             appLauncher.appname = args.shift();
+            appLauncher.theme = args.shift() || 'violet';
             if(typeof appLauncher.appname !== 'undefined') {
                 exec(ucmd, function (error, stdout, stderr) {
                     appLauncher.author = stdout;
-                    createApplication(path,appLauncher.appname,appLauncher.author);
+                    createApplication(path,appLauncher.appname,appLauncher.author,appLauncher.theme);
                     console.log('   \x1b[1mCreate Application ' + appLauncher.appname + ': \x1b[0m ' + path + '/' + appLauncher.appname);
                 });
             } else {
@@ -269,7 +270,7 @@ function runCluster(port) {
  * @param {String} path
  * @param {String} appname
  */
-function createApplicationAt(path, appname, author) {
+function createApplicationAt(path, appname, author, theme) {
     var appdir = path + '/' + appname;
     if(author != "") {
          author = author.replace(/^\s+|\s+$/g, '');
@@ -281,6 +282,14 @@ function createApplicationAt(path, appname, author) {
     console.log('   \x1b[36mCopied\x1b[0m : ' + bootstrapPath + '/public to ' + appdir + '/public');
     wrench.copyDirSyncRecursive(bootstrapPath + '/tests', appdir + '/tests');
     console.log('   \x1b[36mCopied\x1b[0m : ' + bootstrapPath + '/tests to ' + appdir + '/tests');
+
+    if(!fs.existsSync(bootstrapPath + '/scripts/themes/' + theme) || !theme) {
+        theme = 'violet';
+    }
+    theme = theme.toLowerCase();
+    console.log('   \x1b[36mTheme\x1b[0m : ' + theme.toLowerCase());
+    copy(bootstrapPath + '/scripts/themes/' + theme + '/bootstrap.css', appdir + '/public/css/bootstrap.css');
+    copy(bootstrapPath + '/scripts/themes/' + theme + '/bootstrap.min.css', appdir + '/public/css/bootstrap.min.css');
 
     copy(bootstrapPath + '/lib/inflection.js', appdir + '/tools/inflection.js');
     copy(bootstrapPath + '/app-cluster.js', appdir + '/app-cluster.js');
@@ -316,15 +325,15 @@ function createApplicationAt(path, appname, author) {
     console.log('   \x1b[1mNext step install dependencies: \r\n   cd ' + appdir + ' && npm -l install\x1b[0m ');
 }
 
-function createApplication(path, appname, author) {
+function createApplication(path, appname, author, theme) {
     emptyDirectory(path + '/' + appname, function (empty) {
         if (empty) {
-            createApplicationAt(path, appname, author);
+            createApplicationAt(path, appname, author, theme);
         } else {
             confirm('\r\n   This will over-write the existing application, \x1b[1mcontinue (y/n)? \x1b[0m', function (ok) {
                 if (ok) {
                     process.stdin.destroy();
-                    createApplicationAt(path, appname, author);
+                    createApplicationAt(path, appname, author, theme);
                 } else {
                     abort('Aborting');
                 }

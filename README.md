@@ -23,7 +23,8 @@ To install trinte:
 * [Get started!](#start)
 * [Usage overview](#usage)
   * [Command format](#commands)
-  * [Create and initialize app](#create-app)
+  * [Create and initialize Application](#create-app)
+  * [Create Application with Theme](#create-theme)
   * [Creates a scaffold](#scaffold)
   * [Creates a scaffold with Namespace](#namespace)
   * [Creates a Model](#model)
@@ -69,16 +70,23 @@ To install trinte:
 
 <a name="start"></a>
 <a name="create-app"></a>
-###  Create and initialize app
+###  Create and initialize Application
 
       $ trinte create-app HelloWorld    # Create application
       $ cd HelloWorld && npm -l install # intall dependencies
 
       # generate scaffold
       $ trinte script generate-all User name email password active
-      $ trinte                          # running server (default in cluster mode)
+      $ trinte server                   # running server (default in cluster mode)
 
   - Browse your application to [http://localhost:3000](http://localhost:3000)
+
+<a name="create-theme"></a>
+###  Create Application with Theme
+Available 7 themes `default`, `black`, `blue`, `green`, `orange`, `pink`, `violet`. Default theme `violet`.
+
+      $ trinte init AppName theme
+
 
 <a name="scaffold"></a>
 ### Shows help:

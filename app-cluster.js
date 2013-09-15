@@ -10,7 +10,7 @@ var app;
  * @param {Number} port
  * @param {Mixed} path
  */
-exports.boot = function(port, path){
+exports.boot = function(port) {
 
     //Create our express instance
     app = require('./app').boot();
@@ -21,11 +21,18 @@ exports.boot = function(port, path){
             cluster.fork();
         }
 
-        cluster.on('death', function(worker) {
-            console.log('worker ' + worker.pid + ' died');
+        cluster.on('online', function(worker) {
+            console.log('Worker ' + worker.process.pid + ' is online.');
         });
+        cluster.on('death', function(worker) {
+            console.log('worker ' + worker.process.pid + ' died');
+        });
+        cluster.on('exit', function(worker, code, signal) {
+            console.log('worker ' + worker.process.pid + ' died.');
+        });
+
     } else {
-        console.log("worker: %s", process.env.NODE_WORKER_ID || "");
+        console.log("worker: %s", process.pid || "");
         app.listen(parseInt(port));
     }
 };
