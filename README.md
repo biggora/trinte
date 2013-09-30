@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/biggora/trinte.png?branch=master)](https://travis-ci.org/biggora/trinte)
+[![Dependency Status](https://gemnasium.com/biggora/trinte.png)](https://gemnasium.com/biggora/trinte)
 [![NPM version](https://badge.fury.io/js/trinte.png)](http://badge.fury.io/js/trinte)
 # TrinteJS Javascript MVC Framework for NodeJS
 
