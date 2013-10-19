@@ -2,7 +2,10 @@
  * Default configuration manager
  * Inject app and express reference
  */
-
+/**
+ * @param {Object} app
+ * @param {Object} express
+ */
 module.exports = function(app,express) {
 
     // DEVELOPMENT

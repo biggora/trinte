@@ -3,7 +3,6 @@
  */
 var format = require('util').format;
 
-
 /**
  * Expose `flash()` function on requests.
  * @param {Object} options

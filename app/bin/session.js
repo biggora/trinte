@@ -54,7 +54,6 @@ module.exports = function(connect) {
     /**
      * Inherit from `Store`.
      */
-
     CaminteStore.prototype.__proto__ = Store.prototype;
     /**
      * Attempt to fetch session by the given `sid`.

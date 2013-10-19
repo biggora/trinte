@@ -20,7 +20,6 @@ var flash = require('./flash');
 var helper = require('./helper');
 var engine = require('ejs-locals');
 
-
 function TrinteJS(app, root) {
     app.trinte = this;
     this.__defineGetter__('rootModule', function() {
