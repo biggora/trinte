@@ -7,6 +7,7 @@
 /**
  * Library version.
  */
+
 exports.version = '0.0.3';
 
 /**

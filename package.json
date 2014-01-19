@@ -1,7 +1,7 @@
 {
   "name" : "trinte",
   "description": "TrinteJS - MVC framework for NodeJS",
-  "version": "0.1.3-1",
+  "version": "0.2.0",
   "keywords": [
     "app",
     "mvc",
@@ -34,28 +34,15 @@
     "npm": ">=1.0"
   },
   "dependencies": {
-    "should": ">=1.2.0",
-    "wrench": ">=1.4.4",
-    "express": ">=3.0.0",
-    "ejs": ">=0.8.0",
-    "caminte": ">=0.0.4",
-    "ejs-locals": ">=1.0.2",
-    "express-useragent": ">=0.0.7"
+    "trinte-creator": "0.0.x"
   },
   "devDependencies": {
-    "express": ">=3.0.0",
-    "connect": ">=2.5.0",
-    "ejs": ">=0.8.0",
-    "caminte": "latest",
-    "methods": ">=0.0.1",
-    "express-useragent": "latest"
   },
   "optionalDependencies": {
-    "ejs-locals": ">=1.0.2"
   },
   "bin": {
-    "trinte": "./bin/trinte",
-    "trintejs": "./bin/trinte"
+    "trinte": "./lib/trinte.js",
+    "trintejs": "./lib/trinte.js"
   },
   "license": "MIT"
 }

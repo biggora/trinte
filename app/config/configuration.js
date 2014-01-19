@@ -13,7 +13,7 @@ module.exports = {
     session: {
         maxAge : 8640000,
         key : "trinte",
-        secret : "Web-based Application",
+        secret : "feb723690aeccfa92ca9ee6fdf06e55a",
         clear_interval: 60
     },
     parser : {

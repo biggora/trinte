@@ -9,8 +9,9 @@
 
 var useragent = require('express-useragent');
 
-module.exports = function (app, express) {
-    app.configure(function () {
+module.exports = function(app, express) {
+    app.configure(function() {
+        app.use(express.csrf());
         app.use(useragent.express());
     });
 };

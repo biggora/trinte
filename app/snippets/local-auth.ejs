@@ -1,0 +1,69 @@
+/**
+ *  Local Authorization manager
+ *  
+ *
+ *  Created by init script
+ *  App based on TrinteJS MVC framework
+ *  TrinteJS homepage http://www.trintejs.com
+ **/
+ 
+var auth = require( 'trinte-auth' );
+var config = require( '../configuration' );
+var passport = require( 'passport' );
+var LocalStrategy = require( 'passport-local' ).Strategy;
+    
+/**
+ * LocalStrategy
+ */
+passport.use( new LocalStrategy( {
+        usernameField: 'email',
+        passwordField: 'password'
+    },
+    function(username, password, done) {
+        // your code here
+        return done( null, null );
+    }
+) );
+
+/**
+ * LocalStrategy
+ */
+passport.serializeUser( function(user, done) {
+    done( null, user.id );
+} );
+
+/**
+ * LocalStrategy
+ */
+passport.deserializeUser( function(id, done) {
+        // your code here
+        done( err, user );
+} );
+
+/**
+ * localAuth
+ * @param {String} path
+ */
+auth.localAuth = function localAuth(path) {
+    return passport.authenticate( 'local', {
+        successReturnToOrRedirect: '/',
+        failureRedirect: path || '/login',
+        failureFlash: true,
+        successFlash: 'Welcome!'
+    } );
+};
+
+/**
+ * isAdmin
+ * @param {String} path
+ */
+auth.isAdmin = function isAdmin(path) {
+    return  function(req, res, next){
+    // your code here
+          next();
+    };
+};
+
+auth.passport = passport;
+
+module.exports = auth;

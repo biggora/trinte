@@ -1,4 +1,4 @@
-var inflection = require('../tools/inflection');
+var inflection = require('../app/lib/inflection');
 var fs = require('fs');
 var path = require('path');
 var fileExists = fs.existsSync || path.exists;
@@ -22,6 +22,7 @@ function Resource(app) {
     this.pathTo = {};
     this.dump = [];
     this.middlewareStack = [];
+    this.middleware = [];
 }
 
 /**
@@ -36,8 +37,11 @@ function Resource(app) {
 
 function TrinteBridge(namespace, controller, action) {
     var responseHandler;
+    if (typeof action === 'function') {
+        return action;
+    }
     try {
-        if(/\//.test(controller)) {
+        if (/\//.test(controller)) {
             var cnts = controller.split('/');
             namespace = cnts[0] + '/';
             controller = cnts[1];
@@ -48,16 +52,16 @@ function TrinteBridge(namespace, controller, action) {
         var ctlFileB = './../app/controllers/' + namespace + controller + 'esController';
         var ctlFileC = './../app/controllers/' + namespace + controller + 'sesController';
 
-        if(fileExists(path.resolve(__dirname, ctlFileA) + '.js')) {
-            responseHandler =  require(ctlFileA)[action];
-        } else if(fileExists(path.resolve(__dirname, ctlFileB) + '.js')) {
-            responseHandler =  require(ctlFileB)[action];
+        if (fileExists(path.resolve(__dirname, ctlFileA) + '.js')) {
+            responseHandler = require(ctlFileA)[action];
+        } else if (fileExists(path.resolve(__dirname, ctlFileB) + '.js')) {
+            responseHandler = require(ctlFileB)[action];
         } else {
-            responseHandler =  require(ctlFileC)[action];
+            responseHandler = require(ctlFileC)[action];
         }
-    } catch(e) {
-         console.log('Route Action: ' + action);
-         console.log(e);
+    } catch (e) {
+        // console.log( 'Route Action: ' + action );
+        console.log(e);
     }
 
     return responseHandler || function (req, res) {
@@ -107,7 +111,7 @@ Resource.prototype.urlHelperName = function (path, action) {
         } else if (action === "destroyall") {
             token = token.pluralize() || token;
         }
-        switch(action) {
+        switch (action) {
             case "create":
             case "show":
             case "destroy":
@@ -118,14 +122,14 @@ Resource.prototype.urlHelperName = function (path, action) {
                 helperName.unshift("destroy");
                 break;
             case "index":
-                if(/:from/.test(nextToken)) {
+                if (/:from/.test(nextToken)) {
                     helperName.unshift("paging");
                 }
                 break;
             default:
         }
-        helperName = helperName.filter(function(el,i,a){
-            if(i===a.indexOf(el))return 1;
+        helperName = helperName.filter(function (el, i, a) {
+            if (i === a.indexOf(el))return 1;
             return 0;
         });
         helperName.push(token);
@@ -150,6 +154,8 @@ Resource.prototype.root = function (handler, middleware, options) {
         if (typeof handler === 'string') {
             controller = handler.split('#')[0];
             action = handler.split('#')[1];
+        } else if (typeof handler === 'function') {
+            action = handler;
         }
 
         var path;
@@ -162,7 +168,7 @@ Resource.prototype.root = function (handler, middleware, options) {
 
         // only accept functions in before filter when it's an array
         if (middleware instanceof Array) {
-            var before_filter_functions = middleware.filter(function(filter) {
+            var before_filter_functions = middleware.filter(function (filter) {
                 return (typeof filter === 'function');
             });
             middleware = before_filter_functions.length > 0 ? before_filter_functions : null;
@@ -176,13 +182,28 @@ Resource.prototype.root = function (handler, middleware, options) {
         if (!options) {
             options = {};
         }
-
         path = options.collection ? path.replace(/\/:.*_id/, '') : path;
 
         var args = [path];
         if (middleware) {
             args = args.concat(this.middlewareStack.concat(middleware));
+        } else if (this.middlewareStack.length) {
+            args = args.concat(this.middlewareStack);
         }
+        if (typeof controller === 'undefined' && typeof  action === 'undefined') {
+            if (handler instanceof Array) {
+                middleware = [];
+                for (var i in handler) {
+                    if (i < (handler.length - 2)) {
+                        middleware.push(handler[i]);
+                    } else {
+                        action = handler[i];
+                    }
+                }
+                args = args.concat(this.middlewareStack.concat(middleware));
+            }
+        }
+
         args = args.concat(this.bridge(this.ns, controller, action, options));
 
         this.dump.push({
@@ -196,7 +217,7 @@ Resource.prototype.root = function (handler, middleware, options) {
         this.addPath(path, action, options.as);
         this.app[method].apply(this.app, args);
 
-        if(method.toLowerCase() === 'get' && action === 'index') {
+        if (method.toLowerCase() === 'get' && action === 'index') {
             /(.*).:format?/i.test(path);
             var pagingPath = RegExp.$1 + '/:from-:to.:format?';
             // options.as = 'paging_' + controller;
@@ -244,7 +265,6 @@ Resource.prototype.addPath = function (templatePath, action, helperName) {
     }
 
     helperName = helperName || this.urlHelperName(templatePath, action);
-
     // already defined? not need to redefine
     if (helperName in this.pathTo) return;
 
@@ -333,7 +353,10 @@ Resource.prototype.resources = function (name, params, actions) {
         actions = params;
         params = {};
     }
-
+    if (!params.middleware) {
+        params.middleware = [];
+    }
+    params.middleware = this.middlewareStack.concat(params.middleware);
     params.appendFormat = ('appendFormat' in params) ? params.appendFormat : true;
 
     // If resource uses the path param, it's subroutes should be
@@ -353,7 +376,6 @@ Resource.prototype.resources = function (name, params, actions) {
 
     // but first, create subroutes
     if (typeof actions === 'function') {
-
         if (params.singleton) {
             this.subroutes(prefix, actions); // singletons don't need to specify an id
         } else {
@@ -389,16 +411,16 @@ Resource.prototype.resources = function (name, params, actions) {
                     }
                 });
             }
-
-            switch(action) {
-                case 'edit':
-                case 'show':
-                case 'new':
-                case 'destroy':
-                    name = name.singularize();
-                    break;
-            }
-
+            /*
+             switch(action) {
+             case 'edit':
+             case 'show':
+             case 'new':
+             case 'destroy':
+             name = name.singularize();
+             break;
+             }
+             */
             // params.path setting allows to override common path component
             var effectivePath = (params.path || name) + path;
             var controller = params.controller || name;
@@ -411,34 +433,34 @@ Resource.prototype.resources = function (name, params, actions) {
                 controller + '#' + action,
                 skipMiddleware ? [] : params.middleware,
                 getParams(action, params)
-                );
+            );
         }.bind(this))(action);
     }
 
     // calculate set of routes based on params.only and params.except
     function getActiveRoutes(params) {
         var activeRoutes = {},
-        availableRoutes =
-        {
-            'index':   'GET     /',
-            'create':  'POST    /',
-            'new':     'GET     /new',
-            'edit':    'GET     /:id/edit',
-            'destroy': 'DELETE  /:id',
-            'update':  'PUT     /:id',
-            'show':    'GET     /:id',
-            'destroyall': 'DELETE  /'
-        },
-        availableRoutesSingleton =
-        {
-            'show':    'GET     /show',
-            'create':  'POST    /',
-            'new':     'GET     /new',
-            'edit':    'GET     /edit',
-            'destroy': 'DELETE  /',
-            'update':  'PUT     /',
-            'destroyall': 'DELETE  /'
-        };
+            availableRoutes =
+            {
+                'index': 'GET     /',
+                'create': 'POST    /',
+                'new': 'GET     /new',
+                'edit': 'GET     /:id/edit',
+                'destroy': 'DELETE  /:id',
+                'update': 'PUT     /:id',
+                'show': 'GET     /:id',
+                'destroyall': 'DELETE  /'
+            },
+            availableRoutesSingleton =
+            {
+                'show': 'GET     /show',
+                'create': 'POST    /',
+                'new': 'GET     /new',
+                'edit': 'GET     /edit',
+                'destroy': 'DELETE  /',
+                'update': 'PUT     /',
+                'destroyall': 'DELETE  /'
+            };
 
         if (params.singleton) {
             availableRoutes = availableRoutesSingleton;
@@ -478,7 +500,7 @@ Resource.prototype.resources = function (name, params, actions) {
 
     function getParams(action, params) {
         var p = {};
-        var plural = action === 'index' || action === 'create';
+        var plural = true;// action === 'index' || action === 'create';
         if (params.as) {
             p.as = plural ? params.as : params.as.singularize();
             p.as = self.urlHelperName(self.globPath + p.as);
@@ -508,7 +530,7 @@ Resource.prototype.resources = function (name, params, actions) {
  * @param {Function} actions
  * @returns {Resource}
  */
-Resource.prototype.resource = function(name, params, actions) {
+Resource.prototype.resource = function (name, params, actions) {
     var self = this;
     // params are optional
     params = params || {};
@@ -543,6 +565,7 @@ Resource.prototype.namespace = function (name, options, subroutes) {
     if (options && typeof options.middleware === 'function') {
         options.middleware = [options.middleware];
     }
+
     // store previous ns
     var old_ns = this.ns, oldGlobPath = this.globPath;
     // add new ns to old (ensure tail slash present)
@@ -552,9 +575,11 @@ Resource.prototype.namespace = function (name, options, subroutes) {
         this.middlewareStack = this.middlewareStack.concat(options.middleware);
     }
     subroutes(this);
+
     if (options && options.middleware) {
         options.middleware.forEach([].pop.bind(this.middlewareStack));
     }
+
     this.ns = old_ns;
     this.globPath = oldGlobPath;
 };

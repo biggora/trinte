@@ -1,14 +1,20 @@
 /**
  * Module dependencies.
  */
+var crypto = require('crypto');
 
 exports.init = function() {
     return function(req, res, next) {
         var session = req.session;
-        res.locals({
+        var locals = {
             controllers: [],
             session: session,
             request: req,
+            headers: {
+                feed : {},
+                icons: '',
+                open_graph : {}
+            },
             formVal: function(val) {
                 return typeof val === 'undefined' ? "" : val;
             },
@@ -198,8 +204,105 @@ exports.init = function() {
                 }
                 var iso = now.replace('T', ' ').split('.');
                 return iso[0];
+            },
+            open_graph: function(data) {
+                var head = '';
+                if (data && typeof data === 'object') {
+                    head = (Object.keys(data).length)?'<!-- Open Graph -->\n':'';
+                    if (data.image) {
+                        head += '<meta property="og:image" content="' + data.image + '" />\n';
+                    }
+                    if (data.title) {
+                        head += '<meta property="og:title" content="' + data.title + '" />\n';
+                    }
+                    if (data.site_name) {
+                        head += '<meta property="og:site_name" content="' + data.site_name + '" />\n';
+                    }
+                    if (data.description) {
+                        head += '<meta property="og:description" content="' + data.description + '" />\n';
+                    }
+                    if (data.url) {
+                        head += '<meta property="og:url" content="' + data.url + '" />\n';
+                    }
+                    if (data.type) {
+                        head += '<meta property="og:type" content="' + data.type + '" />\n';
+                    }
+                    if (data.locale) {
+                        head += '<meta property="og:locale" content="' + data.type + '" />\n';
+                    }
+                    if (data.published_time) {
+                        head += '<meta property="article:published_time" content="' + data.published_time + '">\n';
+                    }
+                    if (data.modified_time) {
+                        head += '<meta property="article:modified_time" content="' + data.modified_time + '">\n';
+                    }
+                }
+                return head;
+            },
+            site_icons: function(data) {
+                var head = '';
+                if (!data) {
+                    data = {
+                        icon: '/favicon.ico'
+                    };
+                } else if (typeof data === 'string') {
+                    data = {
+                        icon: data
+                    };
+                }
+                head = '<!-- Icons -->\n';
+                head += '<link rel="shortcut icon" href="' + (data.icon ? data.icon : "/favicon.ico") + '">\n';
+                head += '<link rel="icon" type="image/x-icon" href="' + (data.icon ? data.icon : "/favicon.ico") + '">\n';
+
+                if (data && typeof data === 'object') {
+                    if (data['144'] || data['all']) {
+                        head += '<link rel="apple-touch-icon" sizes="144x144" href="' + (data['144'].link || data['all'].link ? data['144'].link || data['all'].link : "/img/logo-default-lg.png") + '">\n';
+                    }
+                    if (data['114'] || data['all']) {
+                        head += '<link rel="apple-touch-icon" sizes="114x114" href="' + (data['114'].link || data['all'].link ? data['114'].link || data['all'].link : "/img/logo-default-lg.png") + '">\n';
+                    }
+                    if (data['72'] || data['all']) {
+                        head += '<link rel="apple-touch-icon" sizes="72x72" href="' + (data['72'].link || data['all'].link ? data['72'].link || data['all'].link : "/img/logo-default-lg.png") + '">\n';
+                    }
+                    if (data['57'] || data['all']) {
+                        head += '<link rel="apple-touch-icon" sizes="57x57" href="' + (data['57'].link || data['all'].link ? data['57'].link || data['all'].link : "/img/logo-default-lg.png") + '">\n';
+                    }
+                    if (data.link) {
+                        head += '<link rel="apple-touch-icon" href="' + (data.link ? data.link : "/img/logo-default-lg.png") + '">\n';
+                    }
+                }
+                return head;
+            },
+            site_feed: function(data) {
+                if (data && data.title) {
+                    return '<!-- RSS Feed -->\n<link rel="alternate" type="application/rss+xml" title="' + data.title + '" href="' + data.link + '">';
+                }
+                return '';
+            },
+            site_fbheaders:function(data) {
+                // <meta property="fb:admins" content="1234,1235" />
+                // <meta property="fb:app_id" content="your_app_id" /> 
+            },
+            site_twheaders:function(data) {
+                // <meta name="twitter:site" content="@site">
+                // <meta name="twitter:title" content="">
+                // <meta name="twitter:card" content="summary">
+                // <meta name="twitter:description" content="">
+            },
+            site_drheaders:function(data) {
+                // <meta property="fb:admins" content="1234,1235" />
+                // <meta property="fb:app_id" content="your_app_id" /> 
+            },
+            site_headers: function(data) {
+                var self = this;
+                var headers = '';
+                headers += self.site_feed(data.feed);
+                headers += self.site_icons(data.icons);
+                headers += self.open_graph(data.open_graph);
+                return headers;
             }
-        });
+        };
+        res.locals(locals);
         next();
     };
 };

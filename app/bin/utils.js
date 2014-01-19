@@ -2,7 +2,7 @@
 /**
  * Module dependencies.
  */
-
+var XML = require('./xml');
 var mime = require('connect').mime;
 
 /**
@@ -15,15 +15,17 @@ var mime = require('connect').mime;
  * @api private
  */
 
-exports.locals = function(obj){
-  obj.viewCallbacks = obj.viewCallbacks || [];
+exports.locals = function(obj) {
+    obj.viewCallbacks = obj.viewCallbacks || [];
 
-  function locals(obj){
-    for (var key in obj) locals[key] = obj[key];
-    return obj;
-  };
+    function locals(obj) {
+        for (var key in obj)
+            locals[key] = obj[key];
+        return obj;
+    }
+    ;
 
-  return locals;
+    return locals;
 };
 
 /**
@@ -34,9 +36,11 @@ exports.locals = function(obj){
  * @api private
  */
 
-exports.isAbsolute = function(path){
-  if ('/' === path[0]) return true;
-  if (':' === path[1] && '\\' === path[2]) return true;
+exports.isAbsolute = function(path) {
+    if ('/' === path[0])
+        return true;
+    if (':' === path[1] && '\\' === path[2])
+        return true;
 };
 
 /**
@@ -48,17 +52,17 @@ exports.isAbsolute = function(path){
  * @api private
  */
 
-exports.flatten = function(arr, ret){
-  ret = ret || [],
-  len = arr.length;
-  for (var i = 0; i < len; ++i) {
-    if (Array.isArray(arr[i])) {
-      exports.flatten(arr[i], ret);
-    } else {
-      ret.push(arr[i]);
+exports.flatten = function(arr, ret) {
+    ret = ret || [],
+            len = arr.length;
+    for (var i = 0; i < len; ++i) {
+        if (Array.isArray(arr[i])) {
+            exports.flatten(arr[i], ret);
+        } else {
+            ret.push(arr[i]);
+        }
     }
-  }
-  return ret;
+    return ret;
 };
 
 /**
@@ -69,8 +73,8 @@ exports.flatten = function(arr, ret){
  * @api private
  */
 
-exports.normalizeType = function(type){
-  return ~type.indexOf('/') ? type : mime.lookup(type);
+exports.normalizeType = function(type) {
+    return ~type.indexOf('/') ? type : mime.lookup(type);
 };
 
 /**
@@ -81,16 +85,16 @@ exports.normalizeType = function(type){
  * @api private
  */
 
-exports.normalizeTypes = function(types){
-  var ret = [];
+exports.normalizeTypes = function(types) {
+    var ret = [];
 
-  for (var i = 0; i < types.length; ++i) {
-    ret.push(~types[i].indexOf('/')
-      ? types[i]
-      : mime.lookup(types[i]));
-  }
+    for (var i = 0; i < types.length; ++i) {
+        ret.push(~types[i].indexOf('/')
+                ? types[i]
+                : mime.lookup(types[i]));
+    }
 
-  return ret;
+    return ret;
 };
 
 /**
@@ -102,22 +106,23 @@ exports.normalizeTypes = function(types){
  * @api private
  */
 
-exports.acceptsArray = function(types, str){
-  // accept anything when Accept is not present
-  if (!str) return types[0];
+exports.acceptsArray = function(types, str) {
+    // accept anything when Accept is not present
+    if (!str)
+        return types[0];
 
-  // parse
-  var accepted = exports.parseAccept(str),
-  normalized = exports.normalizeTypes(types),
-  len = accepted.length;
+    // parse
+    var accepted = exports.parseAccept(str),
+            normalized = exports.normalizeTypes(types),
+            len = accepted.length;
 
-  for (var i = 0; i < len; ++i) {
-    for (var j = 0, jlen = types.length; j < jlen; ++j) {
-      if (exports.accept(normalized[j].split('/'), accepted[i])) {
-        return types[j];
-      }
+    for (var i = 0; i < len; ++i) {
+        for (var j = 0, jlen = types.length; j < jlen; ++j) {
+            if (exports.accept(normalized[j].split('/'), accepted[i])) {
+                return types[j];
+            }
+        }
     }
-  }
 };
 
 /**
@@ -130,9 +135,10 @@ exports.acceptsArray = function(types, str){
  * @api private
  */
 
-exports.accepts = function(type, str){
-  if ('string' === typeof type) type = type.split(/ *, */);
-  return exports.acceptsArray(type, str);
+exports.accepts = function(type, str) {
+    if ('string' === typeof type)
+        type = type.split(/ *, */);
+    return exports.acceptsArray(type, str);
 };
 
 /**
@@ -144,9 +150,9 @@ exports.accepts = function(type, str){
  * @api private
  */
 
-exports.accept = function(type, other){
-  return (type[0] == other.type || '*' == other.type)
-    && (type[1] == other.subtype || '*' == other.subtype);
+exports.accept = function(type, other) {
+    return (type[0] === other.type || '*' === other.type)
+            && (type[1] === other.subtype || '*' === other.subtype);
 };
 
 /**
@@ -156,20 +162,20 @@ exports.accept = function(type, other){
  * with the values provided by
  * `parseQuality()`.
  *
- * @param {Type} name
- * @return {Type}
+ * @param {String} str
+ * @return {Object}
  * @api private
  */
 
-exports.parseAccept = function(str){
-  return exports
-    .parseQuality(str)
-    .map(function(obj){
-      var parts = obj.value.split('/');
-      obj.type = parts[0];
-      obj.subtype = parts[1];
-      return obj;
-    });
+exports.parseAccept = function(str) {
+    return exports
+            .parseQuality(str)
+            .map(function(obj) {
+                var parts = obj.value.split('/');
+                obj.type = parts[0];
+                obj.subtype = parts[1];
+                return obj;
+            });
 };
 
 /**
@@ -177,21 +183,21 @@ exports.parseAccept = function(str){
  * array of objects with `.value` and
  * `.quality`.
  *
- * @param {Type} name
- * @return {Type}
+ * @param {String} str
+ * @return {Integer}
  * @api private
  */
 
-exports.parseQuality = function(str){
-  return str
-    .split(/ *, */)
-    .map(quality)
-    .filter(function(obj){
-      return obj.quality;
-    })
-    .sort(function(a, b){
-      return b.quality - a.quality;
-    });
+exports.parseQuality = function(str) {
+    return str
+            .split(/ *, */)
+            .map(quality)
+            .filter(function(obj) {
+                return obj.quality;
+            })
+            .sort(function(a, b) {
+                return b.quality - a.quality;
+            });
 };
 
 /**
@@ -204,14 +210,14 @@ exports.parseQuality = function(str){
  */
 
 function quality(str) {
-  var parts = str.split(/ *; */)
-    , val = parts[0];
+    var parts = str.split(/ *; */)
+            , val = parts[0];
 
-  var q = parts[1]
-    ? parseFloat(parts[1].split(/ *= */)[1])
-    : 1;
+    var q = parts[1]
+            ? parseFloat(parts[1].split(/ *= */)[1])
+            : 1;
 
-  return { value: val, quality: q };
+    return {value: val, quality: q};
 }
 
 /**
@@ -223,11 +229,11 @@ function quality(str) {
  */
 
 exports.escape = function(html) {
-  return String(html)
-    .replace(/&/g, '&amp;')
-    .replace(/"/g, '&quot;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+    return String(html)
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
 };
 
 /**
@@ -248,23 +254,118 @@ exports.escape = function(html) {
  */
 
 exports.pathRegexp = function(path, keys, sensitive, strict) {
-  if (path instanceof RegExp) return path;
-  if (Array.isArray(path)) path = '(' + path.join('|') + ')';
-  path = path
-    .concat(strict ? '' : '/?')
-    .replace(/\/\(/g, '(?:/')
-    .replace(/(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?(\*)?/g, function(_, slash, format, key, capture, optional, star){
-      keys.push({ name: key, optional: !! optional });
-      slash = slash || '';
-      return ''
-        + (optional ? '' : slash)
-        + '(?:'
-        + (optional ? slash : '')
-        + (format || '') + (capture || (format && '([^/.]+?)' || '([^/]+?)')) + ')'
-        + (optional || '')
-        + (star ? '(/*)?' : '');
-    })
-    .replace(/([\/.])/g, '\\$1')
-    .replace(/\*/g, '(.*)');
-  return new RegExp('^' + path + '$', sensitive ? '' : 'i');
-}
+    if (path instanceof RegExp)
+        return path;
+    if (Array.isArray(path))
+        path = '(' + path.join('|') + ')';
+    path = path
+            .concat(strict ? '' : '/?')
+            .replace(/\/\(/g, '(?:/')
+            .replace(/(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?(\*)?/g, function(_, slash, format, key, capture, optional, star) {
+                keys.push({name: key, optional: !!optional});
+                slash = slash || '';
+                return ''
+                        + (optional ? '' : slash)
+                        + '(?:'
+                        + (optional ? slash : '')
+                        + (format || '') + (capture || (format && '([^/.]+?)' || '([^/]+?)')) + ')'
+                        + (optional || '')
+                        + (star ? '(/*)?' : '');
+            })
+            .replace(/([\/.])/g, '\\$1')
+            .replace(/\*/g, '(.*)');
+    return new RegExp('^' + path + '$', sensitive ? '' : 'i');
+};
+
+/**
+ * XMLResponse extend respose type
+ *
+ * @param  {Object} options
+ * @return {Function}
+ * @api private
+ */
+
+exports.XMLResponse = function(options) {
+    return function(req, res, next) {
+        res.xml = function(data, params) {
+            var header = (params || {}).header ? params.header : "application/xml";
+            res.setHeader("Content-Type", header);
+            res.send(XML(data, {xmlHeader: {standalone: true}}));
+        };
+        next();
+    };
+};
+
+/**
+ * RSSResponse extend respose type
+ *
+ * @param  {Object} options
+ * @return {Function}
+ * @api private
+ */
+
+exports.RSSResponse = function(options) {
+    return function(req, res, next) {
+        res.feed = function(data, params) {
+            var header = (params || {}).header ? params.header : "application/rss+xml";
+            res.setHeader("Content-Type", header);
+            res.send(XML(data, {xmlHeader: {standalone: true}}));
+        };
+        next();
+    };
+};
+
+/**
+ * ErrorResponse extend respose
+ *
+ * @return {Function}
+ * @api private
+ */
+
+exports.ErrorResponse = function() {
+    return function(req, res, next) {
+        res.message = function(format, type, message, code, status) {
+            status = status ? status : 200;
+            var OutMessage = {};
+            OutMessage[type] = {
+                status: status,
+                message: message,
+                code: code
+            };
+
+            switch (format.toString()) {
+                case 'json':
+                    res.json(OutMessage);
+                    break;
+                case 'xml':
+                    res.xml({root: OutMessage});
+                    break;
+                default:
+                    req.flash(type, message);
+                    res.render('errors/' + status);
+            }
+        };
+        next();
+    };
+};
+
+/**
+ * fixCSRF extend respose type
+ *
+ * @return {Function}
+ * @api private
+ */
+
+exports.fixCSRF = function() {
+    return function(req, res, next) {
+        res.setHeader('X-Powered-By', 'TrinteJS MVC');
+        if (!typeof req.csrfToken === "undefined") {
+            req.csrfToken = function() {
+                return '';
+            };
+            next();
+        } else {
+            next();
+        }
+    };
+}; 

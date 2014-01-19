@@ -20,6 +20,7 @@ var flash = require('./flash');
 var helper = require('./helper');
 var engine = require('ejs-locals');
 
+
 function TrinteJS(app, root) {
     app.trinte = this;
     this.__defineGetter__('rootModule', function() {
@@ -40,6 +41,12 @@ function TrinteJS(app, root) {
 }
 
 util.inherits(TrinteJS, events.EventEmitter);
+
+/**
+ * Library version.
+ **/
+exports.version = '0.1.2';
+
 /**
  * Initialize trinte application:
  *
@@ -96,24 +103,21 @@ exports.init = function init(app, root) {
             t: locales.t
         });
         trinte.emit('locales_loaded');
-        if (config.debug)
+        if (config.debug) {
             console.log('locales_loaded');
+        }
     });
 
     trinte.on('locales_loaded', function() {
         require('../config/routes')(map);
         trinte.emit('routes_loaded');
-        if (config.debug)
+        if (config.debug) {
             console.log('routes_loaded');
+        }
     });
 
     trinte.on('routes_loaded', function() {
         global.pathTo = map.pathTo;
-    });
-
-    // everything else can be done after starting server
-    process.nextTick(function() {
-        trinte.helpers['views'] = require('../app/helpers/ViewsHelper');
     });
 
     return trinte;
@@ -158,9 +162,11 @@ function bootModels(trinte) {
             if (err) {
                 console.log(err);
             }
-            if (!files) {
-                if (config.debug)
+            if (!files || files.length === 0) {
+                if (config.debug) {
                     console.log('models_loaded');
+                }
+                console.log("Models files does not found");
                 trinte.emit('models_loaded');
             } else {
                 var count = files.length;
@@ -169,15 +175,19 @@ function bootModels(trinte) {
                         bootModel(trinte, schema, file);
                         if (--count === 0) {
                             if ('function' === typeof schema.autoupdate) {
-                                schema.autoupdate(function(err) {
-                                    console.log('Run Caminte Autoupdate!');
-                                    if (err)
-                                        console.log(err);
-                                });
+                                if (!process.env.AUTOUPDATE) {
+                                    schema.autoupdate(function(err) {
+                                        console.log('Run Caminte driver Autoupdate!');
+                                        process.env.AUTOUPDATE = true;
+                                        if (err)
+                                            console.log(err);
+                                    });
+                                }
                             }
                             trinte.emit('models_loaded');
-                            if (config.debug)
+                            if (config.debug) {
                                 console.log('models_loaded');
+                            }
                         }
                     });
                 }
@@ -219,13 +229,8 @@ function configureApp(trinte, callback) {
     app.use(express.methodOverride());
     app.use(express.cookieParser(config.session.secret));
     session(app, express);
-
     // Before router to enable dynamic routing
     app.use(express['static'](root + '/public'));
-    app.use(function(req, res, next) {
-        res.setHeader('X-Powered-By', 'TrinteJS MVC');
-        next();
-    });
     // Setup ejs views as default, with .ejs as the extension
     app.set('port', process.env.PORT || config.port);
     app.set('views', root + '/app/views');
@@ -234,50 +239,18 @@ function configureApp(trinte, callback) {
     app.set('view options', {
         complexNames: true
     });
+    app.use(utils.XMLResponse());
+    app.use(utils.RSSResponse());
+    app.use(utils.ErrorResponse());
+    app.use(utils.fixCSRF());
     app.use(flash());
-    app.use(express.csrf());
-    app.use(function(req, res, next) {
-        if (typeof req.csrfToken === "function" && req.session) {
-            req.session._csrf = req.csrfToken();
-            next();
-        } else {
-            next();
-        }
-    });
     app.use(helper.init());
     middleware(app, express);
     app.use(app.router);
 
-    // Example 500 page
-    app.use(function(err, req, res, next) {
-        console.log('Internal Server Error: ' + err.message);
-        res.status(err.status || 500);
-        if (parseInt(err.status) === 403) {
-            res.render('errors/403', {
-                request: req,
-                session: req.session
-            });
-        } else if (parseInt(err.status) === 401) {
-            res.render('errors/401', {
-                request: req,
-                session: req.session
-            });
-        } else {
-            res.render('errors/500', {
-                error: err,
-                request: req,
-                session: req.session
-            });
-        }
-    });
-
-    // Example 404 page via simple Connect middleware
-    app.use(function(req, res) {
-        res.render('errors/404', {
-            request: req,
-            session: req.session
-        });
-    });
+    // Initialize errors routes
+    require(root + '/config/errors')(app);
+    
     // Initialize routes params
     require(root + '/config/params')(app);
     callback(app);
