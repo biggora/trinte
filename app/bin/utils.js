@@ -287,7 +287,12 @@ exports.pathRegexp = function(path, keys, sensitive, strict) {
 
 exports.XMLResponse = function(options) {
     return function(req, res, next) {
-        res.xml = function(data, params) {
+        res.xml = function(code, data, params) {
+            if(typeof code === 'object') {
+                params = data;
+                data = code;
+                code = 200;
+            }
             var header = (params || {}).header ? params.header : "application/xml";
             res.setHeader("Content-Type", header);
             res.send(XML(data, {xmlHeader: {standalone: true}}));
@@ -332,7 +337,7 @@ exports.ErrorResponse = function() {
                 message: message,
                 code: code
             };
-
+            res.status(status);
             switch (format.toString()) {
                 case 'json':
                     res.json(OutMessage);
