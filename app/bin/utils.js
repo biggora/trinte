@@ -364,7 +364,7 @@ exports.ErrorResponse = function() {
 exports.fixCSRF = function() {
     return function(req, res, next) {
         res.setHeader('X-Powered-By', 'TrinteJS MVC');
-        if (!typeof req.csrfToken === "undefined") {
+        if (typeof req.csrfToken === "undefined") {
             req.csrfToken = function() {
                 return '';
             };
