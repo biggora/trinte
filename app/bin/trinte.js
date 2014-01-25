@@ -3,6 +3,7 @@
  */
 var fs = require('fs');
 var express = require('express');
+var multiparty = require('connect-multiparty');
 var events = require('events');
 var path = require('path');
 var params = require('./params');
@@ -221,9 +222,11 @@ function configureApp(trinte, callback) {
 
     params.extend(app);
     envConf(app, express);
-    app.use(express.bodyParser({
-        uploadDir: root + '/uploads',
-        keepExtensions: true,
+    app.use(express.urlencoded());
+    app.use(express.json());
+    app.use(multiparty({
+        uploadDir: config.parser.uploadDir,
+        keepExtensions: config.parser.keepExtensions,
         encoding: config.parser.encoding
     }));
     app.use(express.methodOverride());

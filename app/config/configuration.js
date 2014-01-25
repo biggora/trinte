@@ -18,6 +18,7 @@ module.exports = {
     },
     parser : {
         encoding : "utf-8",
-        keepExtensions : true
+        keepExtensions : true,
+        uploadDir: __dirname + '/../uploads'
     }
 };

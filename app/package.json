@@ -5,13 +5,13 @@
     "author": "DEVELOPER",
     "private": true,
     "dependencies": {
-        "trinte": "latest",
-        "caminte": "latest",
-        "express-useragent": "latest",
+        "trinte": ">=0.2.1",
+        "caminte": ">=0.0.10",
+        "express-useragent": ">=0.0.10",
         "connect": ">=2.9.0",
-        "express": ">=3.0.0",
-        "js-yaml": "latest",
-        "crypto": "latest"
+        "express": "3.x",
+        "connect-multiparty":">=1.0.3",
+        "js-yaml": ">=3.0.1"
     },
     "repository": {
        "type": "git",
