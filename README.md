@@ -65,8 +65,8 @@ To install trinte:
 * [Recommend extensions](https://github.com/biggora/trinte/wiki/Recommend-Extensions)
 * [Credits](#credits)
 * [Peoject Author](#author)
-* [Copyright & License](https://github.com/biggora/trinte/wiki/License)
-* [Resources](https://github.com/biggora/trinte/wiki/Resources)
+* [Copyright & License](#license)
+* [Resources](#resources)
 
 <a name="usage"></a>
 ## Usage overview:
