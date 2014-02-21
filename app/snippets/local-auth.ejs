@@ -26,14 +26,18 @@ passport.use( new LocalStrategy( {
 ) );
 
 /**
- * LocalStrategy
+ * serializeUser
+ * @param {Object} user
+ * @param {Function} done
  */
 passport.serializeUser( function(user, done) {
     done( null, user.id );
 } );
 
 /**
- * LocalStrategy
+ * deserializeUser
+ * @param {Mixed} id
+ * @param {Function} done
  */
 passport.deserializeUser( function(id, done) {
         // your code here
@@ -42,12 +46,13 @@ passport.deserializeUser( function(id, done) {
 
 /**
  * localAuth
- * @param {String} path
+ * @param {String} failurePath
+ * @param {String} successPath
  */
-auth.localAuth = function localAuth(path) {
+auth.localAuth = function localAuth(failurePath, successPath) {
     return passport.authenticate( 'local', {
-        successReturnToOrRedirect: '/',
-        failureRedirect: path || '/login',
+        successReturnToOrRedirect: successPath || '/',
+        failureRedirect: failurePath || '/login',
         failureFlash: true,
         successFlash: 'Welcome!'
     } );
@@ -61,6 +66,19 @@ auth.isAdmin = function isAdmin(path) {
     return  function(req, res, next){
     // your code here
           next();
+    };
+};
+
+/**
+ * initialize
+ */
+auth.initialize = function initialize() {
+    var init = passport.initialize();
+    var sess = passport.session();
+    return function(req, res, next) {
+        init(req, res, function() {
+            sess(req, res, next);
+        });
     };
 };
 

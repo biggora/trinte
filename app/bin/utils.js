@@ -374,3 +374,12 @@ exports.fixCSRF = function() {
         }
     };
 }; 
+ 
+exports.typeDependsDriver = function(DbDriver) {
+    DbDriver = typeof DbDriver === 'undefined' ? global._DbDriver : DbDriver;
+    if (/mongodb|mongoose/gi.test(DbDriver)) {
+        return eval('String');
+    } else {
+        return eval('Number');
+    }
+};

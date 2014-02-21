@@ -6,12 +6,13 @@
  *  App based on TrinteJS MVC framework
  *  TrinteJS homepage http://www.trintejs.com
  **/
-
+{ADDONSINC}
 /**
  * Define routes
  * @param {Object} map
  */
 module.exports = function routes(map) {
        map.root("apps#index");
-       map.all("/login","apps#login");
+       map.get("/login","apps#login");
+{ADDONSBODY}
 };

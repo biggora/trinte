@@ -3,9 +3,9 @@
  */
 var crypto = require('crypto');
 
-exports.init = function () {
-    return function (req, res, next) {
-        var session = (req.session || {} );
+exports.init = function() {
+    return function(req, res, next) {
+        var session = (req.session || {});
         var locals = {
             controllers: [],
             session: session,
@@ -15,12 +15,12 @@ exports.init = function () {
                 icons: '',
                 open_graph: {}
             },
-            formVal: function (val) {
+            formVal: function(val) {
                 return typeof val === 'undefined' ? "" : val;
             },
-            sortFor: function (field, title, tooltip) {
+            sortFor: function(field, title, tooltip) {
                 var direction = '-', query = req.query,
-                    sort = false, uri = [], icon = "", dd, dt = "";
+                        sort = false, uri = [], icon = "", dd, dt = "";
                 for (var q in query) {
                     if (q === 'sort') {
                         sort = true;
@@ -41,7 +41,7 @@ exports.init = function () {
                 return '<a ' + dt + ' class="sorter ' + icon + '" data-field="' + field + '" data-direction="' + dd + '" href="?' + uri.join('&') + '">' + title + '</a>';
             },
             form: {
-                makeName: function (name, resource) {
+                makeName: function(name, resource) {
                     var resourceName = false;
                     if (typeof resource === 'string') {
                         resourceName = resource;
@@ -50,7 +50,7 @@ exports.init = function () {
                     }
                     return resourceName ? (resourceName.toLowerCase() + '[' + name + ']') : name;
                 },
-                makeId: function (name, resource) {
+                makeId: function(name, resource) {
                     var resourceName = false;
                     if (typeof resource === 'string') {
                         resourceName = resource;
@@ -59,13 +59,13 @@ exports.init = function () {
                     }
                     return resourceName ? (resourceName.toLowerCase() + '_' + name) : name;
                 },
-                input_tag: function (params, override) {
+                input_tag: function(params, override) {
                     return '<input' + locals.html_tag_params(params, override) + ' />';
                 },
-                label_tag: function (text, params, override) {
+                label_tag: function(text, params, override) {
                     return locals.generic_tag('label', text, params, override);
                 },
-                get_value: function (name, params, resource) {
+                get_value: function(name, params, resource) {
                     params = params || {};
                     if (typeof params.value === 'undefined') {
                         if (typeof resource === 'undefined' || typeof resource === 'string') {
@@ -81,7 +81,7 @@ exports.init = function () {
                     }
                     return params;
                 },
-                input: function (name, params, resource) {
+                input: function(name, params, resource) {
                     params = params || {};
                     params = locals.form.get_value(name, params, resource);
                     return locals.form.input_tag({
@@ -89,7 +89,7 @@ exports.init = function () {
                         id: locals.form.makeId(name, resource)
                     }, params);
                 },
-                checkbox: function (name, params, resource) {
+                checkbox: function(name, params, resource) {
                     params = params || {};
                     params = locals.form.get_value(name, params, resource);
                     if (params.value !== '' && parseInt(params.value) !== 0) {
@@ -102,13 +102,13 @@ exports.init = function () {
                         type: 'checkbox'
                     }, params);
                 },
-                radio: function (name, params, resource, inval, prefix) {
+                radio: function(name, params, resource, inval, prefix) {
                     params = params || {};
                     params = locals.form.get_value(name, params, resource);
                     if ((params.value || '').toString() === (inval || '').toString()) {
                         params.checked = 'checked';
                     }
-                    if(!prefix)  {
+                    if (!prefix) {
                         prefix = '';
                     }
                     return locals.form.input_tag({
@@ -118,7 +118,7 @@ exports.init = function () {
                         type: 'radio'
                     }, params);
                 },
-                file: function (name, params, resource) {
+                file: function(name, params, resource) {
                     params = params || {};
                     params = locals.form.get_value(name, params, resource);
                     return locals.form.input_tag({
@@ -127,27 +127,27 @@ exports.init = function () {
                         type: 'file'
                     }, params);
                 },
-                label: function (name, caption, params, resource) {
+                label: function(name, caption, params, resource) {
                     return locals.form.label_tag(
-                        caption || name,
-                        {for: locals.form.makeId(name, resource)},
-                        params);
+                            caption || name,
+                            {for : locals.form.makeId(name, resource)},
+                    params);
                 },
-                submit: function (name, params) {
+                submit: function(name, params) {
                     return locals.generic_tag('button', name || 'Commit', {type: 'submit'}, params);
                 },
-                textarea: function (name, params, resource) {
+                textarea: function(name, params, resource) {
                     params = params || {};
                     params.value = params.value || '';
                     params = locals.form.get_value(name, params, resource);
                     return locals.generic_tag('textarea', params.value, {name: locals.form.makeName(name, resource), id: locals.form.makeId(name, resource)}, params);
                 },
-                select: function (name, list, current, params, resource) {
+                select: function(name, list, current, params, resource) {
                     var __selectTags = '';
                     // Only do something when there is value in the f_list.
                     // Setup the opening tag for select.
                     if (list.length > 0) {
-                        list.forEach(function (list_entry) {
+                        list.forEach(function(list_entry) {
                             var item = typeof list_entry === 'string' ? {name: list_entry, value: list_entry} : list_entry;
                             // Setup the option tag with selected = specified.
                             __selectTags = __selectTags + '<option value = "' + item['value'] + '" ';
@@ -162,10 +162,10 @@ exports.init = function () {
                     return generic_tag('select', __selectTags, {name: locals.form.makeName(name, resource), id: locals.form.makeId(name, resource)}, params);
                 }
             },
-            generic_tag: function (name, inner, params, override) {
+            generic_tag: function(name, inner, params, override) {
                 return '<' + name + locals.html_tag_params(params, override) + '>' + inner + '</' + name + '>';
             },
-            html_tag_params: function (params, override) {
+            html_tag_params: function(params, override) {
                 var maybe_params = '';
                 locals.safe_merge(params, override);
                 for (var key in params) {
@@ -175,9 +175,9 @@ exports.init = function () {
                 }
                 return maybe_params;
             },
-            safe_merge: function (merge_what) {
+            safe_merge: function(merge_what) {
                 merge_what = merge_what || {};
-                Array.prototype.slice.call(arguments).forEach(function (merge_with, i) {
+                Array.prototype.slice.call(arguments).forEach(function(merge_with, i) {
                     if (i === 0)
                         return;
                     for (var key in merge_with) {
@@ -188,16 +188,16 @@ exports.init = function () {
                 });
                 return merge_what;
             },
-            get_site_param: function (name, params, defval) {
+            get_site_param: function(name, params, defval) {
                 var cur = '';
-                params.forEach(function (param) {
+                params.forEach(function(param) {
                     if (name === param.name) {
                         cur = param.curvalue;
                     }
                 });
                 return cur || defval || '';
             },
-            loggerDate: function (date) {
+            loggerDate: function(date) {
                 var now = new Date().toISOString();
                 if (date) {
                     var time = Date.parse(date);
@@ -206,7 +206,7 @@ exports.init = function () {
                 var iso = now.split('T');
                 return iso[0].replace('-', '_');
             },
-            get_current_date: function (date) {
+            get_current_date: function(date) {
                 var now = new Date().toISOString();
                 if (date) {
                     var time = date;
@@ -222,7 +222,7 @@ exports.init = function () {
                 var iso = now.replace('T', ' ').split('.');
                 return iso[0];
             },
-            open_graph: function (data) {
+            open_graph: function(data) {
                 var head = '';
                 if (data && typeof data === 'object') {
                     head = (Object.keys(data).length) ? '<!-- Open Graph -->\n' : '';
@@ -256,7 +256,7 @@ exports.init = function () {
                 }
                 return head;
             },
-            site_icons: function (data) {
+            site_icons: function(data) {
                 var head = '';
                 if (!data) {
                     data = {
@@ -290,33 +290,52 @@ exports.init = function () {
                 }
                 return head;
             },
-            site_feed: function (data) {
+            site_feed: function(data) {
                 if (data && data.title) {
                     return '<!-- RSS Feed -->\n<link rel="alternate" type="application/rss+xml" title="' + data.title + '" href="' + data.link + '">';
                 }
                 return '';
             },
-            site_fbheaders: function (data) {
+            site_fbheaders: function(data) {
                 // <meta property="fb:admins" content="1234,1235" />
                 // <meta property="fb:app_id" content="your_app_id" /> 
             },
-            site_twheaders: function (data) {
+            site_twheaders: function(data) {
                 // <meta name="twitter:site" content="@site">
                 // <meta name="twitter:title" content="">
                 // <meta name="twitter:card" content="summary">
                 // <meta name="twitter:description" content="">
             },
-            site_drheaders: function (data) {
+            site_drheaders: function(data) {
                 // <meta property="fb:admins" content="1234,1235" />
                 // <meta property="fb:app_id" content="your_app_id" /> 
             },
-            site_headers: function (data) {
+            site_headers: function(data) {
                 var self = this;
                 var headers = '';
                 headers += self.site_feed(data.feed);
                 headers += self.site_icons(data.icons);
                 headers += self.open_graph(data.open_graph);
                 return headers;
+            },
+            /*
+             * Recursively merge properties of two objects 
+             */
+            MergeRecursive: function(trg, src) {
+                for (var p in src) {
+                    try {
+                        // Property in destination object set; update its value.
+                        if (src[p].constructor === Object) {
+                            trg[p] = MergeRecursive(trg[p], src[p]);
+                        } else {
+                            trg[p] = src[p];
+                        }
+                    } catch (e) {
+                        // Property in destination object not set; create it and set its value.
+                        trg[p] = src[p];
+                    }
+                }
+                return trg;
             }
         };
         res.locals(locals);

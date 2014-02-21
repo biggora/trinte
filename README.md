@@ -53,7 +53,7 @@ To install trinte:
   * [Database configuration](https://github.com/biggora/trinte/wiki/Application-configuration#database-configuration)
   * [Directory structure](https://github.com/biggora/trinte/wiki/Directory-Structure)
   * [Routing](https://github.com/biggora/trinte/wiki/Routes)
-  * [Param pre-condition functions](https://github.com/biggora/trinte/wiki/Routes#params)
+  * [Param pre-condition functions](https://github.com/biggora/trinte/wiki/Routes#wiki-param-pre-condition-functions)
   * [Middleware](https://github.com/biggora/trinte/wiki/Middleware)
   * [Application Helper](https://github.com/biggora/trinte/wiki/Helpers)
   * [Views Helper](https://github.com/biggora/trinte/wiki/Helpers#views-helper)
