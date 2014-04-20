@@ -8,12 +8,11 @@
  **/
 
 var useragent = require('express-useragent');
+var csrf = require('csurf');
 var auth = require('./authorization/local');
 
 module.exports = function(app, express) {
-    app.configure(function() {
-        app.use(auth.initialize());
-        app.use(express.csrf());
-        app.use(useragent.express());
-    });
+    app.use(auth.initialize());
+    app.use(csrf());
+    app.use(useragent.express());
 };

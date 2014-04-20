@@ -11,20 +11,21 @@
  **/
 
 module.exports = function(app, express) {
-
+    var env = process.env.NODE_ENV || 'development';
     // DEVELOPMENT
-    app.configure('development', function() {
+    if ('development' === env) {
         require("./env/development.js")(app, express);
-    });
+    }
 
     // TEST
-    app.configure('test', function() {
+    if ('test' === env) {
         require("./env/test.js")(app, express);
-    });
+    }
+
 
     // PRODUCTION
-    app.configure('production', function() {
+    if ('production' === env) {
         require("./env/production.js")(app, express);
-    });
+    }
 
 };

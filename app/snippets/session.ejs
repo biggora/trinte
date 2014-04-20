@@ -7,16 +7,15 @@
  *  TrinteJS homepage http://www.trintejs.com
  **/
  
+var expressSession = require('express-session');
 var config = require('./configuration');
 
 module.exports = function (app,express) {
-    app.configure(function () {
-        app.use(express.session({
+        app.use(expressSession({
             cookie: {
                 maxAge: config.session.maxAge
             },
             key: config.session.key,
             secret: config.session.secret
         }));
-    });
 };

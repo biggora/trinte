@@ -3,7 +3,7 @@
  */
 var crypto = require('crypto');
 
-exports.init = function() {
+exports.init = function(utils) {
     return function(req, res, next) {
         var session = (req.session || {});
         var locals = {
@@ -338,7 +338,10 @@ exports.init = function() {
                 return trg;
             }
         };
-        res.locals(locals);
+        if(!res.mergeLocals) {
+            res.mergeLocals = utils.mergeLocals;
+        }
+        res.mergeLocals(locals);
         next();
     };
 };

@@ -6,6 +6,16 @@ var XML = require('./xml');
 var mime = require('connect').mime;
 
 /**
+ * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
+ * @param obj
+ * @returns obj3 a new object based on obj1 and obj2
+ */
+exports.mergeLocals = function mergeLocals(obj){
+    for (var attrname in obj) { this.locals[attrname] = obj[attrname]; }
+    return this.locals;
+}
+
+/**
  * Make `locals()` bound to the given `obj`.
  *
  * This is used for `app.locals` and `res.locals`.

@@ -33,8 +33,8 @@ exports.extend.regexp = function(app){
   app.param(function(name, fn){
     if (fn instanceof RegExp) {
       return function(req, res, next, val){
-        var captures;
-        if (captures = fn.exec(String(val))) {
+        var captures = fn.exec(String(val));
+        if (captures) {
           req.params[name] = captures;
           next();
         } else {

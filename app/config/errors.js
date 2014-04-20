@@ -10,7 +10,7 @@
  **/
 
 module.exports = function(app) {
-    
+
     // Example 500 page
     app.use(function(err, req, res, next) {
         console.log('Internal Server Error: ' + err.message);
@@ -35,7 +35,7 @@ module.exports = function(app) {
     });
 
     // Example 404 page via simple Connect middleware
-    app.use(function(req, res) {
+    app.all('*', function(req, res) {
         res.render('errors/404', {
             request: req,
             session: req.session

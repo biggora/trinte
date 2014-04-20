@@ -8,10 +8,9 @@
  **/
 
 var useragent = require('express-useragent');
+var csrf = require('csurf');
 
 module.exports = function(app, express) {
-    app.configure(function() {
-        app.use(express.csrf());
-        app.use(useragent.express());
-    });
+    app.use(csrf());
+    app.use(useragent.express());
 };

@@ -4,6 +4,9 @@
 var fs = require('fs');
 var express = require('express');
 var multiparty = require('connect-multiparty');
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
+var cookieParser = require('cookie-parser');
 var events = require('events');
 var path = require('path');
 var params = require('./params');
@@ -33,6 +36,7 @@ function TrinteJS(app, root) {
     this.helpers = {};
     this.models = {};
     this.middleware = [];
+    this.app.mergeLocals = utils.mergeLocals;
 
     this.server = http.createServer(app);
 
@@ -83,7 +87,7 @@ exports.init = function init(app, root) {
                 global[key] = ApplicationHelper[key];
             }
             var ViewsHelper = require('../app/helpers/ViewsHelper');
-            app.locals(ViewsHelper);
+            app.mergeLocals(ViewsHelper);
             trinte.emit('helpers_loaded');
             if (config.debug) {
                 console.log('helpers_loaded');
@@ -100,7 +104,7 @@ exports.init = function init(app, root) {
         }
         global['__lc'] = locales.load();
         global['t'] = locales.t;
-        app.locals({
+        app.mergeLocals({
             t: locales.t
         });
         trinte.emit('locales_loaded');
@@ -110,7 +114,10 @@ exports.init = function init(app, root) {
     });
 
     trinte.on('locales_loaded', function() {
+        // Initialize app routes
         require('../config/routes')(map);
+        // Initialize errors routes
+        require(root + '/config/errors')(app);
         trinte.emit('routes_loaded');
         if (config.debug) {
             console.log('routes_loaded');
@@ -222,15 +229,14 @@ function configureApp(trinte, callback) {
 
     params.extend(app);
     envConf(app, express);
-    app.use(express.urlencoded());
-    app.use(express.json());
+    app.use(bodyParser()); 					// pull information from html in POST
+    app.use(methodOverride()); 					// simulate DELETE and PUT
     app.use(multiparty({
         uploadDir: config.parser.uploadDir,
         keepExtensions: config.parser.keepExtensions,
         encoding: config.parser.encoding
     }));
-    app.use(express.methodOverride());
-    app.use(express.cookieParser(config.session.secret));
+    app.use(cookieParser(config.session.secret));
     session(app, express);
     // Before router to enable dynamic routing
     app.use(express['static'](root + '/public'));
@@ -242,18 +248,14 @@ function configureApp(trinte, callback) {
     app.set('view options', {
         complexNames: true
     });
+    app.use(helper.init(utils));
     app.use(utils.XMLResponse());
     app.use(utils.RSSResponse());
     app.use(utils.ErrorResponse());
     app.use(utils.fixCSRF());
     app.use(flash());
-    app.use(helper.init());
     middleware(app, express);
-    app.use(app.router);
 
-    // Initialize errors routes
-    require(root + '/config/errors')(app);
-    
     // Initialize routes params
     require(root + '/config/params')(app);
     callback(app);

@@ -8,14 +8,16 @@
  *  @param {TrinteJS} app
  *  @param {ExpressJS} express
  **/
+var morgan = require('morgan');
+var errorHandler = require('errorhandler');
 
 module.exports = function(app,express) {
     app.set('trust proxy', true);
     app.set('json spaces', 2);
     app.set('view cache', false);
-    app.use(express.logger("dev"));
+    app.use(morgan('dev')); 
     app.set('jsonp callback name', 'callback');
-    app.use(express.errorHandler({
+    app.use(errorHandler({
         dumpExceptions: true,
         showStack: true
     }));
