@@ -50,7 +50,7 @@ util.inherits(TrinteJS, events.EventEmitter);
 /**
  * Library version.
  **/
-exports.version = '0.1.2';
+exports.version = '0.2.4';
 
 /**
  * Initialize trinte application:

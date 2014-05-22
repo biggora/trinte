@@ -169,7 +169,7 @@ exports.init = function(utils) {
                 var maybe_params = '';
                 locals.safe_merge(params, override);
                 for (var key in params) {
-                    if (params[key] && params[key] !== 'undefined') {
+                    if (params[key] !== null && params[key] !== 'undefined') {
                         maybe_params += ' ' + key + '="' + params[key].toString().replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '"';
                     }
                 }
