@@ -50,7 +50,7 @@ util.inherits(TrinteJS, events.EventEmitter);
 /**
  * Library version.
  **/
-exports.version = '0.2.4';
+exports.version = '0.2.5';
 
 /**
  * Initialize trinte application:
@@ -229,13 +229,19 @@ function configureApp(trinte, callback) {
 
     params.extend(app);
     envConf(app, express);
-    app.use(bodyParser()); 					// pull information from html in POST
-    app.use(methodOverride()); 					// simulate DELETE and PUT
+    /*    */
     app.use(multiparty({
         uploadDir: config.parser.uploadDir,
         keepExtensions: config.parser.keepExtensions,
         encoding: config.parser.encoding
     }));
+    // parse application/x-www-form-urlencoded
+    app.use(bodyParser.urlencoded({ extended: false }))
+    // parse application/json
+    app.use(bodyParser.json())
+    // parse application/vnd.api+json as json
+    app.use(bodyParser.json({ type: 'application/vnd.api+json' }))
+    app.use(methodOverride()); 	    // simulate DELETE and PUT
     app.use(cookieParser(config.session.secret));
     session(app, express);
     // Before router to enable dynamic routing

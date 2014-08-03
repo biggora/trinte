@@ -20,6 +20,8 @@ module.exports = function (app,express) {
          },
          key: config.session.key,
          secret: config.session.secret,
+         saveUninitialized: true,
+         resave: true,
          store: new sessionStore({
              driver: database.driver,
              collection: 'session',
