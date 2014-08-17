@@ -229,19 +229,30 @@ function configureApp(trinte, callback) {
 
     params.extend(app);
     envConf(app, express);
-    /*    */
+
     app.use(multiparty({
         uploadDir: config.parser.uploadDir,
         keepExtensions: config.parser.keepExtensions,
         encoding: config.parser.encoding
     }));
     // parse application/x-www-form-urlencoded
-    app.use(bodyParser.urlencoded({ extended: false }))
+    app.use(bodyParser.urlencoded({ extended: false }));
     // parse application/json
-    app.use(bodyParser.json())
+    app.use(bodyParser.json());
     // parse application/vnd.api+json as json
     app.use(bodyParser.json({ type: 'application/vnd.api+json' }))
-    app.use(methodOverride()); 	    // simulate DELETE and PUT
+    app.use(methodOverride('X-HTTP-Method'));              // Microsoft
+    app.use(methodOverride('X-HTTP-Method-Override'));     // Google/GData
+    app.use(methodOverride('X-Method-Override'));          // IBM
+    app.use(methodOverride('_method')); 	           // simulate DELETE and PUT
+    app.use(methodOverride(function(req, res){
+        if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+            // look in urlencoded POST bodies and delete it
+            var method = req.body._method;
+            delete req.body._method;
+            return method;
+        }
+    }));
     app.use(cookieParser(config.session.secret));
     session(app, express);
     // Before router to enable dynamic routing
