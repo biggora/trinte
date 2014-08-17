@@ -149,6 +149,15 @@ exports.init = function(utils) {
                     if (list.length > 0) {
                         list.forEach(function(list_entry) {
                             var item = typeof list_entry === 'string' ? {name: list_entry, value: list_entry} : list_entry;
+                            if(params.fields) {
+                                if(list_entry[params.fields[0]]) {
+                                    item.name = list_entry[params.fields[0]];
+                                }
+                                if(list_entry[params.fields[1]]) {
+                                    item.value = list_entry[params.fields[1]];
+                                }
+                            }
+
                             // Setup the option tag with selected = specified.
                             __selectTags = __selectTags + '<option value = "' + item['value'] + '" ';
                             if ((current !== null) && (current === item['value'])) {
@@ -159,7 +168,7 @@ exports.init = function(utils) {
                         }); // End of forEach loop.
                     }  // end of if f_list.length > 1 check.
                     // close out the select tag
-                    return generic_tag('select', __selectTags, {name: locals.form.makeName(name, resource), id: locals.form.makeId(name, resource)}, params);
+                    return locals.generic_tag('select', __selectTags, {name: locals.form.makeName(name, resource), id: locals.form.makeId(name, resource)}, params);
                 }
             },
             generic_tag: function(name, inner, params, override) {
