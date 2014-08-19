@@ -236,7 +236,7 @@ function configureApp(trinte, callback) {
         encoding: config.parser.encoding
     }));
     // parse application/x-www-form-urlencoded
-    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.urlencoded({ extended: true }));
     // parse application/json
     app.use(bodyParser.json());
     // parse application/vnd.api+json as json
