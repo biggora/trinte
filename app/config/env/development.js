@@ -11,11 +11,11 @@
 var morgan = require('morgan');
 var errorHandler = require('errorhandler');
 
-module.exports = function(app,express) {
+module.exports = function (app, express) {
     app.set('trust proxy', true);
     app.set('json spaces', 2);
     app.set('view cache', false);
-    app.use(morgan('dev')); 
+    app.use(morgan('dev'));
     app.set('jsonp callback name', 'callback');
     app.use(errorHandler({
         dumpExceptions: true,

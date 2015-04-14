@@ -10,7 +10,7 @@ var app;
  * Initial bootstrapping
  * @param {Number} port
  */
-exports.boot = function(port) {
+exports.boot = function (port) {
     process.env.PORT = port || config.port || 3000;
     if (!process.env.CLUSTER) {
         console.log('App Launching in cluster mode on port: ' + process.env.PORT);
@@ -20,10 +20,10 @@ exports.boot = function(port) {
     //Create our express instance
     app = require('./app').boot(process.env.PORT, process.env.CLUSTER);
 
-    cluster.on('fork', function(worker) {
+    cluster.on('fork', function (worker) {
         console.log("Start worker: %s online", worker.process.pid || "");
     });
-    cluster.on('exit', function(worker, code, signal) {
+    cluster.on('exit', function (worker, code, signal) {
         console.log('Worker: %s died', worker.process.pid || "");
     });
 

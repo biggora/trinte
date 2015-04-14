@@ -40,6 +40,14 @@ function TrinteJS(app, root) {
 
     this.server = http.createServer(app);
 
+    // socket.io support
+    try {
+        var sio = require('socket.io');
+        this.app.io = sio(this.server);
+    } catch(err) {
+        this.app.io = null;
+    }
+
     app.listen = function(port, host, cb) {
         this.server.listen(port, host, cb);
     }.bind(this);

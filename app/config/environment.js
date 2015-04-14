@@ -10,7 +10,7 @@
  *  @param {ExpressJS} express
  **/
 
-module.exports = function(app, express) {
+module.exports = function (app, express) {
     var env = process.env.NODE_ENV || 'development';
     // DEVELOPMENT
     if ('development' === env) {
@@ -22,10 +22,8 @@ module.exports = function(app, express) {
         require("./env/test.js")(app, express);
     }
 
-
     // PRODUCTION
     if ('production' === env) {
         require("./env/production.js")(app, express);
     }
-
 };

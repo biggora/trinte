@@ -12,7 +12,7 @@ var morgan = require('morgan');
 var errorHandler = require('errorhandler');
 var compress = require('compression');
 
-module.exports = function(app,express) {
+module.exports = function (app, express) {
     app.set('trust proxy', true);
     app.set('json spaces', 0);
     app.set('view cache', true);

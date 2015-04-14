@@ -30,8 +30,8 @@ module.exports = {
                     pass: ''
                 },
                 host: "127.0.0.1" //, hostname
-                        //   secureConnection: false, // use SSL
-                        //   port: 465, // port for secure SMTP
+                //   secureConnection: false, // use SSL
+                //   port: 465, // port for secure SMTP
             },
             senderName: 'Example Server',
             senderMail: 'example@example.com'
@@ -50,8 +50,8 @@ module.exports = {
                     pass: ''
                 },
                 host: "127.0.0.1" //, hostname
-                        //   secureConnection: false, // use SSL
-                        //   port: 465, // port for secure SMTP
+                //   secureConnection: false, // use SSL
+                //   port: 465, // port for secure SMTP
             },
             senderName: 'Example Server',
             senderMail: 'example@example.com'

@@ -2,13 +2,13 @@
  * Module dependencies.
  */
 var express = require('express'),
-        config = require('./config/configuration'), app;
+    config = require('./config/configuration'), app;
 
 
 /**
  * Initial bootstrapping
  */
-exports.boot = function(port, cluster) {
+exports.boot = function (port, cluster) {
     process.env.PORT = port || config.port || 3000;
     app = module.exports = require('./bin/trinte').createServer();
     if (!cluster) {

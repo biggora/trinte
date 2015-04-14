@@ -9,10 +9,10 @@
  *  @param {TrinteJS} app
  **/
 
-module.exports = function(app) {
+module.exports = function (app) {
 
     // Example 500 page
-    app.use(function(err, req, res, next) {
+    app.use(function (err, req, res, next) {
         console.log('Internal Server Error: ' + err.message);
         res.status(err.status || 500);
         if (parseInt(err.status) === 403) {
@@ -35,7 +35,7 @@ module.exports = function(app) {
     });
 
     // Example 404 page via simple Connect middleware
-    app.all('*', function(req, res) {
+    app.all('*', function (req, res) {
         res.render('errors/404', {
             request: req,
             session: req.session

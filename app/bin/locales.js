@@ -2,9 +2,10 @@
  * Module dependencies.
  */
 
-var fs = require('fs'),
-        path = require('path'),
-        yaml = require('js-yaml');
+var fs = require('fs');
+var path = require('path');
+var yaml = require('js-yaml');
+var config = require('../config/configuration');
 
 exports.load = function load() {
     var locales = {};
@@ -29,11 +30,11 @@ exports.load = function load() {
     return locales;
 };
 
-exports.t = function t(key, defaultValue) {
+exports.t = function t(language, key, defaultValue) {
     var substitute;
 
     if (typeof global.__lc === 'object') {
-        var language = global.__ln || 'en';
+        var language = language || config.language || 'en';
         var translation = global.__lc[language];
         if (typeof global.__lc[language] === 'object') {
 
