@@ -27,7 +27,7 @@ var engine = require('ejs-locals');
 
 function TrinteJS(app, root) {
     app.trinte = this;
-    this.__defineGetter__('rootModule', function() {
+    this.__defineGetter__('rootModule', function () {
         return module.parent;
     });
     this.app = app;
@@ -37,9 +37,7 @@ function TrinteJS(app, root) {
     this.models = {};
     this.middleware = [];
     this.app.mergeLocals = utils.mergeLocals;
-
     this.server = http.createServer(app);
-
     // socket.io support
     try {
         var sio = require('socket.io');
@@ -48,7 +46,7 @@ function TrinteJS(app, root) {
         this.app.io = null;
     }
 
-    app.listen = function(port, host, cb) {
+    app.listen = function (port, host, cb) {
         this.server.listen(port, host, cb);
     }.bind(this);
 }
@@ -87,8 +85,8 @@ exports.init = function init(app, root) {
 
     bootModels(trinte);
 
-    trinte.on('models_loaded', function() {
-        configureApp(trinte, function() {
+    trinte.on('models_loaded', function () {
+        configureApp(trinte, function () {
             require('../app/helpers/ModelsHelper');
             var ApplicationHelper = require('../app/helpers/ApplicationHelper');
             for (var key in ApplicationHelper) {
@@ -103,7 +101,7 @@ exports.init = function init(app, root) {
         });
     });
 
-    trinte.on('helpers_loaded', function() {
+    trinte.on('helpers_loaded', function () {
         try {
             var locales = require('./locales');
             global['__ln'] = config.language;
@@ -121,9 +119,9 @@ exports.init = function init(app, root) {
         }
     });
 
-    trinte.on('locales_loaded', function() {
+    trinte.on('locales_loaded', function () {
         // Initialize app routes
-        require('../config/routes')(map);
+        require('../config/routes')(map, app);
         // Initialize errors routes
         require(root + '/config/errors')(app);
         trinte.emit('routes_loaded');
@@ -132,7 +130,7 @@ exports.init = function init(app, root) {
         }
     });
 
-    trinte.on('routes_loaded', function() {
+    trinte.on('routes_loaded', function () {
         global.pathTo = map.pathTo;
     });
 
@@ -147,7 +145,7 @@ exports.init = function init(app, root) {
  *   {root: __dirname, any other options for express}.
  * @return {Function} express server.
  */
-exports.createServer = function(options) {
+exports.createServer = function (options) {
     options = options || {};
     if (typeof options === 'string') {
         options = {
@@ -164,17 +162,20 @@ exports.createServer = function(options) {
     } else {
         app.express2 = !!express.version.match(/^2/);
         app.express3 = !!express.version.match(/^3/);
+        app.express4 = !!express.version.match(/^4/);
     }
     return app;
 };
 
 // Bootstrap models
 function bootModels(trinte) {
-    var Schema = require('caminte').Schema,
-            schema = new Schema(database.db.driver, database.db);
+    var Schema = require('caminte').Schema;
+    var schema = new Schema(database.db.driver, database.db);
     var modelsDir = path.resolve(__dirname, '../app/models');
+    global.caminte = schema;
+
     try {
-        fs.readdir(modelsDir, function(err, files) {
+        fs.readdir(modelsDir, function (err, files) {
             if (err) {
                 console.log(err);
             }
@@ -187,12 +188,12 @@ function bootModels(trinte) {
             } else {
                 var count = files.length;
                 if (count > 0) {
-                    files.forEach(function(file) {
+                    files.forEach(function (file) {
                         bootModel(trinte, schema, file);
                         if (--count === 0) {
                             if ('function' === typeof schema.autoupdate) {
                                 if (!process.env.AUTOUPDATE) {
-                                    schema.autoupdate(function(err) {
+                                    schema.autoupdate(function (err) {
                                         console.log('Run Caminte driver Autoupdate!');
                                         process.env.AUTOUPDATE = true;
                                         if (err)
@@ -235,7 +236,6 @@ function configureApp(trinte, callback) {
     var app = trinte.app;
     var root = trinte.root;
 
-    params.extend(app);
     envConf(app, express);
 
     app.use(multiparty({
@@ -244,16 +244,16 @@ function configureApp(trinte, callback) {
         encoding: config.parser.encoding
     }));
     // parse application/x-www-form-urlencoded
-    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.urlencoded({extended: true}));
     // parse application/json
     app.use(bodyParser.json());
     // parse application/vnd.api+json as json
-    app.use(bodyParser.json({ type: 'application/vnd.api+json' }))
+    app.use(bodyParser.json({type: 'application/vnd.api+json'}))
     app.use(methodOverride('X-HTTP-Method'));              // Microsoft
     app.use(methodOverride('X-HTTP-Method-Override'));     // Google/GData
     app.use(methodOverride('X-Method-Override'));          // IBM
     app.use(methodOverride('_method')); 	           // simulate DELETE and PUT
-    app.use(methodOverride(function(req, res){
+    app.use(methodOverride(function (req, res) {
         if (req.body && typeof req.body === 'object' && '_method' in req.body) {
             // look in urlencoded POST bodies and delete it
             var method = req.body._method;
@@ -282,6 +282,7 @@ function configureApp(trinte, callback) {
     middleware(app, express);
 
     // Initialize routes params
-    require(root + '/config/params')(app);
+    var router = express.Router();
+    require(root + '/config/params')(params, router);
     callback(app);
 }
