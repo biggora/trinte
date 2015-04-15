@@ -9,10 +9,10 @@
 module.exports = {
     db: {
         driver     : '<?= driver ?>',
-        host       : '<?= host ?>',
-        port       : '<?= port ?>',
-        username   : '<?= username ?>',
-        password   : '<?= password ?>',
-        database   : '<?= database ?>'
+        <? if(host != '')  { ?>host       : '<?= host ?>',<? } ?>
+        <? if(port != '')  { ?>port       : '<?= port ?>',<? } ?>
+        <? if(username != '')  { ?>username   : '<?= username ?>',<? } ?>
+        <? if(password != '')  { ?>password   : '<?= password ?>',<? } ?>
+        <? if(database != '')  { ?>database   : '<?= database ?>'<? } ?>
     }
 };
