@@ -33,9 +33,13 @@ exports.addProductToCart = function addProductToCart() {
                 }
                 req.session.cart.products = products;
                 req.session.cart.sum_total = sum_total;
-                res.locals({
-                    cart: req.session.cart
-                });
+                if(typeof res.locals === 'function') {
+                    res.locals({
+                        cart: req.session.cart
+                    });
+                } else {
+                    res.locals.cart = req.session.cart;
+                }
                 res.send('Product added!');
             }
         } else {

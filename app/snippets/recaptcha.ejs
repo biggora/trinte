@@ -16,13 +16,21 @@ function buildRecaptcha(data) {
 
 exports.createRecaptcha = function createRecaptcha() {
     return function(req, res, next) {
-        res.locals({
-            recaptcha: {
+        if(typeof res.locals === 'function') {
+          res.locals({
+             recaptcha: {
+                 form: buildRecaptcha().toHTML(),
+                 valid: false,
+                 error: false
+             }
+          });
+        } else {
+          res.locals.recaptcha = {
                 form: buildRecaptcha().toHTML(),
                 valid: false,
                 error: false
-            }
-        });
+          };
+        }
         next();
     };
 };
@@ -47,9 +55,11 @@ exports.verifyRecaptcha = function verifyRecaptcha(successTo) {
                 locals.recaptcha.valid = false;
                 locals.recaptcha.error = error_code;
             }
-
-            res.locals(locals);
-
+            if(typeof res.locals === 'function') {
+                res.locals(locals);
+            } else {
+                res.locals.recaptcha = locals.recaptcha;
+            }
             if (successTo) {
                 res.redirect(successTo);
             } else {
@@ -81,17 +91,29 @@ exports.middleware = function middleware() {
                     locals.recaptcha.error = error_code;
                 }
 
-                res.locals(locals);
+                if(typeof res.locals === 'function') {
+                    res.locals(locals);
+                } else {
+                    res.locals.recaptcha = locals.recaptcha;
+                }
                 next();
             });
         } else {
-            res.locals({
-                recaptcha: {
+            if(typeof res.locals === 'function') {
+                res.locals({
+                    recaptcha: {
+                        form: buildRecaptcha().toHTML(),
+                        valid: false,
+                        error: false
+                    }
+                });
+            } else {
+               res.locals.recaptcha = {
                     form: buildRecaptcha().toHTML(),
                     valid: false,
                     error: false
-                }
-            });
+               };
+            }
             next();
         }
     };
