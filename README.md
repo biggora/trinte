@@ -11,7 +11,7 @@ This application help to create a Webapp [MVC](http://en.wikipedia.org/wiki/Mode
 
 ## Dependencies
 
-- [Express 3.x](http://expressjs.com/).
+- [Express 4.x](http://expressjs.com/).
 - [jQuery 2.x](http://jquery.com/).
 - [Twitter Bootstrap 3.x](http://getbootstrap.com/).
 
@@ -25,29 +25,10 @@ To install trinte:
 * [Get started!](#create-app)
 * [Usage overview](https://github.com/biggora/trinte/wiki/Command-format)
   * [Command format](https://github.com/biggora/trinte/wiki/Command-format)
-    * [Usage](https://github.com/biggora/trinte/wiki/Command-format#usage)
-    * [Commands](https://github.com/biggora/trinte/wiki/Command-format#commands)
-    * [Options](https://github.com/biggora/trinte/wiki/Command-format#options)
-    * [Generators](https://github.com/biggora/trinte/wiki/Command-format#generators)
   * [Create and initialize app](https://github.com/biggora/trinte/wiki/Create-App)
-    * [Create Default Application](https://github.com/biggora/trinte/wiki/Create-app#create-default-application)
-    * [Create Application with Theme](https://github.com/biggora/trinte/wiki/Create-app#create-application-with-theme)
-    * [Create Application with session](https://github.com/biggora/trinte/wiki/Create-app#create-application-with-session)
-    * [Create Application with authorization](https://github.com/biggora/trinte/wiki/Create-app#create-application-with-authorization)
-    * [Create Application with file Uploader](https://github.com/biggora/trinte/wiki/Create-App#create-application-with-uploader)
-    * [Create Application with Recaptcha](https://github.com/biggora/trinte/wiki/Create-App#create-application-with-recaptcha)
-    * [Create Application with Mailer](https://github.com/biggora/trinte/wiki/Create-App#create-application-with-mailer)
-    * [Create Application with Shopping Cart](https://github.com/biggora/trinte/wiki/Create-App#create-application-with-shopping-cart)
   * [Creates a Scaffold](https://github.com/biggora/trinte/wiki/Create-a-Scaffold)
-    * [Create a Scaffold with fields](https://github.com/biggora/trinte/wiki/Create-a-Scaffold#fields-scaffold)
-    * [Create a Scaffold with namespace](https://github.com/biggora/trinte/wiki/Create-a-Scaffold#namespace-scaffold)
   * [Creates a Model](https://github.com/biggora/trinte/wiki/Create-a-Model)
-    * [Create a Model with fields](https://github.com/biggora/trinte/wiki/Create-a-Model#fields-model)
-    * [Setup Model Validations](https://github.com/biggora/trinte/wiki/Create-a-Model#field-validation)
-    * [Setup Models Relationships](https://github.com/biggora/trinte/wiki/Create-a-Model#field-relationships)
   * [Creates a Controller](https://github.com/biggora/trinte/wiki/Create-a-controller)
-    * [Create a Controller with actions](https://github.com/biggora/trinte/wiki/Create-a-controller#actions-controller)
-    * [Create a Controller with namespace](https://github.com/biggora/trinte/wiki/Create-a-controller#namespace-controller)
   * [Creates a View](https://github.com/biggora/trinte/wiki/Create-a-View)
   * [Creates a Rest](https://github.com/biggora/trinte/wiki/Create-a-Rest)
   * [Field types](https://github.com/biggora/trinte/wiki/Create-a-Model#field-types)
