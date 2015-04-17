@@ -104,15 +104,10 @@ exports.init = function init(app, root) {
     trinte.on('helpers_loaded', function () {
         try {
             var locales = require('./locales');
-            global['__ln'] = config.language;
         } catch (err) {
             console.log("Yaml Error 0: ", err);
         }
         global['__lc'] = locales.load();
-        global['t'] = locales.t;
-        app.mergeLocals({
-            t: locales.t
-        });
         trinte.emit('locales_loaded');
         if (config.debug) {
             console.log('locales_loaded');
@@ -279,6 +274,7 @@ function configureApp(trinte, callback) {
     app.use(utils.ErrorResponse());
     app.use(utils.fixCSRF());
     app.use(flash());
+    app.use(locales.translator());
     middleware(app, express);
 
     // Initialize routes params

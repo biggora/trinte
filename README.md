@@ -47,6 +47,7 @@ To install trinte:
   * [Database configuration](https://github.com/biggora/trinte/wiki/Examples#database-configuration)
   * [Authentication](https://github.com/biggora/trinte/wiki/Examples#authentication)
   * [Session](https://github.com/biggora/trinte/wiki/Examples#session)
+  * [Multilingual support](https://github.com/biggora/trinte/wiki/Multilingual-support)
 * [Recommend extensions](https://github.com/biggora/trinte/wiki/Recommend-Extensions)
 * [Credits](#credits)
 * [Peoject Author](#author)

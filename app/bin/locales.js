@@ -30,34 +30,58 @@ exports.load = function load() {
     return locales;
 };
 
-exports.t = function t(language, key, defaultValue) {
-    var substitute;
-
-    if (typeof global.__lc === 'object') {
-        var language = language || config.language || 'en';
-        var translation = global.__lc[language];
-        if (typeof global.__lc[language] === 'object') {
-
-            if (typeof key === 'string') {
-                substitute = false;
-            } else {
-                substitute = key;
-                key = substitute.shift();
-            }
-            if (!translation || !key.split('.').every(nextPathItem)) {
-                translation = typeof defaultValue === 'undefined' ? key : defaultValue;
-            }
-            if (translation && substitute && substitute.length) {
-                substitute.forEach(function(substitution) {
-                    translation = translation.replace(/%/, substitution.toString().replace(/%/g, ''));
-                });
+exports.translator = function translator() {
+    return function(req, res, next) {
+        if(req.params.language) {
+            if(req.session){
+                req.session.language = req.params.language.toString();
             }
         }
-    }
+        if(req.query.language) {
+            if(req.session){
+                req.session.language = req.query.language.toString();
+            }
+        }
+        var sess = req.session || {};
+        var language = sess.language || config.language || 'en';
 
-    function nextPathItem(token) {
-        return (translation = translation[token]);
-    }
+        var tran = function(key, defaultValue) {
+            var substitute;
+            if (typeof global.__lc === 'object') {
+                var language = language || config.language || 'en';
+                var translation = global.__lc[language];
+                if (typeof global.__lc[language] === 'object') {
+                    if (typeof key === 'string') {
+                        substitute = false;
+                    } else {
+                        substitute = key;
+                        key = substitute.shift();
+                    }
+                    if (!translation || !key.split('.').every(nextPathItem)) {
+                        translation = typeof defaultValue === 'undefined' ? key : defaultValue;
+                    }
+                    if (translation && substitute && substitute.length) {
+                        substitute.forEach(function (substitution) {
+                            translation = translation.replace(/%/, substitution.toString().replace(/%/g, ''));
+                        });
+                    }
+                }
+            }
 
-    return translation;
+            function nextPathItem(token) {
+                return (translation = translation[token]);
+            }
+
+            return translation;
+        };
+
+        if(typeof res.locals === 'function'){
+            res.locals({
+                t : tran
+            })
+        } else {
+            res.locals.t = tran
+        }
+        next();
+    }
 };
