@@ -1,7 +1,7 @@
 {
   "name" : "trinte",
   "description": "TrinteJS - MVC framework for NodeJS",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "keywords": [
     "app",
     "mvc",
@@ -34,7 +34,7 @@
     "npm": ">=1.0"
   },
   "dependencies": {
-    "trinte-creator": "0.0.x"
+    "trinte-creator": "0.x.x"
   },
   "devDependencies": {
   },
