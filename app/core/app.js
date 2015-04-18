@@ -12,7 +12,7 @@ exports.boot = function (port, cluster) {
     process.env.PORT = port || config.port || 3000;
     app = module.exports = require('./bin/trinte').createServer();
     if (!cluster) {
-        console.log('App Launching in silgle mode on port: ' + process.env.PORT);
+        console.log('App Launching in single instance mode on port: ' + process.env.PORT);
     }
     return app;
 };

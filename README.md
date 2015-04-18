@@ -59,6 +59,8 @@ To install trinte:
 
       $ trinte [command(s)] [argument(s)]
 
+Command format detail [here](https://github.com/biggora/trinte/wiki/Command-format)
+
 <a name="start"></a>
 <a name="create-app"></a>
 ### Get started!
@@ -72,6 +74,7 @@ To install trinte:
 
   - Browse your application to [http://localhost:3000](http://localhost:3000)
 
+Full params list [here](https://github.com/biggora/trinte/wiki/Create-App)
 
 <a name="middleware"></a>
 ### Used Middleware
@@ -80,14 +83,16 @@ To install trinte:
 - [connect-multiparty](https://github.com/andrewrk/connect-multiparty) Parse http requests with content-type `multipart/form-data`.
 - [csrf](http://www.senchalabs.org/connect/csrf.html) CSRF protection middleware.
 
+
 <a name="recommend"></a>
 ### Recommend extensions
 
 - [CaminteJS](http://www.camintejs.com/) - Cross-db ORM for NodeJS
 - [2CO](https://github.com/biggora/2co) - is the module that will provide nodejs adapters for 2checkout API payment gateway.
+- [connect-caminte](https://github.com/biggora/connect-caminte) CrossDB Session Storage for Connect/Express.
 
 <a name="in-the-wild"></a>
-## In the Wild
+### In the Wild
 
 The following projects use TrinteJS.
 
@@ -97,11 +102,12 @@ by getting in touch or submitting a pull request with changes to the README.
 <a name="startups-and-apps"></a>
 ### Startups & Apps
 
+- [RVA](http://www.rva.lv/)
+- [RK69](http://www.rk69.lv/)
 - [TViMama](http://tvimama.com/)
-- [GorkaTV](https://gorkatv.com/)
 
 <a name="credits"></a>
-## Credits
+### Credits
 
 - [Node.js](http://nodejs.org/): Amazing javascript asynchronous IO library, install manually.
 - [NPM](http://npmjs.org/): Node package manager, used to install:
@@ -113,12 +119,12 @@ by getting in touch or submitting a pull request with changes to the README.
 - [Glyphicons](http://glyphicons.com/): Fantastic library of precisely prepared monochromatic icons and symbols.
 
 <a name="author"></a>
-## Author
+### Author
 
 Aleksej Gordejev (aleksej@gordejev.lv).
 
 <a name="license"></a>
-## Copyright & License
+### Copyright & License
 
 (The MIT License)
 
@@ -144,7 +150,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <a name="resources"></a>
-## Resources
+### Resources
 
 - Visit the [author website](http://www.gordejev.lv).
 - Follow [@biggora](https://twitter.com/#!/biggora) on Twitter for updates.
