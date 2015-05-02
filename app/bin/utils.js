@@ -383,11 +383,39 @@ exports.fixCSRF = function() {
             next();
         }
     };
-}; 
- 
-exports.typeDependsDriver = function(DbDriver) {
-    DbDriver = typeof DbDriver === 'undefined' ? global._DbDriver : DbDriver;
-    if (/mongodb|mongoose/gi.test(DbDriver)) {
+};
+
+/**
+ * Add all param functions to `router`.
+ *
+ * @param {express.Router} router
+ * @api public
+ */
+exports.add = function (router, param, regex) {
+    return router.param(param
+        , function (req, res, next, val) {
+            var captures = regex.exec(String(val));
+            if (util.isArray(captures)) {
+                if (1 === captures.length) {
+                    captures = captures[0];
+                }
+                req.params[param] = captures;
+                next();
+            } else {
+                next('route');
+            }
+        });
+};
+
+/**
+ * Check database driver and choose field type.
+ *
+ * @param {string} driver
+ * @api public
+ */
+exports.typeDependsDriver = function(driver) {
+    driver = typeof driver === 'undefined' ? global._DbDriver : driver;
+    if (/mongodb|mongoose/gi.test(driver)) {
         return eval('String');
     } else {
         return eval('Number');

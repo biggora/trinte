@@ -48,25 +48,21 @@ function TrinteBridge(namespace, controller, action) {
         }
         namespace = typeof namespace === 'string' ? namespace.toString().toLowerCase() : '';
         controller = controller.pluralize().capitalize();
-        var ctlFileA = './../app/controllers/' + namespace + controller + 'Controller';
-        var ctlFileB = './../app/controllers/' + namespace + controller + 'esController';
-        var ctlFileC = './../app/controllers/' + namespace + controller + 'sesController';
-
-        if (fileExists(path.resolve(__dirname, ctlFileA) + '.js')) {
-            responseHandler = require(ctlFileA)[action];
-        } else if (fileExists(path.resolve(__dirname, ctlFileB) + '.js')) {
-            responseHandler = require(ctlFileB)[action];
-        } else {
-            responseHandler = require(ctlFileC)[action];
-        }
+        var crtRoot = './../app/controllers/';
+        ['', 'es', 'ses'].forEach(function (prf) {
+            var ctlFile = crtRoot + namespace + controller + prf + 'Controller';
+            if (fileExists(path.resolve(__dirname, ctlFile) + '.js')) {
+                responseHandler = require(ctlFile)[action];
+            }
+        });
     } catch (e) {
-        // console.log( 'Route Action: ' + action );
+        // console.log( 'Error Route Action: ' + action );
         console.log(e);
     }
-
+    if (!responseHandler) console.log('Bridge not found for ' + namespace + controller + '#' + action);
     return responseHandler || function (req, res) {
-        res.send('bridge not found for ' + namespace + controller + '#' + action);
-    };
+            res.send('Bridge not found for ' + namespace + controller + '#' + action);
+        };
 }
 
 /**
@@ -90,7 +86,7 @@ Resource.prototype.urlHelperName = function (path, action) {
     var helperName = [];
     path.forEach(function (token, index, all) {
         // skip variables
-        if (token[0] === ':') return;
+        if (token[0] === ':' || token === 'subdomain') return;
 
         var nextToken = all[index + 1] || '';
 
@@ -147,18 +143,39 @@ Resource.prototype.root = function (handler, middleware, options) {
     this.get('/', handler, middleware, options);
 };
 
+/**
+ * Set router middleware
+ * @param {Function} handler
+ * @param {Function|Array} middleware
+ * @param {Object} options
+ */
+Resource.prototype.use = function (middleware) {
+    // only accept functions in before filter when it's an array
+    if (middleware instanceof Array) {
+        var before_filter_functions = middleware.filter(function (filter) {
+            return (typeof filter === 'function');
+        });
+        middleware = before_filter_functions.length > 0 ? before_filter_functions : null;
+        for (var i = 0; i < middleware.length; i += 1) {
+            this.middlewareStack.push(middleware[i]);
+        }
+    } else if (typeof middleware === 'function') {
+        this.middlewareStack.push(middleware);
+    }
+};
+
+/**
+ * Map methods for router
+ */
 ['get', 'post', 'put', 'delete', 'del', 'all'].forEach(function (method) {
     Resource.prototype[method] = function (subpath, handler, middleware, options) {
-
-        var controller, action;
+        var controller, action, path;
         if (typeof handler === 'string') {
             controller = handler.split('#')[0];
             action = handler.split('#')[1];
         } else if (typeof handler === 'function') {
             action = handler;
         }
-
-        var path;
 
         if (typeof subpath === 'string') {
             path = this.globPath + subpath.replace(/^\/|\/$/, '');
@@ -182,6 +199,7 @@ Resource.prototype.root = function (handler, middleware, options) {
         if (!options) {
             options = {};
         }
+
         path = options.collection ? path.replace(/\/:.*_id/, '') : path;
 
         var args = [path];
@@ -339,9 +357,7 @@ Resource.prototype.addPath = function (templatePath, action, helperName) {
  * @param {Function|Array} actions
  *
  * Example
- *
  *     map.resources('users');
- *
  */
 Resource.prototype.resources = function (name, params, actions) {
     var self = this;
@@ -356,6 +372,7 @@ Resource.prototype.resources = function (name, params, actions) {
     if (!params.middleware) {
         params.middleware = [];
     }
+
     params.middleware = this.middlewareStack.concat(params.middleware);
     params.appendFormat = ('appendFormat' in params) ? params.appendFormat : true;
 
@@ -411,16 +428,7 @@ Resource.prototype.resources = function (name, params, actions) {
                     }
                 });
             }
-            /*
-             switch(action) {
-             case 'edit':
-             case 'show':
-             case 'new':
-             case 'destroy':
-             name = name.singularize();
-             break;
-             }
-             */
+
             // params.path setting allows to override common path component
             var effectivePath = (params.path || name) + path;
             var controller = params.controller || name;
@@ -522,7 +530,7 @@ Resource.prototype.resources = function (name, params, actions) {
     }
 };
 
-/*
+/**
  * Make Resource.
  *
  * @param {String} name
@@ -543,7 +551,7 @@ Resource.prototype.resource = function (name, params, actions) {
     return self.resources(name, params, actions);
 };
 
-/*
+/**
  * Namespaces mapper.
  *
  * @param {String} name
@@ -551,26 +559,27 @@ Resource.prototype.resource = function (name, params, actions) {
  * @param {String} subroutes
  *
  * Example:
- *
  *     map.namespace('admin', function (admin) {
  *         admin.resources('user');
  *     });
- *
  */
 Resource.prototype.namespace = function (name, options, subroutes) {
     if (typeof options === 'function') {
         subroutes = options;
-        options = null;
+        options = {};
     }
     if (options && typeof options.middleware === 'function') {
         options.middleware = [options.middleware];
     }
 
     // store previous ns
-    var old_ns = this.ns, oldGlobPath = this.globPath;
+    var old_ns = this.ns, oldGlobPath = this.globPath, prefix = '';
+    if (options && options.subdomain) {
+        prefix = 'subdomain/';
+    }
     // add new ns to old (ensure tail slash present)
     this.ns = old_ns + name.replace(/\/$/, '') + '/';
-    this.globPath = oldGlobPath + name.replace(/\/$/, '') + '/';
+    this.globPath = oldGlobPath + prefix + name.replace(/\/$/, '') + '/';
     if (options && options.middleware) {
         this.middlewareStack = this.middlewareStack.concat(options.middleware);
     }
@@ -584,7 +593,7 @@ Resource.prototype.namespace = function (name, options, subroutes) {
     this.globPath = oldGlobPath;
 };
 
-/*
+/**
  * Make subroutes.
  *
  * @param {String} name

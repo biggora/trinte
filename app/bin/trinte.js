@@ -9,7 +9,6 @@ var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var events = require('events');
 var path = require('path');
-var params = require('./params');
 var envConf = require('../config/environment');
 var config = require('../config/configuration');
 var database = require('../config/database');
@@ -279,6 +278,6 @@ function configureApp(trinte, callback) {
 
     // Initialize routes params
     var router = express.Router();
-    require(root + '/config/params')(params, router);
+    require(root + '/config/params')(utils, router);
     callback(app);
 }
