@@ -1,7 +1,7 @@
 {
   "name" : "trinte",
   "description": "TrinteJS - MVC framework for NodeJS",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "keywords": [
     "app",
     "mvc",
@@ -30,11 +30,12 @@
     "url": "https://github.com/biggora/"
   },
   "engines": {
-    "node": ">=0.8",
+    "node": ">=0.10",
     "npm": ">=1.0"
   },
   "dependencies": {
-    "trinte-creator": "0.x.x"
+    "npm": "latest",
+    "trinte-creator": "latest"
   },
   "devDependencies": {
   },
