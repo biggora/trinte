@@ -12,14 +12,21 @@ This application help to create a Webapp [MVC](http://en.wikipedia.org/wiki/Mode
 ## Dependencies
 
 - [Express 4.x](http://expressjs.com/).
-- [jQuery 2.x](http://jquery.com/).
-- [Twitter Bootstrap 3.x](http://getbootstrap.com/).
+- [jQuery 2.2.x](http://jquery.com/).
+- [Twitter Bootstrap 3.3.x](http://getbootstrap.com/).
+- [Bootswatch 3.3.x](https://bootswatch.com/).
 
 ## Installation
 Installation is done using the NodeJS Package Manager (npm). If you don't have npm installed on your system you can download it from [npmjs.org](http://npmjs.org/)
 To install trinte:
 
     $ sudo npm install trinte -g
+
+supported databases:
+```
+mysql, postgres, sqlite3, mongodb, redis, riak, couchdb, neo4j, firebird, rethinkdb, tingodb
+```
+
 
 ### Table of contents
 * [Get started!](#create-app)
@@ -83,7 +90,6 @@ Full params list [here](https://github.com/biggora/trinte/wiki/Create-App)
 - [connect-multiparty](https://github.com/andrewrk/connect-multiparty) Parse http requests with content-type `multipart/form-data`.
 - [csrf](http://www.senchalabs.org/connect/csrf.html) CSRF protection middleware.
 
-
 <a name="recommend"></a>
 ### Recommend extensions
 
@@ -115,7 +121,9 @@ by getting in touch or submitting a pull request with changes to the README.
 - [Caminte.Js](http://camintejs.com/): Node.JS ORM for Any DB.
 - [EJS](http://embeddedjs.com/): Embedded Javascript Templating Library.
 - [jQuery](http://jquery.com/): Best Javascript Library.
-- [Bootstrap](http://twitter.github.com/bootstrap/index.html): Powerful front-end CSS/JS framework
+- [Bootstrap](http://twitter.github.com/bootstrap/index.html): Powerful front-end CSS/JS framework.
+- [Bootswatch](https://bootswatch.com/): Free themes for Bootstrap.
+- [Font Awesome](https://fortawesome.github.io/Font-Awesome/): The iconic font and CSS toolkit.
 - [Glyphicons](http://glyphicons.com/): Fantastic library of precisely prepared monochromatic icons and symbols.
 
 <a name="author"></a>

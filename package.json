@@ -1,7 +1,7 @@
 {
   "name" : "trinte",
   "description": "TrinteJS - MVC framework for NodeJS",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "keywords": [
     "app",
     "mvc",
@@ -19,23 +19,25 @@
     "sqlite3"
   ],
   "homepage": "http://www.trintejs.com/",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/biggora/trinte.git"
-  },
-  "main": "trinte",
   "author": {
     "name": "Aleksej Gordejev",
     "email": "aleksej@gordejev.lv",
     "url": "https://github.com/biggora/"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/biggora/trinte.git"
+  },
+  "license": "MIT",
+  "main": "trinte",
   "engines": {
     "node": ">=0.10",
     "npm": ">=1.0"
   },
   "dependencies": {
     "npm": "latest",
-    "trinte-creator": "latest"
+    "trinte-creator": "latest",
+    "trinte-themes": "latest"
   },
   "devDependencies": {
   },
@@ -44,6 +46,5 @@
   "bin": {
     "trinte": "./lib/trinte.js",
     "trintejs": "./lib/trinte.js"
-  },
-  "license": "MIT"
+  }
 }
