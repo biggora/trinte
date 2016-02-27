@@ -18,13 +18,19 @@ This application help to create a Webapp [MVC](http://en.wikipedia.org/wiki/Mode
 
 ## Installation
 Installation is done using the NodeJS Package Manager (npm). If you don't have npm installed on your system you can download it from [npmjs.org](http://npmjs.org/)
+
+Before install required dependencies:
+
+    $ sudo npm install bower mocha npm -g
+
 To install trinte:
 
     $ sudo npm install trinte -g
 
+
 ## Supported databases:
 
-* MySQL
+* MySQL / MariaDB
 * PostgreSQL
 * SQlite
 * MongoDB
