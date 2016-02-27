@@ -7,7 +7,7 @@ A [MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) boil
 
 ## Description
 
-This application help to create a Webapp [MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) `style` in few minutes. TrinteJS tuned for ExpressJS 3.x, jQuery 2.x and Twitter Bootstrap 3.x.
+This application help to create a Webapp [MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) `style` in few minutes. TrinteJS tuned for ExpressJS 4.x, jQuery 2.x and Twitter Bootstrap 3.3.6.
 
 ## Dependencies
 
@@ -22,10 +22,19 @@ To install trinte:
 
     $ sudo npm install trinte -g
 
-supported databases:
-```
-mysql, postgres, sqlite3, mongodb, redis, riak, couchdb, neo4j, firebird, rethinkdb, tingodb
-```
+## Supported databases:
+
+* MySQL
+* PostgreSQL
+* SQlite
+* MongoDB
+* Redis
+* RethinkDB
+* Riak
+* CouchDB
+* Neo4j
+* Firebird
+* TingoDB
 
 
 ### Table of contents
@@ -86,10 +95,25 @@ Full params list [here](https://github.com/biggora/trinte/wiki/Create-App)
 <a name="middleware"></a>
 ### Used Middleware
 
-- [express-useragent](https://github.com/biggora/express-useragent) NodeJS user-agent middleware.
-- [connect-multiparty](https://github.com/andrewrk/connect-multiparty) Parse http requests with content-type `multipart/form-data`.
-- [csrf](http://www.senchalabs.org/connect/csrf.html) CSRF protection middleware.
+In generated trinte app used middleware and libraries:
 
+  - [body-parser](https://github.com/expressjs/body-parser)
+  - [connect-multiparty](https://github.com/andrewrk/connect-multiparty)
+  - [compression](https://github.com/expressjs/compression)
+  - [connect-timeout](https://github.com/expressjs/timeout)
+  - [cookie-parser](https://github.com/expressjs/cookie-parser)
+  - [csurf](https://github.com/expressjs/csurf)
+  - [errorhandler](https://github.com/expressjs/errorhandler)
+  - [express-session](https://github.com/expressjs/session)
+  - [method-override](https://github.com/expressjs/method-override)
+  - [morgan](https://github.com/expressjs/morgan)
+  - [serve-static](https://github.com/expressjs/serve-static)
+  - [static-favicon](https://github.com/expressjs/favicon)
+  - [connect-flash](https://github.com/jaredhanson/connect-flash)
+  - [express-useragent](https://github.com/biggora/express-useragent)
+  - [express-params](https://github.com/visionmedia/express-params)
+  - [connect-caminte](https://github.com/biggora/connect-caminte)
+  
 <a name="recommend"></a>
 ### Recommend extensions
 
