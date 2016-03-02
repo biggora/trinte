@@ -1,7 +1,7 @@
 {
   "name" : "trinte",
   "description": "TrinteJS - MVC framework for NodeJS",
-  "version": "0.3.11",
+  "version": "0.4.0",
   "keywords": [
     "app",
     "mvc",
