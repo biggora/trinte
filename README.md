@@ -26,7 +26,18 @@ First install required dependencies:
 To install trinte:
 
     $ sudo npm install trinte -g
+    
+### Get started!
 
+    $ trinte -i HelloWorld --sess   # Create application
+    $ cd HelloWorld && npm install  # intall dependencies
+
+    # generate scaffold
+    $ trinte -g crud User active:bool name email password about:text created:date
+      
+    # start test
+    $ npm test
+      
 
 ## Supported databases:
 
