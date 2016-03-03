@@ -29,8 +29,8 @@ To install trinte:
     
 ### Get started!
 
-    $ trinte -i HelloWorld --sess   # Create application
-    $ cd HelloWorld && npm install  # intall dependencies
+    $ trinte -i HelloWorld --sess --theme semargl  # Create application
+    $ cd HelloWorld && npm install                 # intall dependencies
 
     # generate scaffold
     $ trinte -g crud User active:bool name email password about:text created:date
