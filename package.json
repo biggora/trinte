@@ -1,7 +1,7 @@
 {
   "name" : "trinte",
   "description": "TrinteJS - MVC framework for NodeJS",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "keywords": [
     "app",
     "mvc",
@@ -31,17 +31,17 @@
   "license": "MIT",
   "main": "trinte",
   "engines": {
-    "node": "4.x",
-    "npm": "2.x"
+    "node": ">=4.3.0",
+    "npm": ">=2.15.11"
   },
   "dependencies": {
-    "trinte-creator": "latest",
-    "trinte-themes": "latest"
+    "trinte-creator": "^0.3.0",
+    "trinte-themes": "^0.1.4"
   },
   "devDependencies": {
   },
   "optionalDependencies": {
-    "npm": "2.x"
+    "npm": "^2.15.11"
   },
   "bin": {
     "trinte": "./lib/trinte.js",
